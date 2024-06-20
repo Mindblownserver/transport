@@ -6,15 +6,15 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.acme.repositories.DrItinRepo;
+import org.acme.repositories.DrLigneRepo;
 
-@Path("/api/itin")
+@Path("/api/ligne")
 @Produces(MediaType.APPLICATION_JSON)
-public class DrItinResources {
+public class DrLigneResources {
     @Inject
-    DrItinRepo itinRepo;
+    DrLigneRepo ligneRepo;
     @GET
-    public Response getItin(){
-        return Response.ok(itinRepo.listAll()).build();
+    public Response getLigne(){
+        return Response.ok(ligneRepo.listAll()).build();
     }
 }
