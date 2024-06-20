@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.resources.ParamRepo;
 
 import org.acme.repositories.DrCentreRepo;
 
@@ -11,8 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/api/centres")
-@Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+
 public class DrCentreResources {
 
     @Inject

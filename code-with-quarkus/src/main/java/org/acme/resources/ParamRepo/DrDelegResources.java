@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.resources.ParamRepo;
 
 import org.acme.repositories.DrDelegRepo;
 
@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/api/deleg")
 @Produces(MediaType.APPLICATION_JSON)
+
 public class DrDelegResources{
     @Inject
     DrDelegRepo delegRepo;

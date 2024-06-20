@@ -1,4 +1,4 @@
-package org.acme.entities;
+package org.acme.Embeddable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

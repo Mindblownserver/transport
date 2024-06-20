@@ -1,64 +1,69 @@
 package org.acme.entities;
 
+import org.acme.Embeddable.DrItinIdRecord;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class DrItin {
     @EmbeddedId
-    private DrItinId id;
+    private DrItinIdRecord id;
 
     @Column(name="DEKMSTA")
-    private int kmsTa;
+    private Integer kmsTa;
 
     @Column(name="DEDURTR")
-    private int dureetr;
+    private Integer dureetr;
 
-    @Column(name="DEESCALE")
-    private int escale;
+    @Column(name="DEESCALE", nullable = true)
+    private Integer escale;
 
     @Column(name="DEDATES")
     private String dates; // peut ne pas être avec les horraires
     
     @Column(name="DETARIF")
-    private int tarif;
+    private Integer tarif;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Column(name="DECSTAT")
+    @ManyToOne
+    @JoinColumn(name="DECSTAT")
+    @JsonBackReference
     private DrStati station;
 
-    public DrItinId getId() {
+    public DrItinIdRecord getId() {
         return id;
     }
 
-    public void setId(DrItinId id) {
+    public void setId(DrItinIdRecord id) {
         this.id = id;
     }
 
-    public int getKmsTa() {
+    public Integer getKmsTa() {
         return kmsTa;
     }
 
-    public void setKmsTa(int kmsTa) {
+    public void setKmsTa(Integer kmsTa) {
         this.kmsTa = kmsTa;
     }
 
-    public int getDureetr() {
+    public Integer getDureetr() {
         return dureetr;
     }
 
-    public void setDureetr(int dureetr) {
+    public void setDureetr(Integer dureetr) {
         this.dureetr = dureetr;
     }
 
-    public int getEscale() {
+    public Integer getEscale() {
         return escale;
     }
 
-    public void setEscale(int escale) {
+    public void setEscale(Integer escale) {
         this.escale = escale;
     }
 
@@ -70,11 +75,11 @@ public class DrItin {
         this.dates = dates;
     }
 
-    public int getTarif() {
+    public Integer getTarif() {
         return tarif;
     }
 
-    public void setTarif(int tarif) {
+    public void setTarif(Integer tarif) {
         this.tarif = tarif;
     }
 
@@ -89,7 +94,7 @@ public class DrItin {
     public DrItin() {
     }
 
-    public DrItin(DrItinId id, int kmsTa, int dureetr, int escale, String dates, int tarif, DrStati station) {
+    public DrItin(DrItinIdRecord id, Integer kmsTa, Integer dureetr, Integer escale, String dates, Integer tarif, DrStati station) {
         this.id = id;
         this.kmsTa = kmsTa;
         this.dureetr = dureetr;

@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.resources.ParamRepo;
 
 import org.acme.repositories.DrStatiRepo;
 

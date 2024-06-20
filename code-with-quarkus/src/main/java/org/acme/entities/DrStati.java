@@ -1,10 +1,16 @@
 package org.acme.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class DrStati {
@@ -22,16 +28,20 @@ public class DrStati {
     private int typeSt;
 
     @Column(name="STOP_LAT")
-    private float latitude;
+    private Float latitude;
 
     @Column(name="STOP_LON")
-    private float longetude;
+    private Float longetude;
 
     @Column(name="DATE_SYS")
     private Date date;
 
     @Column(name="RAYON")
     private int rayon;
+
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<DrItin> itineraires;
 
     public Long getDecStat() {
         return decStat;
@@ -65,19 +75,19 @@ public class DrStati {
         this.typeSt = typeSt;
     }
 
-    public float getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongetude() {
+    public Float getLongetude() {
         return longetude;
     }
 
-    public void setLongetude(float longetude) {
+    public void setLongetude(Float longetude) {
         this.longetude = longetude;
     }
 
@@ -100,7 +110,7 @@ public class DrStati {
     public DrStati() {
     }
 
-    public DrStati(Long decStat, String nomFr, String nomAr, int typeSt, float latitude, float longetude, Date date,
+    public DrStati(Long decStat, String nomFr, String nomAr, int typeSt, Float latitude, Float longetude, Date date,
             int rayon) {
         this.decStat = decStat;
         this.nomFr = nomFr;
