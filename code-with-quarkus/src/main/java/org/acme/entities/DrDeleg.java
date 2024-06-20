@@ -30,7 +30,7 @@ public class DrDeleg {
     }
     public void setFr_deleg(String fr_deleg) {
         this.fr_deleg = fr_deleg;
-    }
+    }// 84651
     public DrDeleg(Long dec_deleg, String ar_deleg, String fr_deleg) {
         this.dec_deleg = dec_deleg;
         this.ar_deleg = ar_deleg;

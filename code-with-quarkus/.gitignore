@@ -44,12 +44,12 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 
 # soretrak
-Drcentre.java
-Drdeleg.java
+/src/main/java/org/acme/entities/DrCentre.java
+DrDeleg.java
 DrItin.java
 
-DrcentreRepo.java
-DrdelegRepo.java
+DrCentreRepo.java
+DrDelegRepo.java
 
-DrcentreResources.java
-DrdelegResources.java
+DrCentreResources.java
+DrDelegResources.java
