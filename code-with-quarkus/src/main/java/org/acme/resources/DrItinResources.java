@@ -1,22 +1,21 @@
 package org.acme.resources;
 
-import org.acme.repositories.DrDelegRepo;
-
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.acme.repositories.DrItinRepo;
 
-@Path("/api/deleg")
+@Path("/api/itin")
 @Produces(MediaType.APPLICATION_JSON)
-public class DrDelegResources{
+public class DrItinResources {
     @Inject
-    DrDelegRepo delegRepo;
+    DrItinRepo itinRepo;
 
     @GET
-    public Response getDeleg(){
-        return Response.ok(delegRepo.listAll()).build();
+    public Response getItin(){
+        return Response.ok(itinRepo.listAll()).build();
     }
 }
