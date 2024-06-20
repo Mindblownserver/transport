@@ -1,18 +1,28 @@
 package org.acme.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class DrCentre {
     @Id
     @Column(name="DECCENT")
     private Long dec_centre;
+    
     @Column(name="DELCENT")
     private String del_centre;
+    
     @Column(name="AR_DELCENT")
     private String ar_centre;
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "centre")
+    private List<DrLigne> lignes;
+
     public Long getDec_centre() {
         return dec_centre;
     }
