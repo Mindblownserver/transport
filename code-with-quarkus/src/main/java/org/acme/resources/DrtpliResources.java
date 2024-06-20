@@ -1,6 +1,7 @@
 package org.acme.resources;
 
-import org.acme.repositories.DrDelegRepo;
+
+import org.acme.repositories.DrtpliRepo;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -9,14 +10,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/api/deleg")
+
+@Path("/api/tpli")
 @Produces(MediaType.APPLICATION_JSON)
-public class DrDelegResources{
+public class DrtpliResources {
     @Inject
-    DrDelegRepo delegRepo;
+    DrtpliRepo tpliRepo;
 
     @GET
     public Response get(){
-        return Response.ok(delegRepo.listAll()).build();
+        return Response.ok(tpliRepo.listAll()).build();
     }
+    
 }
