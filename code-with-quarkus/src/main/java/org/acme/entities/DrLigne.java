@@ -31,7 +31,7 @@ public class DrLigne {
     @Column(name="DESTATU")
     private String statu;
     @Column(name="DENBRKM")
-    private Double nbrkm;
+    private Float nbrkm;
     @Column(name="DECDELEG")
     private Integer deleg;
     @Column(name="DEACTIF")
@@ -145,11 +145,11 @@ public class DrLigne {
         this.statu = statu;
     }
 
-    public Double getNbrkm() {
+    public Float getNbrkm() {
         return nbrkm;
     }
 
-    public void setNbrkm(Double nbrkm) {
+    public void setNbrkm(Float nbrkm) {
         this.nbrkm = nbrkm;
     }
 
@@ -249,7 +249,7 @@ public class DrLigne {
         this.sae = sae;
     }
 
-    public DrLigne(Integer numli, String nomli, Integer tyli, Integer prior, String tyta, Integer tyeq, Integer cent, String nomla, Date datec, Date datea, String statu, Double nbrkm, Integer deleg, Integer actif, String agencyId, Integer routeType, String routeUrl, Integer routeColor, String routeTextColor, String denomliRet, Integer integBi, Integer clie, Integer admi, Integer sae) {
+    public DrLigne(Integer numli, String nomli, Integer tyli, Integer prior, String tyta, Integer tyeq, Integer cent, String nomla, Date datec, Date datea, String statu, Float nbrkm, Integer deleg, Integer actif, String agencyId, Integer routeType, String routeUrl, Integer routeColor, String routeTextColor, String denomliRet, Integer integBi, Integer clie, Integer admi, Integer sae) {
         this.numli = numli;
         this.nomli = nomli;
         this.tyli = tyli;
