@@ -2,7 +2,6 @@ package org.acme.entities;
 
 import org.acme.Embeddable.ShapsId;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
