@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/code-with-quarkus/.mvn/.mvn.iml" filepath="$PROJECT_DIR$/code-with-quarkus/.mvn/.mvn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code-with-quarkus/src/code-with-quarkus.iml" filepath="$PROJECT_DIR$/code-with-quarkus/src/code-with-quarkus.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/transport.iml" filepath="$PROJECT_DIR$/.idea/transport.iml" />
     </modules>
   </component>
