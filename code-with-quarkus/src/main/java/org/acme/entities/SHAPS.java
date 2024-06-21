@@ -27,9 +27,9 @@ public class SHAPS {
     @Column(name="KM")
     private Integer km;
 
-    @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
+    @JoinColumn(name="deNumLi", insertable=false, updatable=false)
     @ManyToOne
-    @MapsId("numLigne")
+    //@MapsId("deNumLi")
     private DrLigne ligne;
 
     public ShapsId getIdShaps() {

@@ -35,6 +35,10 @@ public class DrItin {
     @JsonBackReference
     private DrStati station;
 
+    @ManyToOne
+    @JoinColumn(name="deNumLi", insertable = false, updatable = false)
+    private DrLigne ligne;
+
     public DrItinIdRecord getId() {
         return id;
     }

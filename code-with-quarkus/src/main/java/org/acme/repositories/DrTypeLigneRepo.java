@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class DrTypeLigneRepo implements PanacheRepository<DrTypeLigne> {
-
-
+    public boolean existe(Long i){
+        return find("decTyLi", i).firstResult() !=null;
+    }
 }

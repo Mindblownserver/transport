@@ -45,40 +45,37 @@ public class DrLigne{
    
     @Column(name="DENBRKM")
     private Integer deNbrkm;
-   
-    @Column(name="DECDELEG")
-    private Long decDeleg;
-   
+    
     @Column(name="DEACTIF")
     private Integer deActif;
-   
+    
     @Column(name="AGENCY_ID")
     private String agencyId;
-   
+    
     @Column(name="ROUTE_TYPE")
     private Long routeType;
-   
+    
     @Column(name="ROUTE_URL")
     private String routeUrl;
-   
+    
     @Column(name="ROUTE_COLOR")
     private Integer routeColor;
     
     @Column(name="ROUTE_TEXT_COLOR")
     private Long routeTextColor;
-   
+    
     @Column(name="DENOMLI_RET")
     private String deNomLiRet;
-   
+    
     @Column(name="INTEG_BI")
     private Integer integBi;
-   
+    
     @Column(name="DECCLIE")
     private Long decClie;
-   
+    
     @Column(name="DECADMI")
     private Integer decAdmi;
-   
+    
     @Column(name="SAE")
     private Integer sae;
     
@@ -89,10 +86,18 @@ public class DrLigne{
     @ManyToOne
     @JoinColumn(name="DECCENT")
     private DrCentre centre;
-
+    
+    @ManyToOne
+    @JoinColumn(name="DecDeleg")
+    private DrDeleg deleg;
+    
     @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<SHAPS> shapList;
+
+    @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<DrItin> itinList;
 
     public Long getIdLigne() {
         return deNumLi;
@@ -174,12 +179,13 @@ public class DrLigne{
         this.deNbrkm = deNbrkm;
     }
 
-    public Long getDECDELEG() {
-        return decDeleg;
+
+    public DrDeleg getDeleg() {
+        return deleg;
     }
 
-    public void setDECDELEG(Long decDeleg) {
-        this.decDeleg = decDeleg;
+    public void setDeleg(DrDeleg deleg) {
+        this.deleg = deleg;
     }
 
     public Integer getDEACTIF() {
@@ -290,7 +296,7 @@ public class DrLigne{
     }
 
     public DrLigne(Long deNumLi, String deNomLi, Long dePrior, String decTyTa, Integer decTyEq, String deNomLa,
-            Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, Long decDeleg, Integer deActif,
+            Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, DrDeleg decDeleg, Integer deActif,
             String agencyId, Long routeType, String routeUrl, Integer routeColor, Long routeTextColor,
             String deNomLiRet, Integer integBi, Long decClie, Integer decAdmi, Integer sae, DrTypeLigne type,
             DrCentre centre) {
@@ -304,7 +310,7 @@ public class DrLigne{
         this.deTaTea = deTaTea;
         this.deStatu = deStatu;
         this.deNbrkm = deNbrkm;
-        this.decDeleg = decDeleg;
+        this.deleg = decDeleg;
         this.deActif = deActif;
         this.agencyId = agencyId;
         this.routeType = routeType;

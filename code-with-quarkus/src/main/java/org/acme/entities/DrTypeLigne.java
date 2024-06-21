@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name="DRTYPELI")
+@Table(name="DRTYPLI")
 public class DrTypeLigne {
     @Id
     @Column(name="DECTYLI")
