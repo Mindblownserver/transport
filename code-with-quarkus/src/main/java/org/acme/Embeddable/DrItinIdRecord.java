@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record DrItinIdRecord(
-    @Column(name="DENUMLI")Long numLigne, 
-    @Column(name="DENUMLG") Long numLg) {
+    @Column(name="DENUMLI")Long deNumLi, 
+    @Column(name="DENUMLG") Long deNumLg) {
 
 }

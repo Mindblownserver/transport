@@ -18,22 +18,22 @@ public class DrStati {
     private Long decStat;
 
     @Column(name="DELSTAT")
-    private String nomFr;
+    private String delStat;
 
     @Column(name="DELSTAA")
-    private String nomAr;
+    private String delStaA;
 
     @Column(name="DECTYST")
-    private int typeSt;
+    private int decTySt;
 
     @Column(name="STOP_LAT")
-    private Float latitude;
+    private Float stopLat;
 
     @Column(name="STOP_LON")
-    private Float longetude;
+    private Float stopLon;
 
     @Column(name="DATE_SYS")
-    private Date date;
+    private Date dateSys;
 
     @Column(name="RAYON")
     private int rayon;
@@ -51,51 +51,51 @@ public class DrStati {
     }
 
     public String getNomFr() {
-        return nomFr;
+        return delStat;
     }
 
-    public void setNomFr(String nomFr) {
-        this.nomFr = nomFr;
+    public void setNomFr(String delStat) {
+        this.delStat = delStat;
     }
 
     public String getNomAr() {
-        return nomAr;
+        return delStaA;
     }
 
-    public void setNomAr(String nomAr) {
-        this.nomAr = nomAr;
+    public void setNomAr(String delStaA) {
+        this.delStaA = delStaA;
     }
 
     public int getTypeSt() {
-        return typeSt;
+        return decTySt;
     }
 
-    public void setTypeSt(int typeSt) {
-        this.typeSt = typeSt;
+    public void setTypeSt(int decTySt) {
+        this.decTySt = decTySt;
     }
 
     public Float getLatitude() {
-        return latitude;
+        return stopLat;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
+    public void setLatitude(Float stopLat) {
+        this.stopLat = stopLat;
     }
 
     public Float getLongetude() {
-        return longetude;
+        return stopLon;
     }
 
-    public void setLongetude(Float longetude) {
-        this.longetude = longetude;
+    public void setLongetude(Float stopLon) {
+        this.stopLon = stopLon;
     }
 
     public Date getDate() {
-        return date;
+        return dateSys;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(Date dateSys) {
+        this.dateSys = dateSys;
     }
 
     public int getRayon() {
@@ -109,15 +109,15 @@ public class DrStati {
     public DrStati() {
     }
 
-    public DrStati(Long decStat, String nomFr, String nomAr, int typeSt, Float latitude, Float longetude, Date date,
+    public DrStati(Long decStat, String delStat, String delStaA, int decTySt, Float stopLat, Float stopLon, Date dateSys,
             int rayon) {
         this.decStat = decStat;
-        this.nomFr = nomFr;
-        this.nomAr = nomAr;
-        this.typeSt = typeSt;
-        this.latitude = latitude;
-        this.longetude = longetude;
-        this.date = date;
+        this.delStat = delStat;
+        this.delStaA = delStaA;
+        this.decTySt = decTySt;
+        this.stopLat = stopLat;
+        this.stopLon = stopLon;
+        this.dateSys = dateSys;
         this.rayon = rayon;
     }
     

@@ -16,19 +16,19 @@ public class DrItin {
     private DrItinIdRecord id;
 
     @Column(name="DEKMSTA")
-    private Integer kmsTa;
+    private Integer deKmsTa;
 
     @Column(name="DEDURTR")
-    private Integer dureetr;
+    private Integer deDureeTr;
 
     @Column(name="DEESCALE", nullable = true)
-    private Integer escale;
+    private Integer deEscale;
 
     @Column(name="DEDATES")
-    private String dates; // peut ne pas être avec les horraires
+    private String deDates; // peut ne pas être avec les horraires
     
     @Column(name="DETARIF")
-    private Integer tarif;
+    private Integer deTarif;
 
     @ManyToOne
     @JoinColumn(name="DECSTAT")
@@ -44,43 +44,43 @@ public class DrItin {
     }
 
     public Integer getKmsTa() {
-        return kmsTa;
+        return deKmsTa;
     }
 
-    public void setKmsTa(Integer kmsTa) {
-        this.kmsTa = kmsTa;
+    public void setKmsTa(Integer deKmsTa) {
+        this.deKmsTa = deKmsTa;
     }
 
     public Integer getDureetr() {
-        return dureetr;
+        return deDureeTr;
     }
 
-    public void setDureetr(Integer dureetr) {
-        this.dureetr = dureetr;
+    public void setDureetr(Integer deDureeTr) {
+        this.deDureeTr = deDureeTr;
     }
 
     public Integer getEscale() {
-        return escale;
+        return deEscale;
     }
 
-    public void setEscale(Integer escale) {
-        this.escale = escale;
+    public void setEscale(Integer deEscale) {
+        this.deEscale = deEscale;
     }
 
     public String getDates() {
-        return dates;
+        return deDates;
     }
 
-    public void setDates(String dates) {
-        this.dates = dates;
+    public void setDates(String deDates) {
+        this.deDates = deDates;
     }
 
     public Integer getTarif() {
-        return tarif;
+        return deTarif;
     }
 
-    public void setTarif(Integer tarif) {
-        this.tarif = tarif;
+    public void setTarif(Integer deTarif) {
+        this.deTarif = deTarif;
     }
 
     public DrStati getStation() {
@@ -94,13 +94,13 @@ public class DrItin {
     public DrItin() {
     }
 
-    public DrItin(DrItinIdRecord id, Integer kmsTa, Integer dureetr, Integer escale, String dates, Integer tarif, DrStati station) {
+    public DrItin(DrItinIdRecord id, Integer deKmsTa, Integer deDureeTr, Integer deEscale, String deDates, Integer deTarif, DrStati station) {
         this.id = id;
-        this.kmsTa = kmsTa;
-        this.dureetr = dureetr;
-        this.escale = escale;
-        this.dates = dates;
-        this.tarif = tarif;
+        this.deKmsTa = deKmsTa;
+        this.deDureeTr = deDureeTr;
+        this.deEscale = deEscale;
+        this.deDates = deDates;
+        this.deTarif = deTarif;
         this.station = station;
     }
 

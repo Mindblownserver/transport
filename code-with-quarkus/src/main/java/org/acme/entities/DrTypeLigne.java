@@ -14,32 +14,32 @@ import jakarta.persistence.Table;
 public class DrTypeLigne {
     @Id
     @Column(name="DECTYLI")
-    private Long numType;
+    private Long decTyLi;
     @Column(name="DELTYLA")
-    private String nomAr;
+    private String delTyLA;
     @Column(name="DELTYLI")
-    private String nomFr;
+    private String delTyLi;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="type")
     private List<DrLigne> lignes;
 
     public Long getDec_tpli() {
-        return numType;
+        return decTyLi;
     }
-    public void setDec_tpli(Long numType) {
-        this.numType = numType;
+    public void setDec_tpli(Long decTyLi) {
+        this.decTyLi = decTyLi;
     }
     public String getAr_tpli() {
-        return nomAr;
+        return delTyLA;
     }
-    public void setAr_tpli(String nomAr) {
-        this.nomAr = nomAr;
+    public void setAr_tpli(String delTyLA) {
+        this.delTyLA = delTyLA;
     }
     public String getFr_tpli() {
-        return nomFr;
+        return delTyLi;
     }
-    public void setFr_tpli(String nomFr) {
-        this.nomFr = nomFr;
+    public void setFr_tpli(String delTyLi) {
+        this.delTyLi = delTyLi;
     }
     public DrTypeLigne() {
     }
