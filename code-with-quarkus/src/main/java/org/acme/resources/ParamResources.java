@@ -7,7 +7,9 @@ import org.acme.entities.DrItin;
 import org.acme.repositories.DrCentreRepo;
 import org.acme.repositories.DrDelegRepo;
 import org.acme.repositories.DrItinRepo;
+import org.acme.repositories.DrLigneRepo;
 import org.acme.repositories.DrStatiRepo;
+import org.acme.repositories.DrTypeLigneRepo;
 import org.acme.repositories.SHAPSRepo;
 import org.acme.repositories.StopTimesRepo;
 
@@ -30,6 +32,13 @@ public class ParamResources {
     @Inject
     StopTimesRepo stopTimesRepo;
     
+
+    @Inject
+    DrTypeLigneRepo tpliRepo;
+
+
+    @Inject
+    DrLigneRepo ligneRepo;
 
     @Inject
     SHAPSRepo shapsRepo;
@@ -99,6 +108,20 @@ public class ParamResources {
     @GET
     public Response getShaps(){
         return Response.ok(shapsRepo.listAll()).build();
+    }
+
+    
+    @Path("/ligne")
+    @GET
+    public Response getligne(){
+        return Response.ok(ligneRepo.listAll()).build();
+    }
+
+    
+    @Path("/ligne/type")
+    @GET
+    public Response getlignetype(){
+        return Response.ok(tpliRepo.listAll()).build();
     }
         
 }
