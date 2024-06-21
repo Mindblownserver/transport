@@ -1,68 +1,74 @@
 package org.acme.entities;
 
+import org.acme.Embeddable.ShapsId;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 
 
 @Entity
+@Table(name="SHAPE")
 public class SHAPS {
-    @Id
-    @Column(name="DENUMLI")
-    private Long DENUMLI;
-    @Column(name="N")
-    private Integer N;
+    @EmbeddedId
+    private ShapsId idShaps;
     @Column(name="LAT")
-    private Integer LAT;
+    private Integer lat;
     @Column(name="LON")
-    private Long LON;
+    private Long lon;
     @Column(name="MAX_VITESSE")
-    private Integer MAX_VITESSE;
+    private Integer maxVitesse;
     @Column(name="KM")
-    private Integer KM;
-    @Column(name="DIRECTION_ID")
-    private Long DIRECTION_ID;
-    public Long getDENUMLI() {
-        return DENUMLI;
+    private Integer km;
+
+    @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
+    @ManyToOne
+    @MapsId("numLigne")
+    private DrLigne ligne;
+
+    public ShapsId getIdShaps() {
+        return idShaps;
     }
-    public void setDENUMLI(Long dENUMLI) {
-        DENUMLI = dENUMLI;
-    }
-    public Integer getN() {
-        return N;
-    }
-    public void setN(Integer n) {
-        N = n;
+    public void setIdShaps(ShapsId idShaps) {
+        this.idShaps = idShaps;
     }
     public Integer getLAT() {
-        return LAT;
+        return lat;
     }
-    public void setLAT(Integer lAT) {
-        LAT = lAT;
+    public void setLAT(Integer lat) {
+        this.lat = lat;
     }
     public Long getLON() {
-        return LON;
+        return lon;
     }
     public void setLON(Long lON) {
-        LON = lON;
+        lon = lON;
     }
     public Integer getMAX_VITESSE() {
-        return MAX_VITESSE;
+        return maxVitesse;
     }
     public void setMAX_VITESSE(Integer mAX_VITESSE) {
-        MAX_VITESSE = mAX_VITESSE;
+        maxVitesse = mAX_VITESSE;
     }
     public Integer getKM() {
-        return KM;
+        return km;
     }
     public void setKM(Integer kM) {
-        KM = kM;
+        km = kM;
     }
-    public Long getDIRECTION_ID() {
-        return DIRECTION_ID;
+    public SHAPS() {
     }
-    public void setDIRECTION_ID(Long dIRECTION_ID) {
-        DIRECTION_ID = dIRECTION_ID;
+    public SHAPS(ShapsId idShaps, Integer lat, Long lON, Integer mAX_VITESSE, Integer kM) {
+        this.idShaps = idShaps;
+        this.lat = lat;
+        lon = lON;
+        maxVitesse = mAX_VITESSE;
+        km = kM;
     }
-    
 }
