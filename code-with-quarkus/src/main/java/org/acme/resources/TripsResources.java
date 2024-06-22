@@ -10,6 +10,9 @@ import jakarta.ws.rs.core.Response;
 import org.acme.entities.Trips;
 import org.acme.repositories.DrTripsRepo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -32,8 +35,14 @@ public class TripsResources {
     }
     @GET
     @Path("/trips/{date}")
-    public Response getTripsByDate(@PathParam("date") Date date) {
-        List<Trips> tripList = tripsRepo.findByDate(date);
-        return Response.ok(tripList).build();
+    public Response getTripsByDate(@PathParam("date") String date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
+        Date parsedDate = formatter.parse(date);
+        List<Trips> listTrips = tripsRepo.findByDate(parsedDate);
+        if(!listTrips.isEmpty()){
+            return Response.ok(listTrips).build();
+        }else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

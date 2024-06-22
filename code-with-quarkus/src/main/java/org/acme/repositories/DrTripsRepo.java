@@ -10,6 +10,6 @@ import java.util.List;
 @ApplicationScoped
 public class DrTripsRepo implements PanacheRepository<Trips> {
     public List<Trips> findByDate(Date date) {
-        return list ("SELECT m FROM TRIPS m WHERE m.DEDATED= ?1", date);
+        return find ("tripsId.deDated",date).list();
     }
 }

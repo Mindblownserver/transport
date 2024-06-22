@@ -1,6 +1,8 @@
 package org.acme.resources;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
-@Path("/api/Stop_times")
+@Path("/api")
 @Produces(MediaType.APPLICATION_JSON)
 public class StopTimesResources {
 
@@ -28,7 +30,8 @@ public class StopTimesResources {
     StopTimesRepo stopTimesRepo;
 
     @GET
-    public Response get(){
+    @Path("/stoptimes")
+    public Response getStoptimes(){
         List<StopTimes> listStops=stopTimesRepo.listAll();
         if(listStops.size()>0){
             return Response.ok(listStops).build();
@@ -36,5 +39,18 @@ public class StopTimesResources {
             return Response.status(Status.NOT_FOUND).build();
         }
      
+    }
+
+    @GET
+    @Path("/stoptimes/{date}")
+    public Response getStopTimeByDate(@PathParam("date") String date) throws ParseException {
+        try{
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
+        Date parsedDate = formatter.parse(date);
+        List<StopTimes> listStoptimes = stopTimesRepo.findByDate(parsedDate);
+        return Response.ok(listStoptimes).build();
+        } catch (ParseException ex){
+            System.out.println("Erreur: Date non parsable");
+        }return Response.status(Response.Status.NOT_FOUND).build();
     }
 }
