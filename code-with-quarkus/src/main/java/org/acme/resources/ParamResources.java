@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.ws.rs.*;
-import org.acme.entities.DrCentre;
-import org.acme.entities.DrItin;
-import org.acme.entities.DrLigne;
-import org.acme.entities.StopTimes;
+import org.acme.entities.*;
 import org.acme.repositories.DrCentreRepo;
 import org.acme.repositories.DrDelegRepo;
 import org.acme.repositories.DrItinRepo;
@@ -53,8 +50,9 @@ public class ParamResources {
     DrCentreRepo centreRepo;
 
     /*
-     * 
+     * CENTRE
      */
+
     @GET
     @Path("/centre")
     public Response getCentres(){
@@ -67,20 +65,33 @@ public class ParamResources {
         }
        
     }
+
+
+    /*
+     * DELEG
+     */
+
     @Path("/deleg")
     @GET
     public Response getDeleg(){
         return Response.ok(delegRepo.listAll()).build();
     }
-    
 
+
+    /*
+     * STATIONS
+     */
     
     @Path("/stations")
     @GET
     public Response getStati(){
         return Response.ok(statRepo.listAll()).build();
-    }   
+    }
 
+
+    /*
+     * ITIN
+     */
 
 
     @Path("/itin")
@@ -93,20 +104,23 @@ public class ParamResources {
         return Response.status(Status.NOT_FOUND).build();
         
     }
-    
-    @Path("/Stati")
-    @GET
-    public Response get(){
-        return Response.ok(statRepo.listAll()).build();
-    }  
-    
-   
+
+
+    /*
+     * SHAPE
+     */
+
     
     @Path("shaps")
     @GET
     public Response getShaps(){
         return Response.ok(shapsRepo.listAll()).build();
     }
+
+
+    /*
+     * LIGNES
+     */
 
     
     @Path("/ligne")
@@ -124,6 +138,31 @@ public class ParamResources {
             return Response.ok(listLignes).build();
         }return Response.status(Status.NOT_FOUND).build();
     }
+
+    /*
+    @Path("/ligne/{decdeleg}")
+    @GET
+    public Response getByDecdeleg(@PathParam("decdeleg") Long decdeleg){
+        DrCentre centre = centreRepo.findById(deccent);
+        List<DrLigne> listLignes = ligneRepo.findByDeccent(centre);
+        if(!listLignes.isEmpty()) {
+            return Response.ok(listLignes).build();
+        }return Response.status(Status.NOT_FOUND).build();
+    }*/
+
+    @Path("/ligne/{typeligne}")
+    @GET
+    public Response getByTypLi(@PathParam("typeligne") Long typId){
+        DrTypeLigne typligne = tpliRepo.findById(typId);
+        List<DrLigne> listLignes = ligneRepo.findByTypLi(typligne);
+        if(!listLignes.isEmpty()) {
+            return Response.ok(listLignes).build();
+        }return Response.status(Status.NOT_FOUND).build();
+    }
+
+    /*
+     * LIGNES TYPE
+     */
     
     @Path("/ligne/type")
     @GET
