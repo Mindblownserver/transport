@@ -1,9 +1,15 @@
 package org.acme.resources;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import jakarta.ws.rs.*;
 import org.acme.entities.DrCentre;
 import org.acme.entities.DrItin;
+import org.acme.entities.DrLigne;
+import org.acme.entities.StopTimes;
 import org.acme.repositories.DrCentreRepo;
 import org.acme.repositories.DrDelegRepo;
 import org.acme.repositories.DrItinRepo;
@@ -14,10 +20,6 @@ import org.acme.repositories.SHAPSRepo;
 import org.acme.repositories.StopTimesRepo;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -28,9 +30,6 @@ import jakarta.ws.rs.core.Response.Status;
 public class ParamResources {
     @Inject
     DrDelegRepo delegRepo;
-    
-    @Inject
-    StopTimesRepo stopTimesRepo;
     
 
     @Inject
@@ -61,7 +60,7 @@ public class ParamResources {
     public Response getCentres(){
 
         List<DrCentre> listCentres=centreRepo.listAll();
-        if(listCentres.size()>0){
+        if(!listCentres.isEmpty()){
             return Response.ok(listCentres).build();
         }else {
             return Response.status(Status.NOT_FOUND).build();
@@ -88,13 +87,12 @@ public class ParamResources {
     @GET
     public Response getItin(){
         List<DrItin> intins = itinRepo.listAll();
-        if(intins.size()> 0) {
+        if(!intins.isEmpty()) {
             return Response.ok(intins).build();
         }
         return Response.status(Status.NOT_FOUND).build();
         
     }
-
     
     @Path("/Stati")
     @GET
@@ -117,6 +115,15 @@ public class ParamResources {
         return Response.ok(ligneRepo.listAll()).build();
     }
 
+    @Path("/ligne/{deccent}")
+    @GET
+    public Response getByDeccent(@PathParam("deccent") Long deccent){
+        DrCentre centre = centreRepo.findById(deccent);
+        List<DrLigne> listLignes = ligneRepo.findByDeccent(centre);
+        if(!listLignes.isEmpty()) {
+            return Response.ok(listLignes).build();
+        }return Response.status(Status.NOT_FOUND).build();
+    }
     
     @Path("/ligne/type")
     @GET

@@ -33,7 +33,7 @@ public class StopTimesResources {
     @Path("/stoptimes")
     public Response getStoptimes(){
         List<StopTimes> listStops=stopTimesRepo.listAll();
-        if(listStops.size()>0){
+        if(!listStops.isEmpty()){
             return Response.ok(listStops).build();
         }else {
             return Response.status(Status.NOT_FOUND).build();
@@ -48,7 +48,7 @@ public class StopTimesResources {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
         Date parsedDate = formatter.parse(date);
         List<StopTimes> listStoptimes = stopTimesRepo.findByDate(parsedDate);
-        return Response.ok(listStoptimes).build();
+        if(!listStoptimes.isEmpty()) return Response.ok(listStoptimes).build();
         } catch (ParseException ex){
             System.out.println("Erreur: Date non parsable");
         }return Response.status(Response.Status.NOT_FOUND).build();
