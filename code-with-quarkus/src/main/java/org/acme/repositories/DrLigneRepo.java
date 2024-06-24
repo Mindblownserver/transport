@@ -15,7 +15,7 @@ public class DrLigneRepo  implements PanacheRepository<DrLigne> {
         return find("centre", deccent).list();
     }
 
-    /*public List<DrLigne> findByDeleg(DrDeleg deleg) { return find("decDeleg", deleg).list();}*/
+    public List<DrLigne> findByDeleg(DrDeleg deleg) { return find("decDeleg", deleg).list();}
     public List<DrLigne> findByTypLi(DrTypeLigne typeLi) {return find("type", typeLi).list();}
 
 

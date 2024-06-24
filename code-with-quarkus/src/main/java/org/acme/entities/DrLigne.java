@@ -46,9 +46,6 @@ public class DrLigne{
     @Column(name="DENBRKM")
     private Integer deNbrkm;
 
-    @Column(name="DECDELEG")
-    private Long decDeleg;
-
     @Column(name="DEACTIF")
     private Integer deActif;
 
@@ -81,6 +78,10 @@ public class DrLigne{
 
     @Column(name="SAE")
     private Integer sae;
+
+    @ManyToOne
+    @JoinColumn(name="DECDELEG")
+    private DrDeleg decDeleg;
 
     @ManyToOne
     @JoinColumn(name="DECTYLI")
@@ -176,14 +177,6 @@ public class DrLigne{
 
     public void setDENBRKM(Integer deNbrkm) {
         this.deNbrkm = deNbrkm;
-    }
-
-    public Long getDECDELEG() {
-        return decDeleg;
-    }
-
-    public void setDECDELEG(Long decDeleg) {
-        this.decDeleg = decDeleg;
     }
 
     public Integer getDEACTIF() {
@@ -294,7 +287,7 @@ public class DrLigne{
     }
 
     public DrLigne(Long deNumLi, String deNomLi, Long dePrior, String decTyTa, Integer decTyEq, String deNomLa,
-                   Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, Long decDeleg, Integer deActif,
+                   Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, Integer deActif,
                    String agencyId, Long routeType, String routeUrl, Integer routeColor, Long routeTextColor,
                    String deNomLiRet, Integer integBi, Long decClie, Integer decAdmi, Integer sae, DrTypeLigne type,
                    DrCentre centre) {
@@ -308,7 +301,6 @@ public class DrLigne{
         this.deTaTea = deTaTea;
         this.deStatu = deStatu;
         this.deNbrkm = deNbrkm;
-        this.decDeleg = decDeleg;
         this.deActif = deActif;
         this.agencyId = agencyId;
         this.routeType = routeType;

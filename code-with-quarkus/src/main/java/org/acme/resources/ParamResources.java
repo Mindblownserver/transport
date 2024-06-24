@@ -139,16 +139,15 @@ public class ParamResources {
         }return Response.status(Status.NOT_FOUND).build();
     }
 
-    /*
     @Path("/ligne/{decdeleg}")
     @GET
     public Response getByDecdeleg(@PathParam("decdeleg") Long decdeleg){
-        DrCentre centre = centreRepo.findById(deccent);
-        List<DrLigne> listLignes = ligneRepo.findByDeccent(centre);
+        DrDeleg deleg = delegRepo.findById(decdeleg);
+        List<DrLigne> listLignes = ligneRepo.findByDeleg(deleg);
         if(!listLignes.isEmpty()) {
             return Response.ok(listLignes).build();
         }return Response.status(Status.NOT_FOUND).build();
-    }*/
+    }
 
     @Path("/ligne/{typeligne}")
     @GET
