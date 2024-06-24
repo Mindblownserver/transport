@@ -1,5 +1,14 @@
 package org.acme.Embeddable;
 
-public record TripsId() {
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public record TripsId(
+    Date deDated,
+    @Column(name="TRIP_ID") Integer trip_id
+) {
 
 }

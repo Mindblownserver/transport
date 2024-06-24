@@ -9,6 +9,7 @@ import org.acme.repositories.StopTimesRepo;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,10 +30,16 @@ public class StopTimesResources {
         }else {
             return Response.status(Status.NOT_FOUND).build();
         }
-     
     }
-    
-     
-
+    @Path("/{row}")
+    @GET
+    public Response getRows(@PathParam("row") int row){
+        List<StopTimes> listStops=stopTimesRepo.findAll().page(1, row).list();
+        if(listStops.size()>0){
+            return Response.ok(listStops).build();
+        }else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
 
 }

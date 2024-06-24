@@ -2,16 +2,25 @@ package org.acme.entities;
 
 import java.util.Date;
 
+import org.acme.Embeddable.StopTimesId;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
 @Entity
 @Table(name="stop_times")
 public class StopTimes{
-    @Id
+    @EmbeddedId 
+    StopTimesId id;
+/* 
     @Column(name="DEDATED")
     private Date dedated;
 
@@ -20,7 +29,7 @@ public class StopTimes{
     
     @Column(name="STOP_SEQUENCE")
     private Integer stop_sequence;
-    
+    */ 
     @Column(name="ARRIVAL_TIME")
     private Date arrival_time;
     
@@ -48,36 +57,26 @@ public class StopTimes{
     @Column(name="STATE")
     private String sate;
 
-    
+    @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name="DEDATED",referencedColumnName = "deDated"),
+        @JoinColumn(name="trip_ID",referencedColumnName = "trip_Id")
+    })
+    @JsonBackReference
+    private Trips trip;
+
     public Date getDedated() {
-        return dedated;
-    }
-
-
-    public void setDedated(Date dedated) {
-        this.dedated = dedated;
+        return id.tripsDatedId().deDated();
     }
 
 
     public Integer getTrip_id() {
-        return trip_id;
+        return id.tripsDatedId().trip_id();
     }
-
-
-    public void setTrip_id(Integer trip_id) {
-        this.trip_id = trip_id;
-    }
-
 
     public Integer getStop_sequence() {
-        return stop_sequence;
+        return id.stopSeq();
     }
-
-
-    public void setStop_sequence(Integer stop_sequence) {
-        this.stop_sequence = stop_sequence;
-    }
-
 
     public Date getArrival_time() {
         return arrival_time;
@@ -169,12 +168,10 @@ public class StopTimes{
     }
 
 
-    public StopTimes(Date dedated, Integer trip_id, Integer stop_sequence, Date arrival_time, Date departure_time,
+    public StopTimes(StopTimesId id, Date arrival_time, Date departure_time,
             Integer decstat, Long pickup_type, String shape_dist_traveled, Integer timepoint, Date rt_arrival_time,
             Date rt_departure_time, String sate) {
-        this.dedated = dedated;
-        this.trip_id = trip_id;
-        this.stop_sequence = stop_sequence;
+        this.id = id;
         this.arrival_time = arrival_time;
         this.departure_time = departure_time;
         this.decstat = decstat;
@@ -190,6 +187,4 @@ public class StopTimes{
     public StopTimes() {
     }
 
-
-   
 }
