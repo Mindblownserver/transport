@@ -50,6 +50,7 @@ public class TripsResources {
         if(listStops.size()>0){
             return Response.ok(listStops).build();
         }else {
+            
             return Response.status(Status.NOT_FOUND).build();
         }
     }

@@ -20,24 +20,12 @@ import jakarta.persistence.Table;
 public class StopTimes{
     @EmbeddedId 
     StopTimesId id;
-/* 
-    @Column(name="DEDATED")
-    private Date dedated;
 
-    @Column(name="TRIP_ID")
-    private Integer trip_id;
-    
-    @Column(name="STOP_SEQUENCE")
-    private Integer stop_sequence;
-    */ 
     @Column(name="ARRIVAL_TIME")
     private Date arrival_time;
     
     @Column(name="DEPARTURE_TIME")
     private Date departure_time;
-    
-    @Column(name="DECSTAT")
-    private Integer decstat;
     
     @Column(name="PICKUP_TYPE")
     private Long pickup_type;
@@ -56,7 +44,7 @@ public class StopTimes{
     
     @Column(name="STATE")
     private String sate;
-
+    
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name="DEDATED",referencedColumnName = "deDated"),
@@ -64,7 +52,11 @@ public class StopTimes{
     })
     @JsonBackReference
     private Trips trip;
-
+    
+    //@ManyToOne
+    @JoinColumn(name="DECSTAT")
+    private Integer decstat;
+    
     public Date getDedated() {
         return id.tripsDatedId().deDated();
     }
@@ -73,7 +65,7 @@ public class StopTimes{
     public Integer getTrip_id() {
         return id.tripsDatedId().trip_id();
     }
-
+    
     public Integer getStop_sequence() {
         return id.stopSeq();
     }

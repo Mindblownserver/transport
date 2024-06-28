@@ -1,5 +1,8 @@
 package org.acme.resources;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 import org.acme.entities.*;
@@ -8,7 +11,11 @@ import org.acme.repositories.*;
 
 import org.jboss.logging.Logger;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -50,8 +57,33 @@ public class ParamResources {
     DrCentreRepo centreRepo;
 
     @Inject
+    BusRepo busRepo;
+
+    @Inject
     Logger log;
 
+    @Path("/bus")
+    @GET
+    public Response getAllBus(){
+        List<Bus> busListes=busRepo.listAll(Sort.by("bus_id").ascending());
+        if(busListes.size()>0){
+            return Response.ok(busListes).build();
+        }else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
+
+    @Path("/test")
+    @GET
+    public Response getTestData(){
+        JsonObject test = Json.createObjectBuilder()
+        .add("id","1")
+        .add("start", LocalTime.now().toString())
+        .add("end", LocalTime.now().plusHours(3).toString())
+        .add("text","TEST 1")
+        .add("resource", "R1").build();
+        return Response.ok(test).build();
+    }
     // Centre
 
     @GET

@@ -25,8 +25,6 @@ public class Trips {
     private Integer tripNid;
     @Column(name="GRP")
     private Integer grp;
-    @Column(name="BUS_PR")
-    private Integer busPr;
     @Column(name="BUS_RE")
     private Integer busRe;
     @Column(name="CHAUFF_PR")
@@ -56,16 +54,31 @@ public class Trips {
     @Column(name="ALERT")
     private Integer alert;
     @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
+    @Transient
+    public Date finalStopTime;
     
     @ManyToOne
     private DrLigne ligne;
-
+    
+    @ManyToOne
+    private Bus busPr;
+    
     @OneToMany(mappedBy = "trip")
     public List<StopTimes> stopTimesList; 
+
+
+    public Date getFinalStopTime() {
+        return finalStopTime;
+    }
+
+    public void setFinalStopTime(Date finalStopTime) {
+        this.finalStopTime = finalStopTime;
+    }
+
     public TripsId getTripsId() {
         return tripsId;
     }
-
+    
     public void setTripsId(TripsId tripsId) {
         this.tripsId = tripsId;
     }
@@ -124,14 +137,6 @@ public class Trips {
 
     public void setGrp(Integer grp) {
         this.grp = grp;
-    }
-
-    public Integer getBusPr() {
-        return busPr;
-    }
-
-    public void setBusPr(Integer busPr) {
-        this.busPr = busPr;
     }
 
     public Integer getBusRe() {
@@ -246,7 +251,7 @@ public class Trips {
         this.alert = alert;
     }
 
-    public Trips(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret, String timeNret, Integer tripNid, Integer grp, Integer busPr, Integer busRe, Integer chauffPr, Integer chauffRe, Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax, Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
+    public Trips(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret, String timeNret, Integer tripNid, Integer grp, Bus busPr, Integer busRe, Integer chauffPr, Integer chauffRe, Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax, Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
         this.tripsId = tripsId;
         this.serviceId = serviceId;
         this.directionId = directionId;
