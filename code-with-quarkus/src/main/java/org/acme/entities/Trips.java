@@ -54,18 +54,28 @@ public class Trips {
     @Column(name="ALERT")
     private Integer alert;
     @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
+    @ManyToOne
+    private DrLigne ligne;
+
     @Transient
     public Date finalStopTime;
     
     @ManyToOne
-    private DrLigne ligne;
-    
-    @ManyToOne
+    @JoinColumn(name="BUS_PR")
     private Bus busPr;
     
     @OneToMany(mappedBy = "trip")
     public List<StopTimes> stopTimesList; 
 
+    // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
+
+    public Bus getBusPr() {
+        return busPr;
+    }
+
+    public void setBusPr(Bus busPr) {
+        this.busPr = busPr;
+    }
 
     public Date getFinalStopTime() {
         return finalStopTime;

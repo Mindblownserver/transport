@@ -6,6 +6,21 @@
 import { DayPilot, DayPilotScheduler } from 'daypilot-pro-vue';
 import { ref, reactive, onMounted } from 'vue';
 import axios from "axios";
+import moment from "moment";
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080',
+  transformResponse: [function (data) {
+    // Parse JSON response with date reviver function
+    return JSON.parse(data, (key, value) => {
+      if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}[+-]\d{2}:\d{2}$/)) {
+        return moment.utc(value).toDate(); // Convert to JavaScript Date object using Moment.js
+      }
+      return value;
+    });
+  }],
+});
+
 
 const config = reactive({
   startDate: DayPilot.Date.today(),
@@ -60,14 +75,29 @@ const config = reactive({
 const schedulerRef = ref(null);
 
 const loadEvents = async () => {
-  const response = await axios.get("http://localhost:8080/api/test");
-  console.log(response.data);
-  const events = [
+  const response = await instance.get("/api/trips/10");
+  //console.log(response.data[0].finalStopTime instanceof Date);
+  let trips = response.data.map(trip=>({
+    id: trip.tripsId.trip_id,
+    start: DayPilot.Date.today().addHours(trip.timeDepart.getHours()).addMinutes(trip.timeDepart.getMinutes()),
+    end: DayPilot.Date.today().addHours(trip.timeDepart.getHours()+ trip.finalStopTime.getHours()).addMinutes(trip.timeDepart.getMinutes()+ trip.finalStopTime.getMinutes()),
+    text: "trip "+trip.tripsId.trip_id,
+    resource:trip.busPr.bus_id
+  }));
+  /* const events = [
     { id: 1, 
       start: DayPilot.Date.today(), 
       end: DayPilot.Date.today().addHours(5), 
       text: "Event 1", 
       resource: "R2" 
+      DayPilot.Date(
+      trip.finalStopTime.getFullYear(), 
+      trip.finalStopTime.getMonth() + 1, 
+      trip.finalStopTime.getDate(), 
+      trip.finalStopTime.getHours(), 
+      trip.finalStopTime.getMinutes(), 
+      trip.finalStopTime.getSeconds()
+    ),
     },
     { id: 2, 
       start: DayPilot.Date.today(), 
@@ -75,13 +105,12 @@ const loadEvents = async () => {
       text: "Event 1", 
       resource: "R2" 
     }
-  ];
-  config.events = events;
+  ]; */
+  config.events = trips;
 };
 
 const loadResources = async () => {
   const res = await axios.get("http://localhost:8080/api/bus")
-  console.log(res.data)
   const resources = res.data.map(bus =>({
     name: "bus "+ bus.bus_id,
     id: bus.bus_id

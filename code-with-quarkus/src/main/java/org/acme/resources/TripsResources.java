@@ -46,7 +46,8 @@ public class TripsResources {
     @GET
     @Path("/{row}")
     public Response getTripsByRow(@PathParam("row") int row) throws ParseException {
-        List<Trips> listStops=tripsRepo.findAll().page(1, row).list();
+        //List<Trips> listStops=tripsRepo.findAll().page(1, row).list();
+        List<Trips> listStops= tripsRepo.getTripsWithLastStop(row);
         if(listStops.size()>0){
             return Response.ok(listStops).build();
         }else {

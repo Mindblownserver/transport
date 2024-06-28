@@ -30,7 +30,7 @@ public class Bus {
         this.bus_type = bus_type;
     }
 
-    @OneToMany(mappedBy = "busPr")
+    @OneToMany(mappedBy = "busPr") // name of the attribute, not the column
     private List<Trips> tripsList;
 
     public Bus(Long bus_id, String bus_type) {
