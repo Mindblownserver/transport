@@ -1,6 +1,5 @@
-
 <template>
-  <MbscEventcalendar
+    <MbscEventcalendar
     :view="myView"
     :data="myTrips"
     :resources="myBuses"
@@ -13,6 +12,7 @@
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted"
   />
+  
   <MbscPopup
     display="bottom"
     :contentPadding="false"
@@ -164,10 +164,16 @@ setOptions({
   theme: "ios"
 })
 
-const myTrips = ref([
-])
+const myTrips = ref([])
 
 const myBuses = ref([])
+
+// scrolling using mouse buttons
+let xPos = ref(0);
+let yPos=ref(0);
+let buttonPressed = ref(false);
+let scheduler = ref(null);
+
 
 // Color picker
 let colors = [
@@ -188,62 +194,31 @@ let colors = [
   '#7e5d4e'
 ]
 
-/* 
-const myResources = [
-  {
-    id: 1,
-    name: 'Resource A',
-    color: '#ffeb3c'
-  },
-  {
-    id: 2,
-    name: 'Resource B',
-    color: '#f44437'
-  },
-  {
-    id: 3,
-    name: 'Resource C',
-    color: '#3f51b5'
-  },
-  {
-    id: 4,
-    name: 'Resource D',
-    color: '#4baf4f'
-  },
-  {
-    id: 5,
-    name: 'Resource E',
-    color: '#ff9900'
-  }
-] */
-
-const loadBuses = async ()=>{
-  const res =  await instance.get("/api/bus");
-
-  const buses = res.data.map((bus, index) =>({
-    id:bus.bus_id,
-    name: "bus "+ bus.bus_id,
-    color: colors[index]
-  }))
-  console.log(buses)
-  myBuses.value=buses;
-}
 
 const loadTrips = async ()=>{
   const res = await instance.get("/api/trips/10")
-  const trips = res.data.map(trip=>({
-    id: trip.tripsId.trip_id,
-    start: trip.timeDepart,
-    end: trip.finalStopTime,
-    text: "trip "+trip.tripsId.trip_id,
-    resource:trip.busPr.bus_id,
-    title:"Test event",
-    description: "Description of event Test",
-    allDay: false,
-    bufferBefore: 30,
-    free: false,
-  }))
+  let arr=[];
+  const trips = res.data.map((trip,index)=>{
+    arr.push({
+      id:trip.busPr.bus_id,
+      name: "bus "+ trip.busPr.bus_id,
+      color: colors[index]
+    })
+    return{
+      id: trip.tripsId.trip_id,
+      start: trip.timeDepart,
+      end: trip.finalStopTime,
+      text: "trip "+trip.tripsId.trip_id,
+      resource:trip.busPr.bus_id,
+      title:"Test event",
+      description: "Description of event Test",
+      allDay: false,
+      bufferBefore: 30,
+      free: false,
+    }
+  })
   myTrips.value = trips;
+  myBuses.value = arr;
 }
 
 const myView = {
@@ -474,9 +449,10 @@ function handleSnackbarClose() {
   isSnackbarOpen.value = false
 }
 
+
 onMounted(()=>{
-  loadBuses();
   loadTrips();
+  console.log(myBuses)
 })
 
 </script>
