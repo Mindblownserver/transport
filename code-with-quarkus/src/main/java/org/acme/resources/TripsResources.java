@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.acme.entities.StopTimes;
 import org.acme.entities.Trips;
 import org.acme.repositories.TripsRepo;
 

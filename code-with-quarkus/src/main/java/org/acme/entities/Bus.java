@@ -13,7 +13,7 @@ public class Bus {
 
     private String bus_type;
 
-    
+
     public Long getBus_id() {
         return bus_id;
     }

@@ -1,8 +1,6 @@
 package org.acme.resources;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 import org.acme.entities.*;
@@ -15,7 +13,6 @@ import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
