@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
-@Path("/api/trips")
+@Path("/api")
 @Produces(MediaType.APPLICATION_JSON)
 public class TripsResources {
     @Inject
@@ -45,4 +45,6 @@ public class TripsResources {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
+
+
 }

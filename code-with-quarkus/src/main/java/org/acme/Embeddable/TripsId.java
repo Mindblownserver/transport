@@ -7,6 +7,6 @@ import java.util.Date;
 
 @Embeddable
 public record TripsId(
-    @Column(name="DEDATED") Date deDated,
+    Date deDated,
     @Column(name="TRIP_ID") Integer tripId){
 }

@@ -2,6 +2,7 @@ package org.acme.entities;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.acme.Embeddable.StopTimeId;
 import org.acme.Embeddable.TripsId;
@@ -35,12 +36,21 @@ public class StopTimes{
     private Date rt_departure_time;
     
     @Column(name="STATE")
-    private String sate;
+    private String state;
 
     @JoinColumn(name="DECSTAT", insertable=false, updatable=false)
+
     @ManyToOne
     private DrLigne decstat;
 
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="DEDATED",referencedColumnName = "deDated"),
+            @JoinColumn(name="trip_ID",referencedColumnName = "trip_Id")
+    })
+
+    @JsonBackReference
+    private Trips trip;
 
     public StopTimeId getStopTimeId() {
         return stopTimeId;
@@ -106,15 +116,15 @@ public class StopTimes{
         this.rt_departure_time = rt_departure_time;
     }
 
-    public String getSate() {
-        return sate;
+    public String getstate() {
+        return state;
     }
 
-    public void setSate(String sate) {
-        this.sate = sate;
+    public void setstate(String state) {
+        this.state = state;
     }
 
-    public StopTimes(StopTimeId stopTimeId, Date arrival_time, Date departure_time, Long pickup_type, String shape_dist_traveled, Integer timepoint, Date rt_arrival_time, Date rt_departure_time, String sate) {
+    public StopTimes(StopTimeId stopTimeId, Date arrival_time, Date departure_time, Long pickup_type, String shape_dist_traveled, Integer timepoint, Date rt_arrival_time, Date rt_departure_time, String state) {
         this.stopTimeId = stopTimeId;
         this.arrival_time = arrival_time;
         this.departure_time = departure_time;
@@ -123,7 +133,7 @@ public class StopTimes{
         this.timepoint = timepoint;
         this.rt_arrival_time = rt_arrival_time;
         this.rt_departure_time = rt_departure_time;
-        this.sate = sate;
+        this.state = state;
     }
     public StopTimes() {
 
