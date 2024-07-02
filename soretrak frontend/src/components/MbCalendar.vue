@@ -29,7 +29,7 @@
       <MbscTextarea label="Description" v-model="popupEventDescription" />
     </div>
     <div class="mbsc-form-group">
-      <MbscSwitch label="All-day" v-model="popupEventAllDay" />
+      
 
       <MbscInput ref="startInput" label="Starts" />
       <MbscInput ref="endInput" label="Ends" />
@@ -98,6 +98,9 @@
           :data-value="color"
           @click="handleColorClick($event)"
         >
+         <!-- <span>{{ i }}</span> -->  <!-- This lets us add text to colors -->
+        <!-- Useful when attributing color to specific types, not necessairly existant in database -->
+        
           <div
             class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check"
             :style="{ background: color }"
@@ -126,6 +129,8 @@
 
 
 <script setup>
+import { Resource, UniqueResourceSet } from '../utility/Resource'
+
 import {
   MbscButton,
   MbscDatepicker,
@@ -168,13 +173,6 @@ const myTrips = ref([])
 
 const myBuses = ref([])
 
-// scrolling using mouse buttons
-let xPos = ref(0);
-let yPos=ref(0);
-let buttonPressed = ref(false);
-let scheduler = ref(null);
-
-
 // Color picker
 let colors = [
   '#ffeb3c',
@@ -197,13 +195,10 @@ let colors = [
 
 const loadTrips = async ()=>{
   const res = await instance.get("/api/trips/10")
-  let arr=[];
+  let uniqueSet = new UniqueResourceSet();
   const trips = res.data.map((trip,index)=>{
-    arr.push({
-      id:trip.busPr.bus_id,
-      name: "bus "+ trip.busPr.bus_id,
-      color: colors[index]
-    })
+    let bus = new Resource(trip.busPr.bus_id,"bus "+ trip.busPr.bus_id, colors[index])
+    uniqueSet.add(bus)
     return{
       id: trip.tripsId.trip_id,
       start: trip.timeDepart,
@@ -217,8 +212,9 @@ const loadTrips = async ()=>{
       free: false,
     }
   })
+  console.log(uniqueSet)
   myTrips.value = trips;
-  myBuses.value = arr;
+  myBuses.value = uniqueSet.values();
 }
 
 const myView = {

@@ -1,7 +1,9 @@
 <template>
-  <MbCalendar />
+  <TestView />
 </template>
 
 <script setup>
-import MbCalendar from "@/components/MbCalendar.vue"
+import TestView from "@/views/TestView.vue"
+
+
 </script>
