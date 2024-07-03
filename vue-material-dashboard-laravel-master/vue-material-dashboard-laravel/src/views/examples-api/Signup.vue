@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
+import Navbar from "@/components/PageLayout/Navbar.vue";
 import MaterialInputField from "@/components/MaterialComponents/MaterialInputField.vue";
 import MaterialCheckboxField from "@/components/MaterialComponents/MaterialCheckboxField.vue";
 import MaterialButton from "@/components/MaterialComponents/MaterialButton.vue";

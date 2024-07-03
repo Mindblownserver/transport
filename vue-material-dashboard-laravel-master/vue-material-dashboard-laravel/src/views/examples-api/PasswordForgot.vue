@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
-import AppFooter from "@/examples/PageLayout/Footer.vue";
+import Navbar from "@/components/PageLayout/Navbar.vue";
+import AppFooter from "@/components/PageLayout/Footer.vue";
 import MaterialInputField from "@/components/MaterialComponents/MaterialInputField.vue";
 import MaterialButton from "@/components/MaterialComponents/MaterialButton.vue";
 import showSwal from "@/mixins/showSwal";

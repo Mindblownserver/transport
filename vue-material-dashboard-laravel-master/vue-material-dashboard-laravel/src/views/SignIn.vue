@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
+import Navbar from "@/components/PageLayout/Navbar.vue";
 import MaterialInput from "@/components/MaterialComponents/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialComponents/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialComponents/MaterialButton.vue";

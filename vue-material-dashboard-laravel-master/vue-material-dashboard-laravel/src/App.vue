@@ -39,7 +39,7 @@ Coded by www.creative-tim.com
 <script>
 import Sidenav from "./components/Sidenav";
 import Configurator from "@/components/Configurator.vue";
-import Navbar from "@/examples/Navbars/Navbar.vue";
+import Navbar from "@/components/Navbars/Navbar.vue";
 import AppFooter from "@/components/Footer.vue";
 import { mapMutations, mapState } from "vuex";
 
