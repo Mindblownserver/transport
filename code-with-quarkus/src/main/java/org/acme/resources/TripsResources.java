@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.entities.Trips;
 import org.acme.repositories.DrTripsRepo;
+import org.jboss.logging.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,9 @@ import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 public class TripsResources {
     @Inject
     DrTripsRepo tripsRepo;
+
+    @Inject
+    Logger log;
     @GET
     @Path("/trips")
     public Response getTrips(){
@@ -36,8 +40,10 @@ public class TripsResources {
     @GET
     @Path("/trips/{date}")
     public Response getTripsByDate(@PathParam("date") String date) throws ParseException {
+        log.debug("ddd");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
         Date parsedDate = formatter.parse(date);
+        log.debug("aaa");
         List<Trips> listTrips = tripsRepo.findByDate(parsedDate);
         if(!listTrips.isEmpty()){
             return Response.ok(listTrips).build();

@@ -56,7 +56,7 @@ public class Trips {
 
     @ManyToOne
     private DrLigne ligne;
-    @Transient
+    @Transient  
     public Date finalStopTime;
     @ManyToOne
     @JoinColumn(name="BUS_PR")
