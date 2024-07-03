@@ -53,8 +53,8 @@
 
 <script>
 import NavPill from "./components/NavPill.vue";
-import MasterCard from "@/examples/Cards/MasterCard.vue";
-import DefaultInfoCard from "@/examples/Cards/DefaultInfoCard.vue";
+import MasterCard from "@/components/Cards/MasterCard.vue";
+import DefaultInfoCard from "@/components/Cards/DefaultInfoCard.vue";
 import PaymentCard from "./components/PaymentCard.vue";
 import InvoiceCard from "./components/InvoiceCard.vue";
 import BillingCard from "./components/BillingCard.vue";

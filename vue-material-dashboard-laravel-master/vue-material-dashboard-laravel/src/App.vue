@@ -37,10 +37,10 @@ Coded by www.creative-tim.com
   </main>
 </template>
 <script>
-import Sidenav from "./examples/Sidenav";
-import Configurator from "@/examples/Configurator.vue";
+import Sidenav from "./components/Sidenav";
+import Configurator from "@/components/Configurator.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
-import AppFooter from "@/examples/Footer.vue";
+import AppFooter from "@/components/Footer.vue";
 import { mapMutations, mapState } from "vuex";
 
 export default {

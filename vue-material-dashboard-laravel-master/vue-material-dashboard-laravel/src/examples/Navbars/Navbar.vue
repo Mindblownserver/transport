@@ -149,7 +149,7 @@
 </template>
 <script>
 import MaterialInput from "@/components/MaterialComponents/MaterialInput.vue";
-import Breadcrumbs from "../Breadcrumbs.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import { mapMutations, mapState } from "vuex";
 
 export default {

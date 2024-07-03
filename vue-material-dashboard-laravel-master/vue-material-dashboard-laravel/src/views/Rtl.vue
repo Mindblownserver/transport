@@ -242,12 +242,12 @@
 
 <script>
 import ChartHolderCard from "./components/ChartHolderCard.vue";
-import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
-import ReportsLineChart from "@/examples/Charts/ReportsLineChart.vue";
+import ReportsBarChart from "@/components/Charts/ReportsBarChart.vue";
+import ReportsLineChart from "@/components/Charts/ReportsLineChart.vue";
 import MiniStatisticsCard from "./components/MiniStatisticsCard.vue";
 import ProjectCard from "./components/ProjectCard.vue";
-import TimelineList from "@/examples/Cards/TimelineList.vue";
-import TimelineItem from "@/examples/Cards/TimelineItem.vue";
+import TimelineList from "@/components/Cards/TimelineList.vue";
+import TimelineItem from "@/components/Cards/TimelineItem.vue";
 import logoXD from "@/assets/img/small-logos/logo-xd.svg";
 import logoAtlassian from "@/assets/img/small-logos/logo-atlassian.svg";
 import logoSlack from "@/assets/img/small-logos/logo-slack.svg";
