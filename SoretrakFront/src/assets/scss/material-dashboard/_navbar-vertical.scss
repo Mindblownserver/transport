@@ -245,7 +245,7 @@
       .nav-link {
         &.active {
           color: $white !important;
-
+          
           i {
             color: $white !important;
           }
@@ -254,6 +254,7 @@
     }
   }
 }
+
 body:not(.dark-version) {
   .sidenav {
     &.bg-white,

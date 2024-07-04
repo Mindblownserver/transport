@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/multi-word-component-names -->
   <div class="bg-white">
     <div class="container top-0 position-sticky z-index-sticky">
       <div class="row">
@@ -40,7 +41,7 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <form role="form">
+                    <form role="signup">
                       <div class="mb-3">
                         <material-input
                           id="name"

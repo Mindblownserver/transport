@@ -63,3 +63,10 @@ export default {
 };
 
 </script>
+
+<style>
+*{
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148, 148, 148) rgba(236, 233, 233, 0.882);/**Thumb track */ 
+}
+</style>

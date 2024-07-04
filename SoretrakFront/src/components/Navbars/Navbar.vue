@@ -182,7 +182,8 @@ export default {
     ...mapState(["isRTL", "isAbsolute"]),
 
     currentRouteName() {
-      return this.$route.name;
+      //console.log(this.$route.name||this.$route.meta.name)
+      return this.$route.name;//||this.$route.meta.name;
     },
   },
 };

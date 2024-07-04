@@ -7,10 +7,7 @@ import Notifications from "../views/Notifications.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
-import Login from "../views/examples-api/Login.vue";
-import Signup from "../views/examples-api/Signup.vue";
-import PasswordForgot from "../views/examples-api/PasswordForgot.vue";
-import PasswordReset from "../views/examples-api/PasswordReset.vue";
+
 import UserProfile from "../views/examples-api/profile/UserProfile.vue";
 import Users from "../views/examples-api/users/UsersList.vue";
 import delegRoute from "../features/parametres/drDeleg/router/delegRoute";
@@ -20,6 +17,7 @@ import vehiculeRoute from "../features/parametres/vehicule/router/vehiculeRoute"
 import centreRoute from "../features/parametres/centre/router/centreRoute";
 import typeLignesRoute from "../features/parametres/typeLigne/router/typeLignesRoute";
 import tripsRoute from "../features/plannification/router/tripsRoute";
+import agentRoute from "../features/parametres/agent/router/agentRoute";
 
 const routes = [
   {
@@ -32,7 +30,7 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
-  ...delegRoute, ...stationRoute, ...ligneRoute, ...vehiculeRoute, ...centreRoute, ...typeLignesRoute, ...tripsRoute,
+  ...delegRoute, ...stationRoute, ...ligneRoute, ...vehiculeRoute, ...centreRoute, ...typeLignesRoute, ...tripsRoute,...agentRoute,
   {
     path: "/tables",
     name: "Tables",
@@ -71,23 +69,14 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login
+    redirect:"/sign-in"
   },
   {
     path: "/signup",
     name: "Signup",
-    component: Signup
+    redirect:"sign-up"
   },
-  {
-    path: "/password-forgot",
-    name: "Password Forgot",
-    component: PasswordForgot
-  },
-  {
-    path: "/password-reset",
-    name: "Password Reset",
-    component: PasswordReset
-  },
+  
   {
     path: "/user-profile",
     name: "User Profile",

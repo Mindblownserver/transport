@@ -62,11 +62,11 @@
         </sidenav-collapse>
       </li>
       
-      <li class="nav-item">
+      <li class="nav-item"  >
         <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/vehicules"
           navText="Vehicules">
-          <template v-slot:icon>
-            <i class="material-icons-round opacity-10 fs-5">directions_bus</i>
+          <template v-slot:icon >
+            <i class="material-icons-round opacity-10 fs-5" >directions_bus</i>
           </template>
         </sidenav-collapse>
       </li>
@@ -92,6 +92,40 @@
             <i class="material-icons-round opacity-10 fs-5">location_city</i>
           </template>
         </sidenav-collapse>
+      </li>
+
+      <li>
+         <a href="#" class="sidebar-link collapsed has-dropdown nav-item" data-bs-toggle="collapse"
+            data-bs-target="#agent" aria-expanded="false" aria-controls="agent" @click="toggleStyle">
+              <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/" navText="Agents">
+                <template v-slot:icon>
+                  <i class="material-icons-round opacity-10 fs-5" :class="isDown?'iconDown':'iconUp'">keyboard_arrow_down</i>
+                </template>
+              </sidenav-collapse>
+        </a>
+        <ul id="agent" class="sidebar-dropdown list-unstyled navbar-nav collapse" data-bs-parent="#sidebar">
+            <li class="sidebar-item nav-item">
+              <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/agent/chauffeur" navText="Chauffeur">
+                <template v-slot:icon>
+                  <i class="material-icons-round opacity-10 fs-5">location_city</i>
+                </template>
+              </sidenav-collapse>
+            </li>
+            <li class="nav-item">
+              <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/agent/receveur" navText="Receveur">
+                <template v-slot:icon>
+                  <i class="material-icons-round opacity-10 fs-5" >location_city</i>
+                </template>
+              </sidenav-collapse>
+            </li>
+            <li class="nav-item">
+              <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/agent/chauff-recev" navText="Chauffeur-Receveur">
+                <template v-slot:icon>
+                  <i class="material-icons-round opacity-10 fs-5">location_city</i>
+                </template>
+              </sidenav-collapse>
+            </li>
+        </ul>
       </li>
 
       <li class="mt-3 nav-item">
@@ -125,7 +159,8 @@ export default {
     return {
       title: "Soft UI Dashboard PRO",
       controls: "dashboardsExamples",
-      isActive: "active"
+      isActive: "active",
+      isDown:true
     };
   },
   components: {
@@ -138,13 +173,20 @@ export default {
     },
     logout() {
       this.$store.dispatch("auth/logout");
+    },
+    toggleStyle(){
+      this.isDown=!this.isDown;
     }
   }
 };
 </script>
-<style lang="scss">
-*{
-  scrollbar-width: thin;
-  scrollbar-color: rgb(148, 148, 148) rgba(236, 233, 233, 0.882);/**Thumb track */ 
+<style scoped>
+
+.iconDown{
+  transition: .6s all cubic-bezier(.25,.56,.32,.96);
+}
+.iconUp{
+  transform: rotateZ(180deg);
+  transition: .6s all cubic-bezier(.25,.56,.32,.96);
 }
 </style>
