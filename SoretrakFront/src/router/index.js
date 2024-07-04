@@ -13,6 +13,13 @@ import PasswordForgot from "../views/examples-api/PasswordForgot.vue";
 import PasswordReset from "../views/examples-api/PasswordReset.vue";
 import UserProfile from "../views/examples-api/profile/UserProfile.vue";
 import Users from "../views/examples-api/users/UsersList.vue";
+import delegRoute from "../features/parametres/drDeleg/router/delegRoute";
+import stationRoute from "../features/parametres/station/router/stationRoute";
+import ligneRoute from "../features/parametres/ligne/router/ligneRoute";
+import vehiculeRoute from "../features/parametres/vehicule/router/vehiculeRoute";
+import centreRoute from "../features/parametres/centre/router/centreRoute";
+import typeLignesRoute from "../features/parametres/typeLigne/router/typeLignesRoute";
+import tripsRoute from "../features/plannification/router/tripsRoute";
 
 const routes = [
   {
@@ -25,6 +32,7 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  ...delegRoute, ...stationRoute, ...ligneRoute, ...vehiculeRoute, ...centreRoute, ...typeLignesRoute, ...tripsRoute,
   {
     path: "/tables",
     name: "Tables",

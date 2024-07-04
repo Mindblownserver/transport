@@ -1,7 +1,7 @@
 <template>
   <router-link
     :data-bs-toggle="collapse ? 'collapse' : ''"
-    :to="collapse ? `#${collapseRef}` : collapseRef"
+    :to="collapse ? `${collapseRef}` : collapseRef"
     :aria-controls="collapseRef"
     :aria-expanded="isExpanded"
     class="nav-link"
@@ -49,8 +49,8 @@ export default {
   },
   methods: {
     getRoute() {
-      const routeArr = this.$route.path.split("/");
-      return routeArr[1];
+      const routeArr = this.$route.path;
+      return routeArr;
     }
   },
   computed: {

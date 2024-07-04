@@ -3,35 +3,35 @@
     <ul class="navbar-nav">
 
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="dashboard" navText="Dashboard">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/dashboard" navText="Dashboard">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">dashboard</i>
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="tables" navText="Tables">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/tables" navText="Tables">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">table_view</i>
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="billing" navText="Billing">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/billing" navText="Billing">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">receipt_long</i>
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="rtl-page" navText="Rtl">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/rtl-page" navText="Rtl">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">format_textdirection_r_to_l</i>
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="notifications"
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/notifications"
           navText="Notifications">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">notifications</i>
@@ -47,7 +47,7 @@
       </li>
 
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="user-profile"
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/ligne"
           navText="Lignes">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">route</i>
@@ -55,7 +55,7 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="users" navText="Stations">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/station" navText="Stations">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">home</i>
           </template>
@@ -63,7 +63,7 @@
       </li>
       
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="user-profile"
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/vehicules"
           navText="Vehicules">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">directions_bus</i>
@@ -71,7 +71,7 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="users" navText="Delegues">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/deleg" navText="Delegues">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">location_on</i>
           </template>
@@ -79,7 +79,7 @@
       </li>
 
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="user-profile"
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/centre"
           navText="Centres">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">home</i>
@@ -87,7 +87,7 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="users" navText="Types ligne">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/param/type_ligne" navText="Types ligne">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">location_city</i>
           </template>
@@ -102,7 +102,7 @@
       </li>
 
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="profile" navText="Trips">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/trips" navText="Trips">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">person</i>
           </template>
