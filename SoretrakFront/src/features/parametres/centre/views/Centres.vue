@@ -10,10 +10,17 @@
           </div>
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
-              <DataTable :value="products" size="large" :stripedRows="true" tableStyle="min-width: 50rem;" v-model:filters="filters" filterDisplay="row">
-                  <template #empty> No customers found. </template>
-                  <template #loading> Loading customers data. Please wait. </template>
-                  <Column v-for="col of columns" sortable :key="col.field" :field="col.field" :header="col.header">
+              <!-- paginator :rows="2"  -->
+              <DataTable               
+              :value="getCentres" size="large" 
+              :stripedRows="true" 
+              tableStyle="min-width: 50rem;" 
+              v-model:filters="filters" filterDisplay="row"
+              selectionMode="single"
+              v-model:selection="selectedRow">
+                  <template #empty> Aucun centre trouvé </template>
+                  <template #loading> Veuillez patienter </template>
+                  <Column v-for="col of columns" sortable :key="col.field" :field="col.field"  :header="col.header">
                     <template #filter="{ filterModel, filterCallback }">
                       <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Search by name" />
                     </template>
@@ -406,68 +413,31 @@ export default {
     },
     data(){
       return{
-        products:[
-          {
-              "id": "4",
-              "code": "a230fh0g3",
-              "name": "Bamboo Watch",
-              "category": "Accessories",
-              "quantity": 24,
-          },
-          {
-              "id": "5",
-              "code": "b230fh0g3",
-              "name": "Bamboo Watch",
-              "category": "Accessories",
-              "quantity": 7,
-          },
-          {
-              "id": "4",
-              "code": "c230fh0g3",
-              "name": "Bamboo Watch",
-              "category": "Accessories",
-              "quantity": 124,
-          },
-          {
-              "id": "4",
-              "code": "d230fh0g3",
-              "name": "Bamboo Watch",
-              "category": "Accessories",
-              "quantity": 4,
-          },  
-        ],
         columns: [
-            { field: 'code', header: 'Code' },
-            { field: 'name', header: 'Name' },
-            { field: 'category', header: 'Category' },
-            { field: 'quantity', header: 'Quantity' }
+          { field: 'dec_centre', header: 'Id Centre' },
+          { field: 'ar_centre', header: 'Centre AR' },
+          { field: 'del_centre', header: 'Centre FR' },
         ],
         filters: {
-          code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-          name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-          category: { value: null, matchMode: FilterMatchMode.IN },
-          quantity: { value: null, matchMode: FilterMatchMode.EQUALS }
+          dec_centre: { value: null, matchMode: FilterMatchMode.EQUALS },
+          ar_centre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          del_centre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         },
+        selectedRow:null
       }
+    },
+    computed:{
+      getCentres(){
+        return this.$store.state.centreModule.centres;
+      }
+    },
+    mounted(){
+      this.$store.dispatch("centreModule/getCentres");
     }
 }
 </script>
 
 <style >
-:root{
-  --p-datatable-row-striped-background: #f8fafc;
-  --p-datatable-body-cell-border-color: #E2E8F0;
-  --p-datatable-header-cell-border-color: #E2E8F0;
-  --p-datatable-header-cell-gap: 5px;
-  --p-inputtext-color: rgb(161, 161, 161);
-  --p-inputtext-background: #ffffff;
-  --p-inputtext-padding-y:5px;
-  --p-inputtext-padding-x:5px;
-  --p-inputtext-border-color: var(--p-datatable-body-cell-border-color);
-  --p-inputtext-transition-duration: 1s;
-  --p-inputtext-border-radius: 5px;
-  --p-datatable-filter-inline-gap:5px
-  
-}
+
 
 </style>

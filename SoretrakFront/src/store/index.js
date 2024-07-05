@@ -2,12 +2,18 @@ import { createStore, createLogger } from "vuex";
 import { auth } from "./auth.module";
 import { profile } from "./profile.module";
 import {sidebar} from "../features/sidenav/store/sidebar.module"
+import {centreModule} from "../features/parametres/centre/store/centre.module";
+import { delegModule } from "../features/parametres/drDeleg/service/deleg.module";
+import { typeLigneModule } from "../features/parametres/typeLigne/service/typeligne.module";
 
 export default createStore({
   modules: {
     auth,
     profile,
-    sidebar
+    sidebar,
+    centreModule,
+    delegModule,
+    typeLigneModule
   },
   state: {
     hideConfigButton: false,

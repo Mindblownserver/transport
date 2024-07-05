@@ -69,4 +69,56 @@ export default {
   scrollbar-width: thin;
   scrollbar-color: rgb(148, 148, 148) rgba(236, 233, 233, 0.882);/**Thumb track */ 
 }
+
+:root{
+  /* Color schemes */
+  --bg-gradient-success: linear-gradient(195deg, #66bb6a 0%, #43a047 100%);
+  --hover-color: #F1F5F9;
+  --gray-color: rgb(161, 161, 161);
+  --soretrak-color: linear-gradient(195deg, #ffa726 0%, #fb8c00 100%);
+  /* Data Table Style */
+  --p-datatable-row-striped-background: #f8fafc;
+  --p-datatable-body-cell-border-color: #E2E8F0;
+  --p-datatable-header-cell-border-color: #E2E8F0;
+  --p-datatable-header-cell-gap: 5px;
+  --p-datatable-transition-duration: 0.3s;
+  /* Input Text Style */
+  --p-inputtext-color: var(--gray-color);
+  --p-inputtext-background: #ffffff;
+  --p-inputtext-padding-y:5px;
+  --p-inputtext-padding-x:5px;
+  --p-inputtext-border-color: var(--p-datatable-body-cell-border-color);
+  --p-inputtext-transition-duration: 1s;
+  --p-inputtext-border-radius: 5px;
+  /* DataTable's Filter Style  */
+  --p-datatable-filter-inline-gap:5px;
+  --p-datatable-filter-constraint-list-padding: 5px;
+  /* The usual style of overlay component */
+  --p-datatable-filter-overlay-select-background: var(--p-inputtext-background);
+  --p-datatable-filter-overlay-select-color: black;
+  --p-datatable-filter-overlay-select-border-color: var(--p-datatable-row-striped-background);
+  --p-datatable-filter-overlay-select-border-radius: var(--p-inputtext-border-radius);
+  --p-datatable-filter-overlay-select-shadow:1px 1px 10px 3px #cacaca93;
+  /* The Style of select element */
+  --p-datatable-filter-constraint-focus-background: var(--hover-color);
+  --p-datatable-filter-constraint-selected-background: var(--p-datatable-filter-constraint-focus-background);
+  --p-datatable-filter-constraint-list-gap: 5px;
+  --p-datatable-filter-constraint-padding: 5px;
+  --p-datatable-filter-constraint-color:black;
+  --p-datatable-filter-constraint-border-radius: var(--p-datatable-filter-overlay-select-border-radius);
+  /* DataTable selected Style */
+  --p-datatable-body-cell-selected-border-color: var(--hover-color);
+  --p-datatable-row-selected-background: #dcf9e1/* var(--hover-color) */;
+  /* Pagination Style */
+  --p-paginator-gap: 10px;
+  --p-datatable-paginator-bottom-border-color: transparent;
+  --p-paginator-padding:10px;
+  --p-paginator-nav-button-selected-background: var(--bg-gradient-success);
+  --p-paginator-nav-button-color:var(--gray-color);
+  --p-paginator-nav-button-selected-color: white;
+  --p-paginator-nav-button-border-radius: 20px;
+  --p-paginator-nav-button-height: 2rem;
+  --p-paginator-nav-button-width: 2rem;
+  --p-paginator-transition-duration: 0.5s
+}
 </style>
