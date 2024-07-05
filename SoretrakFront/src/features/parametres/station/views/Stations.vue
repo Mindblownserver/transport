@@ -1,8 +1,9 @@
 <template>
     <mgl-map 
-        mapStyle="https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0	"
-        :zoom=14
-        :center="[16.62662018, 49.2125578]">
+        v-if="center"
+        :mapStyle="mapStyle"
+        :zoom="zoom"
+        :center="center">
         <mgl-navigation-control position="top-left"/>
     </mgl-map>
 </template>
@@ -15,6 +16,28 @@ export default {
   components: {
     MglMap,
     MglNavigationControl
+  },
+  data() {
+    return {
+      mapStyle: "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
+      zoom: 14,
+      center: null  // Initial center is null, to be updated by geolocation
+    }
+  },
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = [position.coords.longitude, position.coords.latitude];
+      }, error => {
+        console.error("Error getting geolocation: ", error);
+        // Fallback to a default location if needed
+        this.center = [16.62662018, 49.2125578];  // Example default center
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      // Fallback to a default location if needed
+      this.center = [16.62662018, 49.2125578];  // Example default center
+    }
   }
 }
 </script>
