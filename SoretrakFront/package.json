@@ -1,0 +1,61 @@
+{
+  "name": "vue-material-dashboard-2",
+  "version": "3.0.0",
+  "private": true,
+  "author": "Creative Tim",
+  "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
+  "description": "VueJS version of Material Dashboard 2 by Creative Tim",
+  "homepage": "https://demos.creative-tim.com/vue-material-dashboard-2/",
+  "bugs": {
+    "url": "https://github.com/creativetimofficial/vue-material-dashboard-2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativetimofficial/ct-vue-material-dashboard-2.git"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "dev": "npm run serve"
+  },
+  "dependencies": {
+    "@popperjs/core": "2.10.2",
+    "maplibre-gl": "^1.15.3",
+    "vue-maplibre-gl": "^1.0.0-beta.26",
+    "axios": "^1.3.2",
+    "bootstrap": "5.1.3",
+    "chart.js": "3.6.0",
+    "core-js": "^3.37.1",
+    "jsona": "^1.11.0",
+    "moment": "^2.30.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.0",
+    "sweetalert2": "^11.6.13",
+    "vee-validate": "^4.7.4",
+    "vue": "^3.4.26",
+    "vue-router": "4.0.14",
+    "vuex": "4.0.2",
+    "yup": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/preset-env": "^7.24.7",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-router": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "@vue/compiler-sfc": "3.2.0",
+    "@vue/eslint-config-prettier": "6.0.0",
+    "babel-eslint": "10.1.0",
+    "devextreme-themebuilder": "24.1.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-vue": "^9.27.0",
+    "prettier": "2.2.1",
+    "sass": "1.43.3",
+    "sass-loader": "10.1.1"
+  }
+}
