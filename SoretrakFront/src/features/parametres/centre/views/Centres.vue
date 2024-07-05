@@ -5,13 +5,19 @@
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
-              <h6 class="text-white text-capitalize ps-3">Authors table</h6>
+              <h6 class="text-white text-capitalize ps-3">Tableau des centres</h6>
             </div>
           </div>
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
-              <DataTable :value="products" size="large" :stripedRows="true" tableStyle="min-width: 50rem;" >
-                  <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
+              <DataTable :value="products" size="large" :stripedRows="true" tableStyle="min-width: 50rem;" v-model:filters="filters" filterDisplay="row">
+                  <template #empty> No customers found. </template>
+                  <template #loading> Loading customers data. Please wait. </template>
+                  <Column v-for="col of columns" sortable :key="col.field" :field="col.field" :header="col.header">
+                    <template #filter="{ filterModel, filterCallback }">
+                      <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Search by name" />
+                    </template>
+                  </Column>
               </DataTable>
             </div>
           </div>
@@ -384,45 +390,50 @@
 </template>
 
 <script>
-
+// create custom http class that has axios set up
+// make its methods something along the lines of "getCentres", "getTrips", ...etc
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import InputText from 'primevue/inputtext';
+import { FilterMatchMode } from '@primevue/core/api';
+
 export default {
     name: "Centres",
     components:{
       DataTable,
-      Column
+      Column,
+      InputText
     },
     data(){
       return{
         products:[
           {
               "id": "4",
-              "code": "f230fh0g3",
+              "code": "a230fh0g3",
               "name": "Bamboo Watch",
               "category": "Accessories",
               "quantity": 24,
           },
           {
               "id": "5",
-              "code": "f230fh0g3",
+              "code": "b230fh0g3",
               "name": "Bamboo Watch",
               "category": "Accessories",
-              "quantity": 24,
+              "quantity": 7,
           },
           {
               "id": "4",
-              "code": "f230fh0g3",
+              "code": "c230fh0g3",
               "name": "Bamboo Watch",
               "category": "Accessories",
-              "quantity": 24,
+              "quantity": 124,
           },
           {
               "id": "4",
-              "code": "f230fh0g3",
+              "code": "d230fh0g3",
               "name": "Bamboo Watch",
               "category": "Accessories",
-              "quantity": 24,
+              "quantity": 4,
           },  
         ],
         columns: [
@@ -430,7 +441,13 @@ export default {
             { field: 'name', header: 'Name' },
             { field: 'category', header: 'Category' },
             { field: 'quantity', header: 'Quantity' }
-        ]
+        ],
+        filters: {
+          code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          category: { value: null, matchMode: FilterMatchMode.IN },
+          quantity: { value: null, matchMode: FilterMatchMode.EQUALS }
+        },
       }
     }
 }
@@ -441,6 +458,16 @@ export default {
   --p-datatable-row-striped-background: #f8fafc;
   --p-datatable-body-cell-border-color: #E2E8F0;
   --p-datatable-header-cell-border-color: #E2E8F0;
+  --p-datatable-header-cell-gap: 5px;
+  --p-inputtext-color: rgb(161, 161, 161);
+  --p-inputtext-background: #ffffff;
+  --p-inputtext-padding-y:5px;
+  --p-inputtext-padding-x:5px;
+  --p-inputtext-border-color: var(--p-datatable-body-cell-border-color);
+  --p-inputtext-transition-duration: 1s;
+  --p-inputtext-border-radius: 5px;
+  --p-datatable-filter-inline-gap:5px
+  
 }
 
 </style>
