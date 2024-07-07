@@ -76,6 +76,7 @@ export default {
   --hover-color: #F1F5F9;
   --gray-color: rgb(161, 161, 161);
   --soretrak-color: linear-gradient(195deg, #ffa726 0%, #fb8c00 100%);
+  --simple-soretrak-color: #fb8c00;
   /* Data Table Style */
   --p-datatable-row-striped-background: #f8fafc;
   --p-datatable-body-cell-border-color: #E2E8F0;
@@ -119,6 +120,23 @@ export default {
   --p-paginator-nav-button-border-radius: 20px;
   --p-paginator-nav-button-height: 2rem;
   --p-paginator-nav-button-width: 2rem;
-  --p-paginator-transition-duration: 0.5s
+  --p-paginator-transition-duration: 0.5s;
+  /* Tab Style*/
+  --p-tabs-tab-active-background:transparent;
+  --p-tabs-tab-active-border-color: var(--simple-soretrak-color);
+  --p-tabs-tab-active-color: var(--simple-soretrak-color);
+
+  --p-tabs-tab-border-width: 0 0 1px 0;
+  --p-tabs-tab-border-color: #f0f2f5;
+  --p-tabs-tablist-border-color: #f0f2f5;
+  --p-tabs-tablist-border-width: 0 0 1px 0;
+  --p-tabs-tab-padding: 1rem 1.125rem;
+  --p-tabs-tab-margin:0 0 -1px 0;
+  
+  --p-tabs-tab-font-weight:600;
+  --p-tabs-tablist-background: transparent;
+  --p-tabs-tab-color:var(--gray-color);
+  --p-tabs-tab-hover-border-color: transparent;
+  --p-tabs-transition-duration:0.2s;
 }
 </style>

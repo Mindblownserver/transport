@@ -39,7 +39,6 @@ public class DrStati {
     private int rayon;
 
     @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<DrItin> itineraires;
 
     public Long getDecStat() {

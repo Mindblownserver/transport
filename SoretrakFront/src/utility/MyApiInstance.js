@@ -9,14 +9,15 @@ class AxiosInstance {
         // Parse JSON response with date reviver function
         return JSON.parse(data, (key, value) => {
           if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}[+-]\d{2}:\d{2}$/)) {
-            return moment.utc(value).toDate(); // Convert to JavaScript Date object using Moment.js
+            const date = moment.utc(value).toDate();
+            return moment(date).format("DD/MM/YYYY HH:mm:ss"); // Convert to JavaScript Date object using Moment.js
           }
           return value;
         });
       }],
     });
   }
-  getCentres(){
+ getCentres(){
     return this.instance.get("/api/centre");
   }
   getDeleg(){
@@ -24,6 +25,9 @@ class AxiosInstance {
   }
   getTypeLignes(){
     return this.instance.get("/api/ligne/type")
+  }
+  getStations(){
+    return this.instance.get("/api/stations")
   }
 
   get(url, config) {
