@@ -4,7 +4,7 @@ package org.acme.resources;
 import java.util.List;
 
 import org.acme.entities.StopTimes;
-import org.acme.repositories.StopTimesRepo;
+import org.acme.repositories.StopTimesRepository;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class StopTimesResources {
 
    @Inject
-    StopTimesRepo stopTimesRepo;
+    StopTimesRepository stopTimesRepo;
 
     @GET
     public Response get(){

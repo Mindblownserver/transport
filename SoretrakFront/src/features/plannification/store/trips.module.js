@@ -1,38 +1,37 @@
 import myApi from "@/services/myApi.service.js"
-export const stationModule={
+
+export const tripsModule={
     namespaced: true,
     state: {
-      stations:[],
+      trips:[],
       loading:false,
-      error:null,
+      error:null
     },
     mutations: {
-      setStations(state, stations){
-        state.stations = stations;
+      setTrips(state, centres){
+        state.centres = centres;
       },
       setLoading(state,loading){
         state.loading = loading
       },
       setError(state,err){
         state.error =err;
-      },
+      }
     },
     actions: {
-      getStation({commit}){
+      getTrips({commit}, date){
         commit("setLoading", true);
         commit("setError", null);
         try{
-            myApi.getStations().then(res=>{
-              commit("setStations", res.data);
+            myApi.getTrips(date).then(res=>{
+                commit("setTrips", res.data);
             })
-            
         }catch(err){
             commit("setError", err);
         }finally{
-
             commit("setLoading", false);
         }
-      },
+      }
     },
     getters: {},
   }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +15,7 @@ import jakarta.persistence.FetchType;
 
 
 @Entity
-public class DrLigne{
+public class DrLigne extends PanacheEntityBase{
     @Id
     @Column(name="DENUMLI")
     private Long deNumLi;
@@ -91,13 +92,16 @@ public class DrLigne{
     @JoinColumn(name="DecDeleg")
     private DrDeleg deleg;
     
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SHAPS> shapList;
 
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<DrItin> itinList;
+
+    @OneToMany(mappedBy="ligne", fetch=FetchType.LAZY)
+    private List<Trips> tripsList;
 
     public Long getIdLigne() {
         return deNumLi;

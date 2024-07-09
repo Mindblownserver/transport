@@ -27,34 +27,30 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ParamResources {
     @Inject
-    DrDelegRepo delegRepo;
-    
-    @Inject
-    StopTimesRepo stopTimesRepo;
-    
+    DrDelegRepository delegRespository;
 
     @Inject
-    DrTypeLigneRepo typeLigneRepo;
+    DrTypeLigneRepository typeLigneRespository;
 
 
     @Inject
-    DrLigneRepo ligneRepo;
+    DrLigneRepository ligneRespository;
 
     @Inject
-    SHAPSRepo shapsRepo;
+    SHAPSRepository shapeRespository;
 
 
     @Inject
-    DrItinRepo itinRepo;
+    DrItinRepository itinRespository;
 
     @Inject
-    DrStatiRepo statRepo;
+    DrStatiRepository stateRespository;
 
     @Inject
-    DrCentreRepo centreRepo;
+    DrCentreRepository centreRespository;
 
     @Inject
-    BusRepo busRepo;
+    BusRepository busRespository;
 
     @Inject
     Logger log;
@@ -62,7 +58,7 @@ public class ParamResources {
     @Path("/bus")
     @GET
     public Response getAllBus(){
-        List<Bus> busListes=busRepo.listAll(Sort.by("bus_id").ascending());
+        List<Bus> busListes=busRespository.listAll(Sort.by("bus_id").ascending());
         if(busListes.size()>0){
             return Response.ok(busListes).build();
         }else {
@@ -87,7 +83,7 @@ public class ParamResources {
     @Path("/centre")
     public Response getCentres(){
 
-        List<DrCentre> listCentres=centreRepo.listAll();
+        List<DrCentre> listCentres=centreRespository.listAll();
         if(listCentres.size()>0){
             return Response.ok(listCentres).build();
         }else {
@@ -98,7 +94,7 @@ public class ParamResources {
     @Path("/deleg")
     @GET
     public Response getDeleg(){
-        return Response.ok(delegRepo.listAll()).build();
+        return Response.ok(delegRespository.listAll()).build();
     }
     
 
@@ -106,7 +102,7 @@ public class ParamResources {
     @Path("/stations")
     @GET
     public Response getStati(){
-        return Response.ok(statRepo.listAll()).build();
+        return Response.ok(stateRespository.listAll()).build();
     }   
 
 
@@ -114,7 +110,7 @@ public class ParamResources {
     @Path("/itin")
     @GET
     public Response getItin(){
-        List<DrItin> intins = itinRepo.listAll();
+        List<DrItin> intins = itinRespository.listAll();
         if(intins.size()> 0) {
             return Response.ok(intins).build();
         }
@@ -126,7 +122,7 @@ public class ParamResources {
     @Path("/Stati")
     @GET
     public Response get(){
-        return Response.ok(statRepo.listAll()).build();
+        return Response.ok(stateRespository.listAll()).build();
     }  
     
    
@@ -134,7 +130,7 @@ public class ParamResources {
     @Path("shaps")
     @GET
     public Response getShaps(){
-        return Response.ok(shapsRepo.listAll()).build();
+        return Response.ok(shapeRespository.listAll()).build();
     }
 
     // lignes 
@@ -142,15 +138,15 @@ public class ParamResources {
     @Path("/ligne")
     @GET
     public Response getligne(){
-        return Response.ok(ligneRepo.listAll()).build();
+        return Response.ok(ligneRespository.listAll()).build();
     }
 
     @Path("/ligne/type/{type}")
     @GET
     public Response getLigneByType(@PathParam("type") Long type){
-        if(typeLigneRepo.existe(type)){
+        if(typeLigneRespository.existe(type)){
             log.debug("Finding by Type");
-            List<DrLigne> lignes = ligneRepo.findByTypeLigne(type);
+            List<DrLigne> lignes = ligneRespository.findByTypeLigne(type);
             return Response.ok(lignes).build();
         }else{
             return Response.status(Response.Status.NOT_FOUND).entity("Type ="+type+" does not exist").build();
@@ -160,8 +156,8 @@ public class ParamResources {
     @Path("/ligne/deleg/{deleg}")
     @GET
     public Response getligneByDeleg(@PathParam("deleg") Long deleg){
-        if(delegRepo.findById(deleg)!=null){
-            List<DrLigne> delegs = ligneRepo.findByDeleg(deleg);
+        if(delegRespository.findById(deleg)!=null){
+            List<DrLigne> delegs = ligneRespository.findByDeleg(deleg);
             return Response.ok(delegs).build();
         }
         else
@@ -171,7 +167,7 @@ public class ParamResources {
     @Path("/ligne/type")
     @GET
     public Response getlignetype(){
-        return Response.ok(typeLigneRepo.listAll()).build();
+        return Response.ok(typeLigneRespository.listAll()).build();
     }
         
 }

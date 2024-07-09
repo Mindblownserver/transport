@@ -9,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 
 @ApplicationScoped
-public class DrLigneRepo  implements PanacheRepository<DrLigne>{
+public class DrLigneRepository  implements PanacheRepository<DrLigne>{
     public List<DrLigne> findByTypeLigne(Long i){
         return find("type.decTyLi", i).list(); // where type.decTyLi = {i}
     }

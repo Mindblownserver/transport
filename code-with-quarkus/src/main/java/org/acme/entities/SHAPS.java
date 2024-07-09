@@ -2,18 +2,19 @@ package org.acme.entities;
 
 import org.acme.Embeddable.ShapsId;
 
-
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 
 @Entity
 @Table(name="SHAPE")
-public class SHAPS {
+public class SHAPS extends PanacheEntityBase{
     @EmbeddedId
     private ShapsId idShaps;
     @Column(name="LAT")
@@ -27,7 +28,7 @@ public class SHAPS {
 
     @JoinColumn(name="deNumLi", insertable=false, updatable=false)
     @ManyToOne
-    //@MapsId("deNumLi")
+    @MapsId("deNumLi")
     private DrLigne ligne;
 
     public ShapsId getIdShaps() {

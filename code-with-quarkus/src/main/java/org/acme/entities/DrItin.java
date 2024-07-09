@@ -4,6 +4,7 @@ import org.acme.Embeddable.DrItinIdRecord;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -11,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class DrItin {
+public class DrItin extends PanacheEntityBase{
     @EmbeddedId
     private DrItinIdRecord id;
 

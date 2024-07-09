@@ -28,8 +28,6 @@ export default {
       mapStyle: "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
       zoom: 10,
       center: [10.1063907,35.6757932],  // Initial center is null, to be updated by geolocation
-      isRTLTextPluginLoaded:false,
-      
     }
   },
   props:{
@@ -39,13 +37,12 @@ export default {
     }
   },
   mounted() {
-    if(!this.isRTLTextPluginLoaded){
+    if(maplibregl.getRTLTextPluginStatus==='unavailable'){
       maplibregl.setRTLTextPlugin(
         'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
         null,
         true // Lazy load the plugin
       );
-      this.isRTLTextPluginLoaded=true;
     }
     console.log(this.markers)
 

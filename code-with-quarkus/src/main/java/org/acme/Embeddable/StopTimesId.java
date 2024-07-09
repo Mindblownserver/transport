@@ -1,6 +1,8 @@
 package org.acme.Embeddable;
 
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -11,6 +13,6 @@ public record StopTimesId(
     @Column int tripsId, */
     @Embedded TripsId tripsDatedId,
     @Column(name="STOP_SEQUENCE") int stopSeq
-) {
+) implements Serializable{
 
 }

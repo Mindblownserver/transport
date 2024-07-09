@@ -29,7 +29,13 @@ class AxiosInstance {
   getStations(){
     return this.instance.get("/api/stations")
   }
-
+  /**
+   * Get Trips
+   * @param {Date} date - specify the date of the desired trips 
+   */
+  getTrips(date){
+    return this.instance.get(`/api/trips/date/${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`)
+  }/* 
   get(url, config) {
     return this.instance.get(url, config);
   }
@@ -55,6 +61,6 @@ class AxiosInstance {
   // Method to add headers
   addHeader(key, value) {
     this.instance.defaults.headers.common[key] = value;
-  }
+  } */
 }
 export default AxiosInstance;

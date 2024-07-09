@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
@@ -45,26 +46,26 @@ public class StopTimes{
     @Column(name="STATE")
     private String sate;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name="DEDATED",referencedColumnName = "deDated"),
         @JoinColumn(name="trip_ID",referencedColumnName = "trip_Id")
     })
-    @JsonBackReference
+    //@JsonBackReference
     private Trips trip;
     
     //@ManyToOne
-    @JoinColumn(name="DECSTAT")
+    @Column(name="DECSTAT")
     private Integer decstat;
     
-    public Date getDedated() {
+   /*  public Date getDedated() {
         return id.tripsDatedId().deDated();
     }
 
 
     public Integer getTrip_id() {
         return id.tripsDatedId().trip_id();
-    }
+    } */
     
     public Integer getStop_sequence() {
         return id.stopSeq();

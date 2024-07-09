@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.acme.entities.Trips;
-import org.acme.repositories.TripsRepo;
+import org.acme.entities.SQL.TripsSql;
+import org.acme.repositories.TripsRepository;
+import org.acme.repositories.SQL.TripsSqlRepository;
+import org.jboss.logging.Logger;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -18,12 +21,19 @@ import jakarta.ws.rs.core.Response.Status;
 @Path("/api/trips")
 public class TripsResources {
     @Inject
-    TripsRepo tripsRepo;
+    TripsRepository tripsRepo;
+
+    @Inject
+    TripsSqlRepository tripsSqlRepo;
+
+    @Inject
+    Logger log;
+
     @GET
     public Response getTrips(){
         List<Trips> listTrips=tripsRepo.listAll();
         if(listTrips.size()>0){
-            return Response.ok(listTrips).build();
+            return Response.ok(listTrips.size()).build();
         }else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -32,15 +42,33 @@ public class TripsResources {
     @GET
     @Path("/date/{date}")
     public Response getTripsByDate(@PathParam("date") String date) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date parsedDate = formatter.parse(date);
-        List<Trips> listTrips = tripsRepo.findByDate(parsedDate);
-        if(!listTrips.isEmpty()){
-            return Response.ok(listTrips).build();
-        }else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        try{
+            List<TripsSql> trips = tripsSqlRepo.getTripsByDate(parsedDate);
+            log.debug("Trips=" + trips);
+            return Response.ok(trips).build();
+        }catch(Exception e){
+            log.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+/* 
+    @GET
+    @Path("/test")
+    public Response getTripsTest(){
+        try{
+            List<TripsSql> trips = tripsSqlRepo.getTripsByDate();
+            log.debug("Trips=" + trips);
+            return Response.ok(trips).build();
+        }catch(Exception e){
+            log.error(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+    } */
+   
     // dev only
     @GET
     @Path("/{row}")

@@ -6,6 +6,7 @@ import {centreModule} from "../features/parametres/centre/store/centre.module";
 import { delegModule } from "../features/parametres/drDeleg/service/deleg.module";
 import { typeLigneModule } from "../features/parametres/typeLigne/service/typeligne.module";
 import { stationModule } from "../features/parametres/station/store/station.module";
+import { tripsModule } from "../features/plannification/store/trips.module";
 
 export default createStore({
   modules: {
@@ -15,7 +16,8 @@ export default createStore({
     centreModule,
     delegModule,
     typeLigneModule,
-    stationModule
+    stationModule,
+    tripsModule
   },
   state: {
     hideConfigButton: false,

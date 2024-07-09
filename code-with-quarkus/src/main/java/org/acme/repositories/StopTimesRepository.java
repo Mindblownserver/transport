@@ -10,7 +10,7 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class StopTimesRepo implements PanacheRepository<StopTimes>{
+public class StopTimesRepository implements PanacheRepository<StopTimes>{
     public Date getLastStopTimes(TripsId tripsId){
         StopTimes lastStop =  find("id.tripsDatedId",Sort.by("id.stopSeq").descending() ,tripsId).page(0, 1).firstResult();
         return lastStop.getArrival_time();

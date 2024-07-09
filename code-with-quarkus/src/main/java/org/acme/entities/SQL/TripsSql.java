@@ -1,94 +1,86 @@
-package org.acme.entities;
-
-
-import jakarta.persistence.*;
-import org.acme.Embeddable.TripsId;
+package org.acme.entities.SQL;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(indexes = {@Index(name="IDX_TRIPS_DEDATED", columnList = "deDated")})
-public class Trips {
-    @EmbeddedId
+import org.acme.Embeddable.TripsId;
+import org.acme.entities.DrLigne;
+import org.acme.entities.StopTimes;
+
+
+public class TripsSql {
     private TripsId tripsId;
-    @Column(name="SERVICE_ID")
+    
     private Integer serviceId;
-    @Column(name="DIRECTION_ID")
+    
     private Integer directionId;
-    @Column(name="TIME_DEPART")
+    
     private Date timeDepart;
-    @Column(name="HAVERET")
+    
     private Integer haveret;
-    @Column(name="TIME_NRET")
+    
     private String timeNret;
-    @Column(name="TRIP_NID")
+    
     private Integer tripNid;
-    @Column(name="GRP")
+    
     private Integer grp;
-    @Column(name="BUS_RE")
+    
     private Integer busRe;
-    @Column(name="CHAUFF_PR")
+    
     private Integer chauffPr;
-    @Column(name="CHAUFF_RE")
+    
     private Integer chauffRe;
-    @Column(name="REC_PR")
+    
     private Integer RecPr;
-    @Column(name="REC_RE")
+    
     private Integer RecRe;
-    @Column(name="ETAT")
+    
     private Integer etat;
-    @Column(name="TIME_DEPART_R")
+    
     private Date timeDepartR;
-    @Column(name="TIME_ARRIVE_R")
+    
     private Date timeArriveR;
-    @Column(name="VMAX")
+    
     private Integer vMax;
-    @Column(name="AVANCE_RETARD")
+    
     private Integer avanceRetard;
-    @Column(name="CHANGEMENT")
+    
     private Integer changement;
-    @Column(name="META_DATA")
+    
     private String metaData;
-    @Column(name="DEVALID")
+    
     private Integer deValid;
-    @Column(name="ALERT")
+    
     private Integer alert;
     
-    @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
-    @ManyToOne(fetch = FetchType.LAZY)
     private DrLigne ligne;
+/* 
+    public Date getFinalStopTimes(){
+        return stopTimesList.get(0).getArrival_time();
+    } */
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="BUS_PR")
-    private Bus busPr;
-    
-    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
-    //@Fetch(FetchMode.JOIN)
-    @OrderBy("id.stopSeq DESC")
     private List<StopTimes> stopTimesList; 
+    
 
     // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
     public Date getFinalStopTime() {
         return stopTimesList.get(0).getArrival_time();
     }
 
-/* 
-    
-    public Bus getBusPr() {
-        return busPr;
-    }
- */
-
-    public void setBusPr(Bus busPr) {
-        this.busPr = busPr;
-    }
-
+   
 
     public TripsId getTripsId() {
         return tripsId;
     }
     
+    public List<StopTimes> getStopTimesList() {
+        return stopTimesList;
+    }
+
+    public void setStopTimesList(List<StopTimes> stopTimesList) {
+        this.stopTimesList = stopTimesList;
+    }
+
     public void setTripsId(TripsId tripsId) {
         this.tripsId = tripsId;
     }
@@ -261,7 +253,11 @@ public class Trips {
         this.alert = alert;
     }
 
-    public Trips(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret, String timeNret, Integer tripNid, Integer grp, Bus busPr, Integer busRe, Integer chauffPr, Integer chauffRe, Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax, Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
+    
+    public TripsSql(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret,
+            String timeNret, Integer tripNid, Integer grp, Integer busRe, Integer chauffPr, Integer chauffRe,
+            Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax,
+            Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
         this.tripsId = tripsId;
         this.serviceId = serviceId;
         this.directionId = directionId;
@@ -270,7 +266,6 @@ public class Trips {
         this.timeNret = timeNret;
         this.tripNid = tripNid;
         this.grp = grp;
-        this.busPr = busPr;
         this.busRe = busRe;
         this.chauffPr = chauffPr;
         this.chauffRe = chauffRe;
@@ -286,5 +281,7 @@ public class Trips {
         this.deValid = deValid;
         this.alert = alert;
     }
-    public Trips(){}
+
+    public TripsSql(){}
+
 }

@@ -6,7 +6,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class DrTypeLigneRepo implements PanacheRepository<DrTypeLigne> {
+public class DrTypeLigneRepository implements PanacheRepository<DrTypeLigne> {
     public boolean existe(Long i){
         return find("decTyLi", i).firstResult() !=null;
     }

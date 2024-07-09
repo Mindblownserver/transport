@@ -1,11 +1,11 @@
 package org.acme.repositories;
 
-import org.acme.entities.DrCentre;
+import org.acme.entities.Bus;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class DrCentreRepo implements PanacheRepository<DrCentre>{
+public class BusRepository implements PanacheRepository<Bus>{
 
 }
