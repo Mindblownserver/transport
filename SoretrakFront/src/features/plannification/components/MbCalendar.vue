@@ -26,7 +26,12 @@
         <MbscCalendarNav />
         <div class="empty-box"></div>
         <div class="card">
-          <SelectButton v-model="selectedResourceValue" :options="['Lignes','Bus','Chauffeurs','Receveurs']" aria-labelledby="basic" @change="checkSelection()" />
+          <SelectButton 
+          v-model="selectedResourceValue" 
+          :options="['Lignes','Bus','Chauffeurs','Receveurs']" 
+          aria-labelledby="basic" 
+          @change="checkSelection()" 
+          v-tooltip.bottom="'Choisir le type des resources à afficher'" />
       </div>
 
       </div>
@@ -180,9 +185,11 @@ const store = useStore();
 const myTrips = ref([])
 
 const searchValue = ref("")
-const selectedResourceValue = ref([])
+const selectedResourceValue = ref("Lignes")
 
 const myBuses = ref([])
+let previousResourceValue="Lignes";
+
 let uniqueSet = new UniqueResourceSet();
 
 // Color picker
@@ -204,6 +211,28 @@ let colors = [
   '#7e5d4e'
 ]
 
+// computing values
+const getLoading = computed(()=>store.state.tripsModule.loading)
+
+const getTrips= computed(()=>{
+  const trips= store.state.tripsModule.trips;
+  return trips;
+})
+
+
+// methods
+const filter =()=>{
+  let regex = new RegExp(`^${searchValue.value}`)
+  myBuses.value = uniqueSet.values().filter(resource => regex.test(resource.id));
+}
+
+const checkSelection = ()=>{
+  if(selectedResourceValue.value==null)
+    selectedResourceValue.value = previousResourceValue;
+  else
+    previousResourceValue = selectedResourceValue.value;
+}
+
 const loadTrips = ()=>{
   const trips = getTrips.value.map((trip,index)=>{
     let bus = new Resource(String(trip.busRe.bus_id),"bus "+ trip.busRe.bus_id, colors[index])
@@ -223,26 +252,7 @@ const loadTrips = ()=>{
   })
   myBuses.value = uniqueSet.values();
   myTrips.value = trips;
-  console.debug("Buses=",myBuses.value)
-  console.debug("Trips=",myTrips.value)
-}
 
-const getLoading = computed(()=>store.state.tripsModule.loading)
-
-const getTrips= computed(()=>{
-  const trips= store.state.tripsModule.trips;
-  return trips;
-})
-
-
-const filter =()=>{
-  let regex = new RegExp(`^${searchValue.value}`)
-  myBuses.value = uniqueSet.values().filter(resource => regex.test(resource.id));
-}
-
-const checkSelection = ()=>{
-  if(selectedResourceValue.value==null)
-    selectedResourceValue.value = "Lignes";
 }
 
 watch(getLoading, (isLoading)=>{
