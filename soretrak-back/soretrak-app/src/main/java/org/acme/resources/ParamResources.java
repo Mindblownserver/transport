@@ -1,10 +1,10 @@
 package org.acme.resources;
 
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import org.acme.entities.*;
 import org.acme.repositories.DrCentreRepo;
@@ -55,8 +55,6 @@ public class ParamResources {
 
     @GET
     @Path("/centre")
-    @PermitAll
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getCentres(){
 
         List<DrCentre> listCentres=centreRepo.listAll();
@@ -68,12 +66,12 @@ public class ParamResources {
        
     }
 
+
     /*
      * DELEG
      */
 
     @Path("/deleg")
-    @RolesAllowed("USER")
     @GET
     public Response getDeleg(){
         return Response.ok(delegRepo.listAll()).build();
@@ -98,7 +96,6 @@ public class ParamResources {
 
     @Path("/itin")
     @GET
-    @RolesAllowed("ADMIN")
     public Response getItin(){
         List<DrItin> intins = itinRepo.listAll();
         if(!intins.isEmpty()) {
