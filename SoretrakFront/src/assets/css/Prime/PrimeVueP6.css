@@ -1,0 +1,46 @@
+:root {
+  --p-togglebutton-padding:0.5rem 1rem;
+  --p-togglebutton-border-radius:var(--p-content-border-radius);
+  --p-togglebutton-gap:0.5rem;
+  --p-togglebutton-font-weight:500;
+  --p-togglebutton-disabled-background:var(--p-form-field-disabled-background);
+  --p-togglebutton-disabled-border-color:var(--p-form-field-disabled-background);
+  --p-togglebutton-disabled-color:var(--p-form-field-disabled-color);
+  --p-togglebutton-invalid-border-color:var(--p-form-field-invalid-border-color);
+  --p-togglebutton-focus-ring-width:var(--p-focus-ring-width);
+  --p-togglebutton-focus-ring-style:var(--p-focus-ring-style);
+  --p-togglebutton-focus-ring-color:var(--p-focus-ring-color);
+  --p-togglebutton-focus-ring-offset:var(--p-focus-ring-offset);
+  --p-togglebutton-focus-ring-shadow:var(--p-focus-ring-shadow);
+  --p-togglebutton-transition-duration:var(--p-form-field-transition-duration);
+  --p-togglebutton-icon-disabled-color:var(--p-form-field-disabled-color);
+  --p-togglebutton-content-left:0.25rem;
+  --p-togglebutton-content-top:0.25rem;
+  --p-togglebutton-content-checked-shadow:0px 1px 2px 0px rgba(0,0,0,0.02),0px 1px 2px 0px rgba(0,0,0,0.04);
+  --p-togglebutton-background:var(--p-surface-100);
+  --p-togglebutton-checked-background:var(--p-surface-100);
+  --p-togglebutton-hover-background:var(--p-surface-100);
+  --p-togglebutton-border-color:var(--p-surface-100);
+  --p-togglebutton-color:var(--p-surface-500);
+  --p-togglebutton-hover-color:var(--p-surface-700);
+  --p-togglebutton-checked-color:var(--p-surface-900);
+  --p-togglebutton-checked-border-color:var(--p-surface-100);
+  --p-togglebutton-content-checked-background:var(--p-surface-0);
+  --p-togglebutton-icon-color:var(--p-surface-500);
+  --p-togglebutton-icon-hover-color:var(--p-surface-700);
+  --p-togglebutton-icon-checked-color:var(--p-surface-900);
+}
+.p-dark {
+  --p-togglebutton-background:var(--p-surface-950);
+  --p-togglebutton-checked-background:var(--p-surface-950);
+  --p-togglebutton-hover-background:var(--p-surface-950);
+  --p-togglebutton-border-color:var(--p-surface-950);
+  --p-togglebutton-color:var(--p-surface-400);
+  --p-togglebutton-hover-color:var(--p-surface-300);
+  --p-togglebutton-checked-color:var(--p-surface-0);
+  --p-togglebutton-checked-border-color:var(--p-surface-950);
+  --p-togglebutton-content-checked-background:var(--p-surface-800);
+  --p-togglebutton-icon-color:var(--p-surface-400);
+  --p-togglebutton-icon-hover-color:var(--p-surface-300);
+  --p-togglebutton-icon-checked-color:var(--p-surface-0);
+}

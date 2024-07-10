@@ -18,14 +18,18 @@
       </template>
       <template #resourceHeader>
       <div class="md-resource-header-template-title">  
-        <InputText id="search" v-model="valeurRecherche" placeholder="Chercher par bus" @change="filter()"/>
+        <InputText id="search" v-model="searchValue" placeholder="Chercher par bus" @change="filter()"/>
       </div>
     </template>
     <template #header>
-      <MbscCalendarNav />
-      <div class="card flex justify-center">
-        <SelectButton v-model="value" :options="['Lignes','Bus','Chauffeurs','Receveurs']" aria-labelledby="basic" />
-    </div>
+      <div class="custom-header">
+        <MbscCalendarNav />
+        <div class="empty-box"></div>
+        <div class="card">
+          <SelectButton v-model="selectedResourceValue" :options="['Lignes','Bus','Chauffeurs','Receveurs']" aria-labelledby="basic" @change="checkSelection()" />
+      </div>
+
+      </div>
       </template>
   </MbscEventcalendar>  
   
@@ -175,7 +179,8 @@ const store = useStore();
 
 const myTrips = ref([])
 
-const valeurRecherche = ref("")
+const searchValue = ref("")
+const selectedResourceValue = ref([])
 
 const myBuses = ref([])
 let uniqueSet = new UniqueResourceSet();
@@ -229,9 +234,15 @@ const getTrips= computed(()=>{
   return trips;
 })
 
+
 const filter =()=>{
-  let regex = new RegExp(`^${valeurRecherche.value}`)
+  let regex = new RegExp(`^${searchValue.value}`)
   myBuses.value = uniqueSet.values().filter(resource => regex.test(resource.id));
+}
+
+const checkSelection = ()=>{
+  if(selectedResourceValue.value==null)
+    selectedResourceValue.value = "Lignes";
 }
 
 watch(getLoading, (isLoading)=>{
@@ -243,23 +254,6 @@ watch(getLoading, (isLoading)=>{
 onMounted(()=>{
   store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0));
 })
-
-/* filter(e){
-        this.recipies = this.all_recipies.filter((recipe) => recipe.Tag[0] === e)
-        },
-    reset(){
-        this.recipies = this.all_recipies;
-        },
-    search(text){
-        console.log(text)
-        if (text === ""){
-            this.recipies = this.all_recipies;
-        }
-        else{
-            this.recipies = this.recipies.filter((recipe) => recipe.title.toLowerCase().includes(text) || recipe.desc.toLowerCase().includes(text));
-        }
-    } */
-
 
 // MbScroll settings DO NOT TOUCH
 const myView = {
@@ -565,5 +559,12 @@ function handleSnackbarClose() {
 #search{
   width: 160px;
   margin-left: 5px;
+}
+.custom-header{
+  display: flex;
+  justify-content: space-evenly;
+}
+.empty-box{
+  width: 60px;
 }
 </style>

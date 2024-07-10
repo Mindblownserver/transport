@@ -1,0 +1,6 @@
+:root {
+  --p-ripple-background:rgba(0,0,0,0.1);
+}
+.p-dark {
+  --p-ripple-background:rgba(255,255,255,0.3);
+}

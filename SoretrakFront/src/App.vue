@@ -63,6 +63,17 @@ export default {
 </script>
 
 <style>
+@import "./assets/css/Prime/PrimeVueP1.css";
+@import "./assets/css/Prime/PrimeVueP2.css";
+@import "./assets/css/Prime/PrimeVueP3.css";
+@import "./assets/css/Prime/PrimeVueP4.css";
+@import "./assets/css/Prime/PrimeVueP5.css";
+@import "./assets/css/Prime/PrimeVueP6.css";
+@import "./assets/css/Prime/PrimeVueP7.css";
+@import "./assets/css/Prime/PrimeVueP8.css";
+@import "./assets/css/Prime/PrimeVueP9.css";
+@import "./assets/css/Prime/PrimeVueP10.css";
+@import "./assets/css/Prime/PrimeVueP11.css";
 *{
   scrollbar-width: thin;
   scrollbar-color: rgb(148, 148, 148) rgba(236, 233, 233, 0.882);/**Thumb track */ 
@@ -143,7 +154,7 @@ export default {
   --p-iconfield-icon-color: var(--gray-color);
 
   /* Select Buttons */
-  --card-background:#fff;
+/*   --card-background:#fff;
   --card-border: 1px solid #e2e8f0;
   --p-selectbutton-border-radius:10px;
   --p-selectbutton-border-radius:5px;
@@ -156,7 +167,7 @@ export default {
   --p-togglebutton-transition-duration:0.2s;
   --p-togglebutton-content-left:100px;
   --p-togglebutton-content-top:100px;
-  --p-togglebutton-border-radius:5px;
+  --p-togglebutton-border-radius:5px; */
 
 }
 </style>
