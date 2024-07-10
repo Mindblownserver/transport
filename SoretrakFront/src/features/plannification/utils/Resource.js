@@ -14,8 +14,6 @@ class Resource{
       }
 }
 
-
-
 class UniqueResourceSet {
     constructor() {
       this.map = new Map();

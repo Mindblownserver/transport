@@ -8,8 +8,8 @@ export const tripsModule={
       error:null
     },
     mutations: {
-      setTrips(state, centres){
-        state.centres = centres;
+      setTrips(state, trips){
+        state.trips = trips;
       },
       setLoading(state,loading){
         state.loading = loading
@@ -19,17 +19,16 @@ export const tripsModule={
       }
     },
     actions: {
-      getTrips({commit}, date){
+      async getTrips({ commit }, date) {
         commit("setLoading", true);
         commit("setError", null);
-        try{
-            myApi.getTrips(date).then(res=>{
-                commit("setTrips", res.data);
-            })
-        }catch(err){
-            commit("setError", err);
-        }finally{
-            commit("setLoading", false);
+        try {
+          const res = await myApi.getTrips(date);
+          commit("setTrips", res.data);
+        } catch (error) {
+          commit("setError", error);
+        } finally {
+          commit("setLoading", false);
         }
       }
     },

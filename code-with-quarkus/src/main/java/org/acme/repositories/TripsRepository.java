@@ -29,9 +29,5 @@ public class TripsRepository  implements PanacheRepository<Trips> {
         log.debug("finished this part");
         return trips;
     }
-    /* public List<Trips> */
-    // inject StopTimes Repo 
-    // prepare needed List with finalStopTimes configured
-    // return a list that'll be used in busResource
 
 }

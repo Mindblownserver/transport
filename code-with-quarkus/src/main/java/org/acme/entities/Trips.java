@@ -70,15 +70,12 @@ public class Trips {
 
     // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
     public Date getFinalStopTime() {
-        return stopTimesList.get(0).getArrival_time();
+        return stopTimesList.get(stopTimesList.size()-1).getArrival_time();
     }
 
-/* 
-    
-    public Bus getBusPr() {
-        return busPr;
+    public String getTripName(){
+        return String.format("%s - %s", stopTimesList.get(0), stopTimesList.get(stopTimesList.size()-1));
     }
- */
 
     public void setBusPr(Bus busPr) {
         this.busPr = busPr;

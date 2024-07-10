@@ -26,7 +26,6 @@
 import Sidenav from "./features/sidenav/components/";
 import Configurator from "@/components/Configurator.vue";
 import Navbar from "@/components/Navbars/Navbar.vue";
-import AppFooter from "@/components/Footer.vue";
 import { mapMutations, mapState } from "vuex";
 
 export default {
@@ -35,7 +34,6 @@ export default {
     Sidenav,
     Configurator,
     Navbar,
-    AppFooter
   },
   methods: {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"])
@@ -138,5 +136,27 @@ export default {
   --p-tabs-tab-color:var(--gray-color);
   --p-tabs-tab-hover-border-color: transparent;
   --p-tabs-transition-duration:0.2s;
+
+  /* Icon postion in Input */
+  --p-form-field-padding-x:0.75rem;
+  --p-icon-size: 1.2rem;
+  --p-iconfield-icon-color: var(--gray-color);
+
+  /* Select Buttons */
+  --card-background:#fff;
+  --card-border: 1px solid #e2e8f0;
+  --p-selectbutton-border-radius:10px;
+  --p-selectbutton-border-radius:5px;
+  --p-togglebutton-checked-background:#f1f5f9;
+  --p-togglebutton-checked-border-color:#f1f5f9;
+  --p-togglebutton-checked-color:#f1f5f9;
+  --p-togglebutton-gap:0.5rem;
+  --p-togglebutton-content-checked-background:#ffffff;
+  --p-togglebutton-content-checked-shadow:0px 1px 2px 0px rgba(0,0,0,0.02),0px 1px 2px 0px rgba(0,0,0,0.04); 
+  --p-togglebutton-transition-duration:0.2s;
+  --p-togglebutton-content-left:100px;
+  --p-togglebutton-content-top:100px;
+  --p-togglebutton-border-radius:5px;
+
 }
 </style>

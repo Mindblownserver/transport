@@ -107,6 +107,7 @@ public class DrLigne extends PanacheEntityBase{
         return deNumLi;
     }
 
+
     public void setIdLigne(Long deNumLi) {
         this.deNumLi = deNumLi;
     }

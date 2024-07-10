@@ -54,9 +54,9 @@ public class StopTimes{
     //@JsonBackReference
     private Trips trip;
     
-    //@ManyToOne
-    @Column(name="DECSTAT")
-    private Integer decstat;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="station")
+    private DrStati station;
     
    /*  public Date getDedated() {
         return id.tripsDatedId().deDated();
@@ -91,13 +91,13 @@ public class StopTimes{
     }
 
 
-    public Integer getDecstat() {
-        return decstat;
+    public DrStati getStation() {
+        return station;
     }
 
 
-    public void setDecstat(Integer decstat) {
-        this.decstat = decstat;
+    public void setDecstat(DrStati station) {
+        this.station = station;
     }
 
 
@@ -162,12 +162,12 @@ public class StopTimes{
 
 
     public StopTimes(StopTimesId id, Date arrival_time, Date departure_time,
-            Integer decstat, Long pickup_type, String shape_dist_traveled, Integer timepoint, Date rt_arrival_time,
+            DrStati station, Long pickup_type, String shape_dist_traveled, Integer timepoint, Date rt_arrival_time,
             Date rt_departure_time, String sate) {
         this.id = id;
         this.arrival_time = arrival_time;
         this.departure_time = departure_time;
-        this.decstat = decstat;
+        this.station = station;
         this.pickup_type = pickup_type;
         this.shape_dist_traveled = shape_dist_traveled;
         this.timepoint = timepoint;

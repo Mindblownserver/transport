@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.acme.Embeddable.TripsId;
+import org.acme.entities.Bus;
 import org.acme.entities.DrLigne;
 import org.acme.entities.StopTimes;
 
@@ -25,7 +26,9 @@ public class TripsSql {
     
     private Integer grp;
     
-    private Integer busRe;
+    private Bus busPr;
+
+    private Bus busRe;
     
     private Integer chauffPr;
     
@@ -54,20 +57,31 @@ public class TripsSql {
     private Integer alert;
     
     private DrLigne ligne;
-/* 
-    public Date getFinalStopTimes(){
-        return stopTimesList.get(0).getArrival_time();
-    } */
 
     private List<StopTimes> stopTimesList; 
-    
 
-    // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
     public Date getFinalStopTime() {
-        return stopTimesList.get(0).getArrival_time();
+        return stopTimesList.get(stopTimesList.size()-1).getArrival_time();
     }
 
-   
+    // link decState with the needed station
+    public String getTripName(){
+        return ligne.getNomLigne();
+    }
+    public DrLigne getLigne(){
+        return ligne;
+    }
+
+    
+    public Bus getBusPr() {
+        return busPr;
+    }
+
+    public void setBusPr(Bus busPr) {
+        this.busPr = busPr;
+    }
+
+    // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
 
     public TripsId getTripsId() {
         return tripsId;
@@ -141,11 +155,11 @@ public class TripsSql {
         this.grp = grp;
     }
 
-    public Integer getBusRe() {
+    public Bus getBusRe() {
         return busRe;
     }
 
-    public void setBusRe(Integer busRe) {
+    public void setBusRe(Bus busRe) {
         this.busRe = busRe;
     }
 
@@ -255,7 +269,7 @@ public class TripsSql {
 
     
     public TripsSql(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret,
-            String timeNret, Integer tripNid, Integer grp, Integer busRe, Integer chauffPr, Integer chauffRe,
+            String timeNret, Integer tripNid, Integer grp, Integer chauffPr, Integer chauffRe,
             Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax,
             Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
         this.tripsId = tripsId;
@@ -283,5 +297,9 @@ public class TripsSql {
     }
 
     public TripsSql(){}
+
+    public void setLigne(DrLigne ligne) {
+        this.ligne = ligne;
+    }
 
 }

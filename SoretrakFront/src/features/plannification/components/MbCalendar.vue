@@ -13,10 +13,21 @@
     @event-deleted="handleEventDeleted">
       <template #resource="res">
         <div>
-          <img :src="'@/assets/bus.svg'" alt="">
-          {{res.name}}</div>
+          <img src="../../../assets/images/bus.svg" style="width: 28px;margin-left: 1px;" alt="">
+          {{res.id}}</div>
       </template>
-  </MbscEventcalendar>
+      <template #resourceHeader>
+      <div class="md-resource-header-template-title">  
+        <InputText id="search" v-model="valeurRecherche" placeholder="Chercher par bus" @change="filter()"/>
+      </div>
+    </template>
+    <template #header>
+      <MbscCalendarNav />
+      <div class="card flex justify-center">
+        <SelectButton v-model="value" :options="['Lignes','Bus','Chauffeurs','Receveurs']" aria-labelledby="basic" />
+    </div>
+      </template>
+  </MbscEventcalendar>  
   
   <MbscPopup
     display="bottom"
@@ -134,7 +145,9 @@
 
 
 <script setup>
-//import { Resource, UniqueResourceSet } from '../utils/Resource'
+import InputText from 'primevue/inputtext';
+import SelectButton from 'primevue/selectbutton';
+import { Resource, UniqueResourceSet } from '../utils/Resource'
 import {
   MbscButton,
   MbscDatepicker,
@@ -145,10 +158,12 @@ import {
   MbscSegmentedGroup,
   MbscSnackbar,
   MbscTextarea,
+  MbscCalendarNav,
   setOptions /* localeImport */
 } from '@mobiscroll/vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import {useStore} from "vuex"
+import moment from 'moment'
 
 setOptions({
   // locale,
@@ -160,7 +175,10 @@ const store = useStore();
 
 const myTrips = ref([])
 
+const valeurRecherche = ref("")
+
 const myBuses = ref([])
+let uniqueSet = new UniqueResourceSet();
 
 // Color picker
 let colors = [
@@ -181,29 +199,27 @@ let colors = [
   '#7e5d4e'
 ]
 
-
 const loadTrips = ()=>{
-  /* let uniqueSet = new UniqueResourceSet();
   const trips = getTrips.value.map((trip,index)=>{
-    let bus = new Resource(trip.busPr.bus_id,"bus "+ trip.busPr.bus_id, colors[index])
+    let bus = new Resource(String(trip.busRe.bus_id),"bus "+ trip.busRe.bus_id, colors[index])
     uniqueSet.add(bus)
     return{
       id: trip.tripsId.trip_id,
-      start: trip.timeDepart,
-      end: trip.finalStopTime,
+      start: moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(),
+      end: moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
       text: "trip "+trip.tripsId.trip_id,
-      resource:trip.busPr.bus_id,
-      title:"Test event",
+      resource:trip.busRe.bus_id,
+      title:trip.tripName,
       description: "Description of event Test",
       allDay: false,
-      bufferBefore: 30,
+      bufferBefore: 0,
       free: false,
     }
   })
-  console.log("Set="+uniqueSet)
+  myBuses.value = uniqueSet.values();
   myTrips.value = trips;
-  myBuses.value = uniqueSet.values(); */
-  console.log("Trips="+getTrips.value)
+  console.debug("Buses=",myBuses.value)
+  console.debug("Trips=",myTrips.value)
 }
 
 const getLoading = computed(()=>store.state.tripsModule.loading)
@@ -213,11 +229,14 @@ const getTrips= computed(()=>{
   return trips;
 })
 
+const filter =()=>{
+  let regex = new RegExp(`^${valeurRecherche.value}`)
+  myBuses.value = uniqueSet.values().filter(resource => regex.test(resource.id));
+}
 
 watch(getLoading, (isLoading)=>{
   if(!isLoading && getTrips.value.length>0){
     loadTrips();
-    console.log("Loading Changed")
   }
 })
 
@@ -225,10 +244,28 @@ onMounted(()=>{
   store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0));
 })
 
-// MbScroll settings
+/* filter(e){
+        this.recipies = this.all_recipies.filter((recipe) => recipe.Tag[0] === e)
+        },
+    reset(){
+        this.recipies = this.all_recipies;
+        },
+    search(text){
+        console.log(text)
+        if (text === ""){
+            this.recipies = this.all_recipies;
+        }
+        else{
+            this.recipies = this.recipies.filter((recipe) => recipe.title.toLowerCase().includes(text) || recipe.desc.toLowerCase().includes(text));
+        }
+    } */
+
+
+// MbScroll settings DO NOT TOUCH
 const myView = {
   timeline: {
-    type: 'day'
+    type: 'day',
+    timeCellStep: 30,
   }
 }
 const isEdit = ref(false)
@@ -455,11 +492,6 @@ function handleSnackbarClose() {
 }
 
 
-onMounted(()=>{
-  loadTrips();
-  console.log(myBuses)
-})
-
 </script>
 
 <style>
@@ -524,5 +556,14 @@ onMounted(()=>{
 
 .crud-color-c.selected .crud-color:before {
   display: block;
+}
+
+.md-resource-header-template-title{
+  display: inline-block;
+
+}
+#search{
+  width: 160px;
+  margin-left: 5px;
 }
 </style>

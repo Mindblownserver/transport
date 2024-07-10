@@ -15,7 +15,7 @@ public class Bus extends PanacheEntityBase{
     public String bus_type;
 
     @OneToMany(mappedBy = "busPr") // name of the attribute, not the column
-    public List<Trips> tripsList;
+    private List<Trips> tripsList;
 
     public Bus(Long bus_id, String bus_type) {
         this.bus_id = bus_id;
@@ -25,4 +25,21 @@ public class Bus extends PanacheEntityBase{
     public Bus(){
 
     }
+
+    public Long getBus_id() {
+        return bus_id;
+    }
+
+    public void setBus_id(Long bus_id) {
+        this.bus_id = bus_id;
+    }
+
+    public String getBus_type() {
+        return bus_type;
+    }
+
+    public void setBus_type(String bus_type) {
+        this.bus_type = bus_type;
+    }
+    
 }
