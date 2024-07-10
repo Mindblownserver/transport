@@ -4,6 +4,7 @@
     :class="[isRTL ? 'fixed-end' : 'fixed-start']"
     v-if="showSidenav"
   />
+  <!-- Fix the theming problem. -->
   <main
     class="main-content position-relative max-height-vh-100 h-100 overflow-x-hidden"
   >
@@ -63,17 +64,7 @@ export default {
 </script>
 
 <style>
-@import "./assets/css/Prime/PrimeVueP1.css";
-@import "./assets/css/Prime/PrimeVueP2.css";
-@import "./assets/css/Prime/PrimeVueP3.css";
-@import "./assets/css/Prime/PrimeVueP4.css";
-@import "./assets/css/Prime/PrimeVueP5.css";
-@import "./assets/css/Prime/PrimeVueP6.css";
-@import "./assets/css/Prime/PrimeVueP7.css";
-@import "./assets/css/Prime/PrimeVueP8.css";
-@import "./assets/css/Prime/PrimeVueP9.css";
-@import "./assets/css/Prime/PrimeVueP10.css";
-@import "./assets/css/Prime/PrimeVueP11.css";
+
 *{
   scrollbar-width: thin;
   scrollbar-color: rgb(148, 148, 148) rgba(236, 233, 233, 0.882);/**Thumb track */ 

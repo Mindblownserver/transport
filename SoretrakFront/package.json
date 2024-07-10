@@ -23,6 +23,7 @@
     "@mapbox/mapbox-gl-rtl-text": "github:mapbox/mapbox-gl-rtl-text",
     "@mobiscroll/vue": "npm:@mobiscroll/vue-trial@^5.31.1",
     "@popperjs/core": "2.10.2",
+    "@primevue/themes": "^4.0.0",
     "axios": "^1.3.2",
     "bootstrap": "5.1.3",
     "chart.js": "3.6.0",
