@@ -1,24 +1,39 @@
 <template>
   <MbscEventcalendar
     :view="myView"
-    :data="myTrips"
-    :resources="myBuses"
+    :data="myTripsProp"
+    :resources="myBusesProp"
     clickToCreate="double"
     :dragToCreate="true"
     :dragToMove="true"
-    :dragToResize="true"
+    :dragToResize="false"
+    :dragInTime="false"
     :selectedDate="mySelectedDate"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted">
+      <template #day="day">
+        <div class="md-date-header-day">
+          {{ formatDate('DD/MM/YYYY', day.date) }}
+        </div>
+      </template>
+      <template #hour="day">
+        <div class="md-date-header-hour">
+          {{ formatDate('h:mm A', day.date) }}
+        </div>
+      </template>
       <template #resource="res">
-        <div>
-          <img src="../../../assets/images/bus.svg" style="width: 28px;margin-left: 1px;" alt="">
-          {{res.id}}</div>
+         <div class="md-resource-header-template-cont">
+        <div class="md-resource-header-template-name">
+          <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+          {{res.id}}
+        </div>
+        <div v-if="resourceModeLocal=='Agents'" class="md-resource-header-template-seats">{{ res.name}}</div>
+      </div>
       </template>
       <template #resourceHeader>
       <div class="md-resource-header-template-title">  
-        <InputText id="search" v-model="searchValue" placeholder="Chercher par bus" @change="filter()"/>
+        <InputText id="search" v-model="searchValueLocal" placeholder="Chercher par bus" @input="filter()"/>
       </div>
     </template>
     <template #header>
@@ -27,8 +42,8 @@
         <div class="empty-box"></div>
         <div class="card">
           <SelectButton 
-          v-model="selectedResourceValue" 
-          :options="['Lignes','Bus','Chauffeurs','Receveurs']" 
+          v-model="resourceModeLocal" 
+          :options="['Lignes','Bus','Agents']" 
           aria-labelledby="basic" 
           @change="checkSelection()" 
           v-tooltip.bottom="'Choisir le type des resources à afficher'" />
@@ -36,6 +51,23 @@
 
       </div>
       </template>
+    <template #resourceEmpty>
+      <div class="mds-resource-filtering-empty mbsc-flex mbsc-align-items-center">
+        <div class="mbsc-flex-1-1">
+          <img
+            src=""
+            alt="Empty list"
+            style="width: 100px"
+          />
+          <p class="mbsc-font mbsc-margin mbsc-medium mbsc-italic mbsc-txt-muted">
+            No resources match your search.
+          </p>
+          <p class="mbsc-margin mbsc-medium mbsc-italic mbsc-txt-muted">
+            Adjust your filters or try a different keyword.
+          </p>
+        </div>
+      </div>
+    </template>
   </MbscEventcalendar>  
   
   <MbscPopup
@@ -156,7 +188,6 @@
 <script setup>
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
-import { Resource, UniqueResourceSet } from '../utils/Resource'
 import {
   MbscButton,
   MbscDatepicker,
@@ -170,27 +201,60 @@ import {
   MbscCalendarNav,
   setOptions /* localeImport */
 } from '@mobiscroll/vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import {useStore} from "vuex"
-import moment from 'moment'
+import {ref,defineProps,defineEmits, computed} from 'vue'
+import { formatDate } from '@mobiscroll/vue';
+const emits = defineEmits(["update:search-query","update:resource-mode"])
+const props = defineProps({
+
+  myTripsProp:{
+    type:Array,
+    required:true
+  },
+  myBusesProp:{
+    type:Array,
+    required:true
+  }
+})
+
+const searchValueLocal = ref("");
+const resourceModeLocal = ref("Bus");
+const myTripsLocal = ref(props.myTripsProp)
+let previousResourceValue="Bus";
+
+
+const getIcon = computed(()=>{
+  if(resourceModeLocal.value == "Bus"){
+    console.log("Busses")
+    return require('../../../assets/images/bus.svg')
+  }
+  else if(resourceModeLocal.value=="Lignes")
+    return require("../../../assets/images/lignes.svg")
+  else
+    return "";
+})
+
+const filter= ()=>{
+  emits("update:search-query", searchValueLocal.value);
+}
+
+const checkSelection =()=>{
+  if(resourceModeLocal.value==null)
+    resourceModeLocal.value = previousResourceValue
+  else{
+    previousResourceValue = resourceModeLocal.value;
+    emits("update:resource-mode", resourceModeLocal);
+  }
+}
 
 setOptions({
   // locale,
   // theme
   themeVariant: "light",
-  theme: "ios"
+  theme: "material"
 })
-const store = useStore();
 
-const myTrips = ref([])
+// MbScroll settings DO NOT TOUCH
 
-const searchValue = ref("")
-const selectedResourceValue = ref("Lignes")
-
-const myBuses = ref([])
-let previousResourceValue="Lignes";
-
-let uniqueSet = new UniqueResourceSet();
 
 // Color picker
 let colors = [
@@ -211,61 +275,6 @@ let colors = [
   '#7e5d4e'
 ]
 
-// computing values
-const getLoading = computed(()=>store.state.tripsModule.loading)
-
-const getTrips= computed(()=>{
-  const trips= store.state.tripsModule.trips;
-  return trips;
-})
-
-
-// methods
-const filter =()=>{
-  let regex = new RegExp(`^${searchValue.value}`)
-  myBuses.value = uniqueSet.values().filter(resource => regex.test(resource.id));
-}
-
-const checkSelection = ()=>{
-  if(selectedResourceValue.value==null)
-    selectedResourceValue.value = previousResourceValue;
-  else
-    previousResourceValue = selectedResourceValue.value;
-}
-
-const loadTrips = ()=>{
-  const trips = getTrips.value.map((trip,index)=>{
-    let bus = new Resource(String(trip.busRe.bus_id),"bus "+ trip.busRe.bus_id, colors[index])
-    uniqueSet.add(bus)
-    return{
-      id: trip.tripsId.trip_id,
-      start: moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(),
-      end: moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      text: "trip "+trip.tripsId.trip_id,
-      resource:trip.busRe.bus_id,
-      title:trip.tripName,
-      description: "Description of event Test",
-      allDay: false,
-      bufferBefore: 0,
-      free: false,
-    }
-  })
-  myBuses.value = uniqueSet.values();
-  myTrips.value = trips;
-
-}
-
-watch(getLoading, (isLoading)=>{
-  if(!isLoading && getTrips.value.length>0){
-    loadTrips();
-  }
-})
-
-onMounted(()=>{
-  store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0));
-})
-
-// MbScroll settings DO NOT TOUCH
 const myView = {
   timeline: {
     type: 'day',
@@ -347,7 +356,7 @@ const colorResponsive = {
 const isSnackbarOpen = ref(false)
 const snackbarButton = {
   action: () => {
-    myTrips.value = [...myTrips.value, editedEvent]
+    myTripsLocal.value = [...myTripsLocal.value, editedEvent]
   },
   text: 'Undo'
 }
@@ -389,7 +398,7 @@ function createAddPopup(event, target) {
           color: popupEventColor.value,
           resource: event.resource
         }
-        myTrips.value = [...myTrips.value, newEvent]
+        myTripsLocal.value = [...myTripsLocal.value, newEvent]
         mySelectedDate.value = popupEventDates.value[0]
         isPopupOpen.value = false
       },
@@ -428,10 +437,10 @@ function createEditPopup(event, target) {
         updatedEvent.color = popupEventColor.value
         updatedEvent.status = popupEventStatus.value
         // Update event
-        let newEventList = [...myTrips.value]
+        let newEventList = [...myTripsLocal.value]
         const index = newEventList.findIndex((x) => x.id === updatedEvent.id)
         newEventList[index] = updatedEvent
-        myTrips.value = newEventList
+        myTripsLocal.value = newEventList
 
         isPopupOpen.value = false
       },
@@ -453,7 +462,7 @@ function handleEventCreated(args) {
 }
 
 function deleteEvent(event) {
-  myTrips.value = myTrips.value.filter((item) => item.id !== event.id)
+  myTripsLocal.value = myTripsLocal.value.filter((item) => item.id !== event.id)
   isSnackbarOpen.value = true
 }
 
@@ -577,4 +586,78 @@ function handleSnackbarClose() {
 .empty-box{
   width: 60px;
 }
+
+.md-resource-header-template-cont {
+  line-height: 50px;
+  height: 100%;
+}
+
+.md-resource-header-template-name {
+  height: 100%;
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.md-resource-header-template-seats {
+  border-left: 1px solid #ccc;
+  width: 90px;
+  height: 100%;
+  line-height: 63px;
+  float: right;
+  padding: 0 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.md-date-header-hour {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 8px;
+    margin: 3px;
+    color: #f8f8f8;
+    background-color: var(--simple-soretrak-color);
+}
+.md-date-header-day{
+  font-weight: 600;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+}
+
+.mds-resource-filtering-calendar .mbsc-timeline-resource-header {
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}/* 
+
+.mds-resource-filtering-calendar .mbsc-timeline-resource-col {
+  width: 350px;
+} */
+/* 
+@supports (overflow: clip) {
+  .mds-resource-filtering-calendar.mbsc-ltr .mbsc-schedule-event-inner {
+    left: 350px;
+  }
+
+  .mds-resource-filtering-calendar.mbsc-rtl .mbsc-schedule-event-inner {
+    right: 350px;
+  }
+} */
+/* 
+.mds-resource-filtering-calendar .mbsc-timeline-resource-title {
+  height: 100%;
+  box-sizing: border-box;
+} */
+/* 
+.mds-resource-filtering-calendar .mbsc-timeline-parent {
+  height: 34px;
+}
+ */
+/* .mds-resource-filtering-calendar .mbsc-timeline-row-gutter {
+  height: 6px;
+}
+ */
+
 </style>

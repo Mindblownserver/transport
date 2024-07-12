@@ -71,19 +71,19 @@ export default {
 }
 
 :root{
-  /* Color schemes */
+  /* Color schemes 
   --bg-gradient-success: linear-gradient(195deg, #66bb6a 0%, #43a047 100%);
+*/--simple-soretrak-color: #fb8c00;
+  --soretrak-color: linear-gradient(195deg, #ffa726 0%, #fb8c00 100%);
+  /* Data Table Style 
   --hover-color: #F1F5F9;
   --gray-color: rgb(161, 161, 161);
-  --soretrak-color: linear-gradient(195deg, #ffa726 0%, #fb8c00 100%);
-  --simple-soretrak-color: #fb8c00;
-  /* Data Table Style */
   --p-datatable-row-striped-background: #f8fafc;
   --p-datatable-body-cell-border-color: #E2E8F0;
   --p-datatable-header-cell-border-color: #E2E8F0;
   --p-datatable-header-cell-gap: 5px;
   --p-datatable-transition-duration: 0.3s;
-  /* Input Text Style */
+  /* Input Text Style 
   --p-inputtext-color: var(--gray-color);
   --p-inputtext-background: #ffffff;
   --p-inputtext-padding-y:5px;
@@ -91,26 +91,26 @@ export default {
   --p-inputtext-border-color: var(--p-datatable-body-cell-border-color);
   --p-inputtext-transition-duration: 1s;
   --p-inputtext-border-radius: 5px;
-  /* DataTable's Filter Style  */
+  /* DataTable's Filter Style 
   --p-datatable-filter-inline-gap:5px;
   --p-datatable-filter-constraint-list-padding: 5px;
-  /* The usual style of overlay component */
+  /* The usual style of overlay component 
   --p-datatable-filter-overlay-select-background: var(--p-inputtext-background);
   --p-datatable-filter-overlay-select-color: black;
   --p-datatable-filter-overlay-select-border-color: var(--p-datatable-row-striped-background);
   --p-datatable-filter-overlay-select-border-radius: var(--p-inputtext-border-radius);
   --p-datatable-filter-overlay-select-shadow:1px 1px 10px 3px #cacaca93;
-  /* The Style of select element */
+  /* The Style of select element 
   --p-datatable-filter-constraint-focus-background: var(--hover-color);
   --p-datatable-filter-constraint-selected-background: var(--p-datatable-filter-constraint-focus-background);
   --p-datatable-filter-constraint-list-gap: 5px;
   --p-datatable-filter-constraint-padding: 5px;
   --p-datatable-filter-constraint-color:black;
   --p-datatable-filter-constraint-border-radius: var(--p-datatable-filter-overlay-select-border-radius);
-  /* DataTable selected Style */
+  /* DataTable selected Style 
   --p-datatable-body-cell-selected-border-color: var(--hover-color);
   --p-datatable-row-selected-background: #dcf9e1/* var(--hover-color) */;
-  /* Pagination Style */
+  /* Pagination Style 
   --p-paginator-gap: 10px;
   --p-datatable-paginator-bottom-border-color: transparent;
   --p-paginator-padding:10px;
@@ -121,7 +121,7 @@ export default {
   --p-paginator-nav-button-height: 2rem;
   --p-paginator-nav-button-width: 2rem;
   --p-paginator-transition-duration: 0.5s;
-  /* Tab Style*/
+  /* Tab Style
   --p-tabs-tab-active-background:transparent;
   --p-tabs-tab-active-border-color: var(--simple-soretrak-color);
   --p-tabs-tab-active-color: var(--simple-soretrak-color);
@@ -139,7 +139,7 @@ export default {
   --p-tabs-tab-hover-border-color: transparent;
   --p-tabs-transition-duration:0.2s;
 
-  /* Icon postion in Input */
+  /* Icon postion in Input 
   --p-form-field-padding-x:0.75rem;
   --p-icon-size: 1.2rem;
   --p-iconfield-icon-color: var(--gray-color);
@@ -158,7 +158,7 @@ export default {
   --p-togglebutton-transition-duration:0.2s;
   --p-togglebutton-content-left:100px;
   --p-togglebutton-content-top:100px;
-  --p-togglebutton-border-radius:5px; */
-
+  --p-togglebutton-border-radius:5px; 
+ */ 
 }
 </style>

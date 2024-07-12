@@ -10,7 +10,7 @@
             </div>
             <div class="card-body px-0 pb-2">
               <div class="table-responsive p-0" style="height: 75vh;">
-                  <SchemaView />
+                  <TimelineComponent />
               </div>
             </div>
           </div>
@@ -20,5 +20,5 @@
 </template>
 
 <script setup>
-import SchemaView from "./SchemaView.vue"
+import TimelineComponent from '../components/TimelineComponent.vue';
 </script>

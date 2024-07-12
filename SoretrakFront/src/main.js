@@ -22,7 +22,7 @@ appInstance.use(PrimeVue,{
     options:{
         darkModeSelector:'.dark-version',
         
-    }
+        }
     }
 });
 appInstance.use(mobiscroll);
