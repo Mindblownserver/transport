@@ -119,6 +119,7 @@ public class TripsSqlRepository {
         while(rs.next()){
             bus.setBus_id(rs.getLong("BUS_ID"));
             bus.setBus_type(rs.getString("BUS_TYPE"));
+            bus.setColor(rs.getString("Color"));
         }
         rs.close();
         ps.close();

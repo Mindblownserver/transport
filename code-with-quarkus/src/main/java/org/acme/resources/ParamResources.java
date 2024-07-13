@@ -58,7 +58,7 @@ public class ParamResources {
     @Path("/bus")
     @GET
     public Response getAllBus(){
-        List<Bus> busListes=busRespository.listAll(Sort.by("bus_id").ascending());
+        List<Bus> busListes= busRespository.listAll(Sort.by("bus_id").ascending());
         if(busListes.size()>0){
             return Response.ok(busListes).build();
         }else {

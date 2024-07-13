@@ -10,9 +10,11 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Bus extends PanacheEntityBase{
     @Id
-    public Long bus_id;
+    private Long bus_id;
 
-    public String bus_type;
+    private String bus_type;
+
+    private String color;
 
     @OneToMany(mappedBy = "busPr") // name of the attribute, not the column
     private List<Trips> tripsList;
@@ -41,5 +43,14 @@ public class Bus extends PanacheEntityBase{
     public void setBus_type(String bus_type) {
         this.bus_type = bus_type;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+    
     
 }
