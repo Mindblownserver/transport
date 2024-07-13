@@ -2,8 +2,9 @@
     <MbCalendar 
     :myTripsProp="myTrips" 
     :myBusesProp="myResources"
-    :searchValueProp="searchValue" @update:search-query="filter" 
-    :resourceModeProp="selectedResourceValue" @update:resource-mode="checkSelection"/>
+     @update:search-query="filter" 
+     @update:resource-mode="checkSelection"
+    @update:search-by-time-query="filerByTime"/>
 </template>
 
 <script setup>
@@ -20,7 +21,6 @@ const store = useStore();
 const myTrips = ref([])
 const myResources = ref([])
 
-const searchValue = ref("")
 const selectedResourceValue = ref("Bus")
 
 const resourceMode = new ref(new ResourceModes());
@@ -47,6 +47,35 @@ const checkSelection = (newResourceMode)=>{
   selectedResourceValue.value = newResourceMode.value;
   myTrips.value.map(trip=>trip.changeResourceId(newResourceMode.value));
   myResources.value = resourceMode.value.getMode(newResourceMode.value).values()
+}
+
+const filerByTime = (timeDepart,timeArrive, searchByTimeMode)=>{
+  const resourcePasLibre = new Set();
+  myTrips.value.map(trip=>{
+    if (!(compareTime(trip.end,timeDepart)>0 || compareTime(timeArrive, trip.start)>0))
+      resourcePasLibre.add(String(trip.resource));
+  })
+  if(searchByTimeMode==0)
+    myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>!resourcePasLibre.has(resource.id));
+  else
+    myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>resourcePasLibre.has(resource.id));
+}
+
+/**
+ * A method to compare 2 times
+ * @returns 1 if dateTime1 is before dateTime2
+ * @returns 0 if dateTime1 = dateTime 2
+ * @returns -1 if dateTime1 is after dateTime 2
+ */
+const compareTime = (dateTime1, dateTime2)=>{
+  let time1 = moment(`${dateTime1.getHours()}:${dateTime1.getMinutes()}:${dateTime1.getSeconds()}`,"HH:mm:ss");
+  let time2 = moment(`${dateTime2.getHours()}:${dateTime2.getMinutes()}:${dateTime2.getSeconds()}`,"HH:mm:ss");
+  if(time1.isBefore(time2))
+    return 1;
+  else if(time1.isAfter(time2))
+    return -1;
+  else
+    return 0;
 }
 
 const loadTrips = ()=>{

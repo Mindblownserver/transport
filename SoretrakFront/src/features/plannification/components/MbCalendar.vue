@@ -50,7 +50,7 @@
         </div>
         <div class="empty-box"></div>
         <div>
-          <DatePicker v-model="timeDebutLocal" fluid timeOnly placeholder="Temps de Depart"></DatePicker>
+          <DatePicker v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
         </div>
         <Button label="" disabled text>
           <template #icon>
@@ -58,15 +58,21 @@
           </template>
         </Button>
         <div>
-          <DatePicker v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé"></DatePicker>
+          <DatePicker v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
         </div>
         <div class="small-empty-box"></div>
         <div>
-          <Button label="Submit" :loading="loading" @click="load">
+          <SplitButton label="Chercher" :loading="loading" @click="searchByTime" :model="items">
+            <template #dropdownicon><!-- icon is called a slot, this is how slots are used -->
+              <i class="material-icons-round opacity-10 fs-5">filter_alt</i>
+            </template>
             <template #icon><!-- icon is called a slot, this is how slots are used -->
               <i class="material-icons-round opacity-10 fs-5">search</i>
             </template>
-          </Button>
+            <template #item="{item}">
+              <span class="dropDownItem" :class="selectedSearchByTimeMode==item.itemId?'selected-dropDownItem':''">{{ item.label }}</span>
+            </template>
+          </SplitButton>
         </div>
       </div>
       <div class="custom-header-right">
@@ -213,6 +219,7 @@
 
 <script setup>
 import Button from 'primevue/button';
+import SplitButton from 'primevue/splitbutton';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import DatePicker from 'primevue/datepicker';
@@ -229,7 +236,7 @@ import {
   MbscCalendarNav,
   setOptions /* localeImport */
 } from '@mobiscroll/vue'
-import {ref,defineProps,defineEmits, computed} from 'vue'
+import {ref, computed} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
 
 const emits = defineEmits(["update:search-query","update:resource-mode"])
@@ -246,19 +253,38 @@ const props = defineProps({
   }
 })
 
-const timeDebutLocal = ref("")
-const timeArriveLocal = ref("")
+const timeDebutLocal = ref(new Date())
+const timeArriveLocal = ref(new Date())
+
 const searchValueLocal = ref("");
 const resourceModeLocal = ref("Bus");
 const myTripsLocal = ref(props.myTripsProp)
 let previousResourceValue="Bus";
 const loading = ref(false);
 
-const load = () => {
+const items=[
+  {
+    itemId:0,
+    label: "Resource libre",
+    command: ()=>{
+      selectedSearchByTimeMode.value = 0
+    }
+  },
+  {
+    itemId:1,
+    label: "Resource occupée",
+    command: ()=>{
+      selectedSearchByTimeMode.value = 1;
+    }
+  }
+]
+const selectedSearchByTimeMode = ref(0)
+
+const searchByTime = () => {
     loading.value = true;
     setTimeout(() => {
-        loading.value = false;
-    }, 2000);
+        emits("update:search-by-time-query", timeDebutLocal.value,timeArriveLocal.value, selectedSearchByTimeMode.value);loading.value=false;
+    }, 400);
 };
 
 const getIcon = computed(()=>{
@@ -675,4 +701,16 @@ function handleSnackbarClose() {
   width:25px
 }
 
+.highlight-time {
+  background-color: #f0c674;
+  color: #000;
+}
+
+.dropDownItem{
+  margin-left: 10px;
+  font-weight: bolder;
+}
+.selected-dropDownItem{
+  color: var(--simple-soretrak-color);
+}
 </style>
