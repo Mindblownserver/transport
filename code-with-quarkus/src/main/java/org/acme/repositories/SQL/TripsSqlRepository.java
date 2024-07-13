@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.acme.Embeddable.StopTimesId;
 import org.acme.Embeddable.TripsId;
+import org.acme.entities.Agent;
 import org.acme.entities.Bus;
 import org.acme.entities.DrLigne;
 import org.acme.entities.DrStati;
@@ -26,7 +27,24 @@ import jakarta.inject.Inject;
 public class TripsSqlRepository {
     @Inject
     DataSource dataSource;
-    
+    public Agent getAgentById(int decAgen)throws SQLException{
+        Agent agent = new Agent();
+        String sql = "select * from DrAgent where decagen=?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, decAgen);
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        agent.setDecagen((long)decAgen);
+                        agent.setDecdeleg(rs.getInt("DECDELEG"));
+                        agent.setDenagea(rs.getString("DENAGEA"));
+                        agent.setDenagen(rs.getString("DENAGEN"));
+                    }
+                }
+        } 
+        return agent;
+    }
+
     public DrLigne getLigneById(int denumli)throws SQLException{
         DrLigne ligne = new DrLigne();
         String sql = "select * from DrLigne where denumli = ?";
@@ -57,9 +75,9 @@ public class TripsSqlRepository {
                         ligne.setDECADMI(rs.getInt("DECADMI"));
                         ligne.setSAE(rs.getInt("SAE"));
                     }
-                    return ligne;
                 }
             }
+            return ligne;
     }
 
     public DrStati getStationById(int decStat) throws SQLException{
@@ -81,9 +99,9 @@ public class TripsSqlRepository {
                     station.setLongetude(rs.getFloat("STOP_LON"));
                     station.setRayon(rs.getInt("RAYON"));
                 }
-                return station;
             }
         }
+        return station;
     }
     
     public List<StopTimes> getStopTimesByTripsId(Date dedated, int trip_id)throws SQLException{
@@ -149,9 +167,7 @@ public class TripsSqlRepository {
             rs.getString("TIME_NRET"),
             rs.getInt("TRIP_NID"),
             rs.getInt("GRP"),
-            rs.getInt("CHAUFF_PR"),
             rs.getInt("CHAUFF_RE"),
-            rs.getInt("REC_PR"),
             rs.getInt("REC_RE"),
             rs.getInt("ETAT"),
             rs.getDate("TIME_DEPART_R"),
@@ -167,10 +183,14 @@ public class TripsSqlRepository {
             Bus busPr = getBusById(rs.getInt("BUS_PR"));
             Bus busRe = getBusById(rs.getInt("BUS_RE"));
             DrLigne ligne = getLigneById(rs.getInt("DENUMLI"));
+            Agent chauffPr = getAgentById(rs.getInt("CHAUFF_PR"));
+            Agent recPr = getAgentById(rs.getInt("REC_PR"));
             trip.setStopTimesList(stopTimesList);
             trip.setBusPr(busPr);
             trip.setBusRe(busRe);
             trip.setLigne(ligne);
+            trip.setRecPr(recPr);
+            trip.setChauffPr(chauffPr);
             tripsList.add(trip);
         }
         rs.close();

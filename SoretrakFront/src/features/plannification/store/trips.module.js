@@ -4,7 +4,7 @@ export const tripsModule={
     namespaced: true,
     state: {
       trips:[],
-      loading:false,
+      loading:true,
       error:null
     },
     mutations: {
@@ -20,8 +20,7 @@ export const tripsModule={
     },
     actions: {
       async getTrips({ commit }, date) {
-        commit("setLoading", true);
-        commit("setError", null);
+
         try {
           const res = await myApi.getTrips(date);
           commit("setTrips", res.data);

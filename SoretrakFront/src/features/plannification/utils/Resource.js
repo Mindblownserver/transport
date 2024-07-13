@@ -60,7 +60,6 @@ class Ligne {
   }
 }
 
-
 class Bus{
     constructor(id, name, color){
         this.id = id;
@@ -104,8 +103,8 @@ class ResourceArray {
     get size() {
       return this.map.size;
     }
-  }
-  class ResourceModes {
+}
+class ResourceModes {
     constructor(busResources, ligneResources, chauffResources, recevResources) {
       this._busResources = busResources || new ResourceArray();
       this._ligneResources = ligneResources || new ResourceArray();

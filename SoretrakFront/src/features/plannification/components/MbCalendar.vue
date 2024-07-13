@@ -19,7 +19,7 @@
       </template>
       <template #hour="day">
         <div class="md-date-header-hour">
-          {{ formatDate('h:mm A', day.date) }}
+          {{ formatDate('hh:mm A', day.date) }}
         </div>
       </template>
       <template #resource="res">
@@ -37,18 +37,44 @@
       </div>
     </template>
     <template #header>
-      <div class="custom-header">
+      <div class="custom-header-left">
         <MbscCalendarNav />
         <div class="empty-box"></div>
-        <div class="card">
+        <div class="card" style="flex-shrink: 0;">
           <SelectButton 
           v-model="resourceModeLocal" 
           :options="['Lignes','Bus','Agents']" 
           aria-labelledby="basic" 
           @change="checkSelection()" 
           v-tooltip.bottom="'Choisir le type des resources à afficher'" />
+        </div>
+        <div class="empty-box"></div>
+        <div>
+          <DatePicker v-model="timeDebutLocal" fluid timeOnly placeholder="Temps de Depart"></DatePicker>
+        </div>
+        <Button label="" disabled text>
+          <template #icon>
+            <i class="material-icons-round opacity-10 fs-5">arrow_forward</i>
+          </template>
+        </Button>
+        <div>
+          <DatePicker v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé"></DatePicker>
+        </div>
+        <div class="small-empty-box"></div>
+        <div>
+          <Button label="Submit" :loading="loading" @click="load">
+            <template #icon><!-- icon is called a slot, this is how slots are used -->
+              <i class="material-icons-round opacity-10 fs-5">search</i>
+            </template>
+          </Button>
+        </div>
       </div>
-
+      <div class="custom-header-right">
+        <Button label="Ajouter trip" severity="info">
+          <template #icon>
+            <i class="material-icons-round opacity-10 fs-5">add</i>
+          </template>
+        </Button>
       </div>
       </template>
     <template #resourceEmpty>
@@ -186,8 +212,10 @@
 
 
 <script setup>
+import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
+import DatePicker from 'primevue/datepicker';
 import {
   MbscButton,
   MbscDatepicker,
@@ -203,7 +231,9 @@ import {
 } from '@mobiscroll/vue'
 import {ref,defineProps,defineEmits, computed} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
+
 const emits = defineEmits(["update:search-query","update:resource-mode"])
+
 const props = defineProps({
 
   myTripsProp:{
@@ -216,15 +246,23 @@ const props = defineProps({
   }
 })
 
+const timeDebutLocal = ref("")
+const timeArriveLocal = ref("")
 const searchValueLocal = ref("");
 const resourceModeLocal = ref("Bus");
 const myTripsLocal = ref(props.myTripsProp)
 let previousResourceValue="Bus";
+const loading = ref(false);
 
+const load = () => {
+    loading.value = true;
+    setTimeout(() => {
+        loading.value = false;
+    }, 2000);
+};
 
 const getIcon = computed(()=>{
   if(resourceModeLocal.value == "Bus"){
-    console.log("Busses")
     return require('../../../assets/images/bus.svg')
   }
   else if(resourceModeLocal.value=="Lignes")
@@ -579,12 +617,19 @@ function handleSnackbarClose() {
   width: 160px;
   margin-left: 5px;
 }
-.custom-header{
+.custom-header-left{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  width: 100%;
 }
+.custom-header-right{
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
 .empty-box{
-  width: 60px;
+  width: 46px;
 }
 
 .md-resource-header-template-cont {
@@ -626,38 +671,8 @@ function handleSnackbarClose() {
   padding-bottom: 10px; */
 }
 
-.mds-resource-filtering-calendar .mbsc-timeline-resource-header {
-  height: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-}/* 
-
-.mds-resource-filtering-calendar .mbsc-timeline-resource-col {
-  width: 350px;
-} */
-/* 
-@supports (overflow: clip) {
-  .mds-resource-filtering-calendar.mbsc-ltr .mbsc-schedule-event-inner {
-    left: 350px;
-  }
-
-  .mds-resource-filtering-calendar.mbsc-rtl .mbsc-schedule-event-inner {
-    right: 350px;
-  }
-} */
-/* 
-.mds-resource-filtering-calendar .mbsc-timeline-resource-title {
-  height: 100%;
-  box-sizing: border-box;
-} */
-/* 
-.mds-resource-filtering-calendar .mbsc-timeline-parent {
-  height: 34px;
+.small-empty-box{
+  width:25px
 }
- */
-/* .mds-resource-filtering-calendar .mbsc-timeline-row-gutter {
-  height: 6px;
-}
- */
 
 </style>

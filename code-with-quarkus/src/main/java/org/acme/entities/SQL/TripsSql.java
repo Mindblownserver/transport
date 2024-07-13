@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.acme.Embeddable.TripsId;
+import org.acme.entities.Agent;
 import org.acme.entities.Bus;
 import org.acme.entities.DrLigne;
 import org.acme.entities.StopTimes;
@@ -30,11 +31,11 @@ public class TripsSql {
 
     private Bus busRe;
     
-    private Integer chauffPr;
+    private Agent chauffPr;
     
     private Integer chauffRe;
     
-    private Integer RecPr;
+    private Agent RecPr;
     
     private Integer RecRe;
     
@@ -163,14 +164,6 @@ public class TripsSql {
         this.busRe = busRe;
     }
 
-    public Integer getChauffPr() {
-        return chauffPr;
-    }
-
-    public void setChauffPr(Integer chauffPr) {
-        this.chauffPr = chauffPr;
-    }
-
     public Integer getChauffRe() {
         return chauffRe;
     }
@@ -179,11 +172,20 @@ public class TripsSql {
         this.chauffRe = chauffRe;
     }
 
-    public Integer getRecPr() {
+
+    public Agent getChauffPr() {
+        return chauffPr;
+    }
+
+    public void setChauffPr(Agent chauffPr) {
+        this.chauffPr = chauffPr;
+    }
+
+    public Agent getRecPr() {
         return RecPr;
     }
 
-    public void setRecPr(Integer recPr) {
+    public void setRecPr(Agent recPr) {
         RecPr = recPr;
     }
 
@@ -269,8 +271,8 @@ public class TripsSql {
 
     
     public TripsSql(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret,
-            String timeNret, Integer tripNid, Integer grp, Integer chauffPr, Integer chauffRe,
-            Integer recPr, Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax,
+            String timeNret, Integer tripNid, Integer grp, Integer chauffRe,
+             Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax,
             Integer avanceRetard, Integer changement, String metaData, Integer deValid, Integer alert) {
         this.tripsId = tripsId;
         this.serviceId = serviceId;
@@ -281,9 +283,7 @@ public class TripsSql {
         this.tripNid = tripNid;
         this.grp = grp;
         this.busRe = busRe;
-        this.chauffPr = chauffPr;
         this.chauffRe = chauffRe;
-        RecPr = recPr;
         RecRe = recRe;
         this.etat = etat;
         this.timeDepartR = timeDepartR;
