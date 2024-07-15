@@ -76,6 +76,23 @@ class Bus{
       }
 }
 
+class Agent{
+  constructor( decagenRec, decagenChauff, denageaRec, denageaChauff, denagenRec, denagenChauff,decdeleg) {
+    this.id = `${decagenChauff}|${decagenRec}`;
+    this.nameChauffAr = denageaChauff;
+    this.nameRecAr = denageaRec;
+    this.nameChauff = denagenChauff;
+    this.nameRec = denagenRec;
+    this.decdeleg = decdeleg;
+    this.chauffId = decagenChauff;
+    this.recId = decagenRec
+  }
+
+  get hash() {
+    return this.id;
+  }
+}
+
 class ResourceArray {
     constructor() {
       this.map = new Map();
@@ -105,11 +122,10 @@ class ResourceArray {
     }
 }
 class ResourceModes {
-    constructor(busResources, ligneResources, chauffResources, recevResources) {
+    constructor(busResources, ligneResources, agentResources, ) {
       this._busResources = busResources || new ResourceArray();
       this._ligneResources = ligneResources || new ResourceArray();
-      this._chauffResources = chauffResources || new ResourceArray();
-      this._recevResources = recevResources || new ResourceArray();
+      this._agentResources = agentResources || new ResourceArray();
     }
   
     // Get desired resource mode
@@ -120,9 +136,8 @@ class ResourceModes {
         case "Bus":
           return this.busResources;
         case "Agents":
-          return this.chauffResources;
-        case "Receveurs":
-          return this.recevResources;
+          return this.agentResources;
+
         default:
           return null;
       }
@@ -144,21 +159,12 @@ class ResourceModes {
       this._ligneResources = value;
     }
   
-    // Getter and Setter for chauffResources
-    get chauffResources() {
-      return this._chauffResources;
+    // Getter and Setter for agentResources
+    get agentResources() {
+      return this._agentResources;
     }
-    set chauffResources(value) {
-      this._chauffResources = value;
+    set agentResources(value) {
+      this._agentResources = value;
     }
-  
-    // Getter and Setter for recevResources
-    get recevResources() {
-      return this._recevResources;
-    }
-    set recevResources(value) {
-      this._recevResources = value;
-    }
-  }
-  
-export {Bus, ResourceArray, ResourceModes,Ligne};
+}  
+export {Bus, ResourceArray, ResourceModes,Ligne, Agent};
