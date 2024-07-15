@@ -43,8 +43,8 @@ class TripEvent{
             case "Bus":
                 this.resource = this.busPrId;
                 break;
-            case "Agent":
-                this.resource = String(this.chauffRe) + String(this.recRe);
+            case "Agents":
+                this.resource =`${this.chauffPr}|${this.recPr}`;
                 break;
             default:
                 break;
