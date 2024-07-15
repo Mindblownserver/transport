@@ -22,14 +22,23 @@
           {{ formatDate('hh:mm A', day.date) }}
         </div>
       </template>
-      <template #resource="res">
-         <div class="md-resource-header-template-cont">
-        <div class="md-resource-header-template-name">
-          <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
-          {{res.id}}
+      <template #resource="res">   
+        <div v-if="resourceModeLocal=='Agents'" class="md-resource-header-template-cont">
+          <div class="md-resource-header-template-name">
+            <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+              {{res.chauffId}}
+          </div>
+          <div class="md-resource-header-template-seats">
+            <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+            {{ res.recId}}
+          </div>
         </div>
-        <div v-if="resourceModeLocal=='Agents'" class="md-resource-header-template-seats">{{ res.name}}</div>
-      </div>
+        <div v-else class="md-resource-header-template-cont">
+            <div class="md-resource-header-template-name">
+              <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+                {{res.id}}
+            </div>
+          </div>
       </template>
       <template #resourceHeader>
       <div class="md-resource-header-template-title">  
@@ -294,7 +303,7 @@ const getIcon = computed(()=>{
   else if(resourceModeLocal.value=="Lignes")
     return require("../../../assets/images/lignes.svg")
   else
-    return "";
+    return require("../../../assets/images/agent.svg");
 })
 
 const filter= ()=>{

@@ -9,7 +9,7 @@
 
 <script setup>
 import MbCalendar from './MbCalendar.vue';
-import { Bus, Ligne,ResourceArray,ResourceModes } from '../utils/Resource'
+import { Bus, Ligne, Agent, ResourceArray,ResourceModes } from '../utils/Resource'
 import { computed, onMounted, ref, watch } from 'vue'
 import {useStore} from "vuex"
 import moment from 'moment'
@@ -27,7 +27,7 @@ const resourceMode = new ref(new ResourceModes());
 
 let busResourceArray = new ResourceArray();
 let ligneResourceArray = new ResourceArray();
-
+let agentResourceArray = new ResourceArray();
 
 // computing values
 const getLoading = computed(()=>store.state.tripsModule.loading)
@@ -83,9 +83,11 @@ const loadTrips = ()=>{
     const busReFromTrips = trip.busRe;
     const busPrFromTrips = trip.busPr;
     const ligneFromTrips=trip.ligne;
+    const recPrFromTrips = trip.recPr;
+    const chauffPrFromTrips = trip.chauffPr
 
     let bus = new Bus(String(busReFromTrips.bus_id),"bus "+ busReFromTrips.bus_id, busReFromTrips.color)
-    let ligne = new Ligne(ligneFromTrips.idLigne,ligneFromTrips.nomLigne,ligneFromTrips.priorite,
+    let ligne = new Ligne(String(ligneFromTrips.idLigne),ligneFromTrips.nomLigne,ligneFromTrips.priorite,
       ligneFromTrips.dectyta,ligneFromTrips.dectyeq,ligneFromTrips.denomla,ligneFromTrips.detatec,
       ligneFromTrips.detatea,ligneFromTrips.destatu,ligneFromTrips.denbrkm,
       ligneFromTrips.deleg,ligneFromTrips.deactif,ligneFromTrips.agency_ID,
@@ -94,12 +96,17 @@ const loadTrips = ()=>{
       ligneFromTrips.decClie,ligneFromTrips.decAdmi,ligneFromTrips.sae,
       ligneFromTrips.type,ligneFromTrips.centre
     );
+    let agent = new Agent(recPrFromTrips.decagen,chauffPrFromTrips.decagen,recPrFromTrips.denagea,
+    chauffPrFromTrips.denagea,recPrFromTrips.denagen,chauffPrFromTrips.denagen,chauffPrFromTrips.decdeleg)
+    
+    agentResourceArray.add(agent);
     ligneResourceArray.add(ligne);
     busResourceArray.add(bus);
+    
     const tripEvent = new TripEvent(trip.tripsId.trip_id,moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(), moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      trip.busPr.bus_id,trip.tripName,"À rejeté",trip.serviceId,trip.directionId,trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
-      trip.chauffPr,trip.chauffRe,trip.etat,trip.timeDepartR,trip.timeArriveR,trip.vMax,trip.avanceRetard,trip.changement,trip.metaData,
-      trip.deValid,trip.alert,trip.recPr,trip.recRe,ligneFromTrips.idLigne,busReFromTrips.bus_id,busPrFromTrips.bus_id
+      String(trip.busPr.bus_id),trip.tripName,"À rejeté",trip.serviceId,trip.directionId,trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
+      String(chauffPrFromTrips.decagen),trip.chauffRe,trip.etat,trip.timeDepartR,trip.timeArriveR,trip.vMax,trip.avanceRetard,trip.changement,trip.metaData,
+      trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.bus_id,String(busPrFromTrips.bus_id)
     )
     
     return tripEvent;
@@ -107,6 +114,7 @@ const loadTrips = ()=>{
   })
   resourceMode.value.busResources= busResourceArray;
   resourceMode.value.ligneResources= ligneResourceArray;
+  resourceMode.value.agentResources = agentResourceArray;
   
   myTrips.value = trips;
 
