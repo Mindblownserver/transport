@@ -24,24 +24,26 @@ public class DrCentre extends PanacheEntityBase {
     @OneToMany(fetch=FetchType.LAZY, mappedBy = "centre")
     private List<DrLigne> lignes;
 
-    public Long getDec_centre() {
+    public Long getDeccentre() {
         return decCentre;
     }
     public void setDec_centre(Long decCentre) {
         this.decCentre = decCentre;
     }
-    public String getDel_centre() {
+    public String getDelcentre() {
         return delCent;
     }
     public void setDel_centre(String delCent) {
         this.delCent = delCent;
     }
-    public String getAr_centre() {
+    public String getArcentre() {
         return arDelCent;
     }
     public void setAr_centre(String arDelCent) {
         this.arDelCent = arDelCent;
     }
+
+    
     public DrCentre(Long decCentre, String delCent, String arDelCent) {
         this.decCentre = decCentre;
         this.delCent = delCent;

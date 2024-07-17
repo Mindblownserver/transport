@@ -282,7 +282,6 @@ public class TripsSql {
         this.timeNret = timeNret;
         this.tripNid = tripNid;
         this.grp = grp;
-        this.busRe = busRe;
         this.chauffRe = chauffRe;
         RecRe = recRe;
         this.etat = etat;

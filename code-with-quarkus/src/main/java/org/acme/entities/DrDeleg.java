@@ -23,19 +23,19 @@ public class DrDeleg extends PanacheEntityBase{
     @OneToMany(mappedBy = "deleg")
     private List<DrLigne> lignes;
 
-    public Long getDec_deleg() {
+    public Long getDecdeleg() {
         return decDeleg;
     }
     public void setDec_deleg(Long decDeleg) {
         this.decDeleg = decDeleg;
     }
-    public String getAr_deleg() {
+    public String getArdeleg() {
         return libDelegAr;
     }
     public void setAr_deleg(String libDelegAr) {
         this.libDelegAr = libDelegAr;
     }
-    public String getFr_deleg() {
+    public String getFrdeleg() {
         return libDelegFr;
     }
     public void setFr_deleg(String libDelegFr) {

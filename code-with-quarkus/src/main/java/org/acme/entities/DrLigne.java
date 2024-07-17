@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.persistence.FetchType;
 
 
@@ -79,6 +80,15 @@ public class DrLigne extends PanacheEntityBase{
     
     @Column(name="SAE")
     private Integer sae;
+
+    @Transient
+    private String color = "#18851a";
+
+    @Transient
+    private int decCentre;
+    
+    @Transient
+    private int decDeleg;
     
     @ManyToOne
     @JoinColumn(name="DECTYLI")
@@ -253,6 +263,16 @@ public class DrLigne extends PanacheEntityBase{
         return integBi;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+
     public void setINTEG_BI(Integer integBi) {
         this.integBi = integBi;
     }
@@ -296,6 +316,27 @@ public class DrLigne extends PanacheEntityBase{
     public void setCentre(DrCentre centre) {
         this.centre = centre;
     }
+
+
+    public int getDecCentre() {
+        return decCentre;
+    }
+
+
+    public void setDecCentre(int decCentre) {
+        this.decCentre = decCentre;
+    }
+
+
+    public int getDecDeleg() {
+        return decDeleg;
+    }
+
+
+    public void setDecDeleg(int decDeleg) {
+        this.decDeleg = decDeleg;
+    }
+
 
     public DrLigne() {
     }

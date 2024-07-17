@@ -11,10 +11,14 @@ import org.acme.Embeddable.StopTimesId;
 import org.acme.Embeddable.TripsId;
 import org.acme.entities.Agent;
 import org.acme.entities.Bus;
+import org.acme.entities.DrCentre;
+import org.acme.entities.DrDeleg;
 import org.acme.entities.DrLigne;
 import org.acme.entities.DrStati;
 import org.acme.entities.StopTimes;
 import org.acme.entities.SQL.TripsSql;
+import org.acme.repositories.DrCentreRepository;
+import org.acme.repositories.DrDelegRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +31,7 @@ import jakarta.inject.Inject;
 public class TripsSqlRepository {
     @Inject
     DataSource dataSource;
+
     public Agent getAgentById(int decAgen)throws SQLException{
         Agent agent = new Agent();
         String sql = "select * from DrAgent where decagen=?";
@@ -43,6 +48,40 @@ public class TripsSqlRepository {
                 }
         } 
         return agent;
+    }
+
+    public DrCentre getCentreById(int deccent)throws SQLException{
+        DrCentre centre = new DrCentre();
+        String sql = "select * from DRCENTRE where deccent=?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, deccent);
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        centre.setDec_centre((long)deccent);
+                        centre.setDel_centre(rs.getString("DELCENT"));
+                        centre.setAr_centre(rs.getString("AR_DELCENT"));
+                    }
+                }
+        } 
+        return centre;
+    }
+
+    public DrDeleg getDelegById(int decdeleg)throws SQLException{
+        DrDeleg deleg = new DrDeleg();
+        String sql = "select * from DRDELEG where decdeleg=?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, decdeleg);
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        deleg.setDec_deleg((long)decdeleg);
+                        deleg.setAr_deleg(rs.getString("LIBDELEGAR"));
+                        deleg.setFr_deleg(rs.getString("LIBDELEGFR"));
+                    }
+                }
+        } 
+        return deleg;
     }
 
     public DrLigne getLigneById(int denumli)throws SQLException{
@@ -74,6 +113,8 @@ public class TripsSqlRepository {
                         ligne.setDECCLIE(rs.getLong("DECCLIE"));
                         ligne.setDECADMI(rs.getInt("DECADMI"));
                         ligne.setSAE(rs.getInt("SAE"));
+                        ligne.setCentre(getCentreById(rs.getInt("DECCENT")));
+                        ligne.setDeleg(getDelegById(rs.getInt("DECDELEG")));
                     }
                 }
             }

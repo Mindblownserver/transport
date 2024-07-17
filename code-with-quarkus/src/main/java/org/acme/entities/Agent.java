@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "DrAGENT")
@@ -20,6 +21,9 @@ public class Agent {
 
     @Column(name = "DECDELEG")
     public int decdeleg;
+
+    @Transient
+    public String color ="#18851a";
 
     public Long getDecagen() {
         return decagen;
@@ -54,6 +58,10 @@ public class Agent {
     }
 
     public Agent() {
+    }
+
+    public String getColor() {
+        return color;
     }
 
     
