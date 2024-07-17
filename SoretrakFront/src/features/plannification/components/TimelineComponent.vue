@@ -2,9 +2,12 @@
     <MbCalendar 
     :myTripsProp="myTrips" 
     :myBusesProp="myResources"
-     @update:search-query="filter" 
-     @update:resource-mode="checkSelection"
-    @update:search-by-time-query="filerByTime"/>
+    :centreProp = "centreResourceArray.values()"
+    :delegProp = "delegResourceArray.values()"
+    @update:search-query="filter" 
+    @update:resource-mode="checkSelection"
+    @update:search-by-time-query="filerByTime"
+    @update:criteria-query="filterByCrit"/>
 </template>
 
 <script setup>
@@ -14,6 +17,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import {useStore} from "vuex"
 import moment from 'moment'
 import { TripEvent } from '../utils/TripEvent';
+import { DrCentre,DrDeleg } from '../utils/Criteria';
 
 
 const store = useStore();
@@ -21,13 +25,19 @@ const store = useStore();
 const myTrips = ref([])
 const myResources = ref([])
 
-const selectedResourceValue = ref("Bus")
+const myResourcesCriteria = ref([])
+let centreCriteria = [];
+let delegCriteria = []
 
+const selectedResourceValue = ref("Bus")
 const resourceMode = new ref(new ResourceModes());
+
 
 let busResourceArray = new ResourceArray();
 let ligneResourceArray = new ResourceArray();
 let agentResourceArray = new ResourceArray();
+let centreResourceArray = new ResourceArray();
+let delegResourceArray = new ResourceArray();
 
 // computing values
 const getLoading = computed(()=>store.state.tripsModule.loading)
@@ -40,13 +50,15 @@ const getTrips= computed(()=>{
 // methods
 const filter =(newSearchValue)=>{
   let regex = new RegExp(`^${newSearchValue}`)
-  myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource => regex.test(resource.id));
+  myResources.value = myResourcesCriteria.value.filter(resource => regex.test(resource.id));
 }
 
 const checkSelection = (newResourceMode)=>{
   selectedResourceValue.value = newResourceMode.value;
   myTrips.value.map(trip=>trip.changeResourceId(newResourceMode.value));
-  myResources.value = resourceMode.value.getMode(newResourceMode.value).values()
+  myResourcesCriteria.value = resourceMode.value.getMode(newResourceMode.value).values()
+  //myResources.value = myResourcesCriteria.value
+  filterByCrit(centreCriteria,delegCriteria)
 }
 
 const filerByTime = (timeDepart,timeArrive, searchByTimeMode)=>{
@@ -56,9 +68,9 @@ const filerByTime = (timeDepart,timeArrive, searchByTimeMode)=>{
       resourcePasLibre.add(String(trip.resource));
   })
   if(searchByTimeMode==0)
-    myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>!resourcePasLibre.has(resource.id));
+    myResources.value = myResourcesCriteria.value.filter(resource=>!resourcePasLibre.has(resource.id));
   else
-    myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>resourcePasLibre.has(resource.id));
+    myResources.value = myResourcesCriteria.value.filter(resource=>resourcePasLibre.has(resource.id));
 }
 
 /**
@@ -86,6 +98,9 @@ const loadTrips = ()=>{
     const recPrFromTrips = trip.recPr;
     const chauffPrFromTrips = trip.chauffPr
 
+    let deleg = new DrDeleg(ligneFromTrips.deleg.decdeleg,ligneFromTrips.deleg.frdeleg,ligneFromTrips.deleg.ardeleg);
+    let centre = new DrCentre(ligneFromTrips.centre.deccentre, ligneFromTrips.centre.delcentre,ligneFromTrips.centre.arcentre);
+
     let bus = new Bus(String(busReFromTrips.bus_id),"bus "+ busReFromTrips.bus_id, busReFromTrips.color)
     let ligne = new Ligne(String(ligneFromTrips.idLigne),ligneFromTrips.nomLigne,ligneFromTrips.priorite,
       ligneFromTrips.dectyta,ligneFromTrips.dectyeq,ligneFromTrips.denomla,ligneFromTrips.detatec,
@@ -94,20 +109,22 @@ const loadTrips = ()=>{
       ligneFromTrips.route_TYPE,ligneFromTrips.route_URL,ligneFromTrips.route_COLOR,
       ligneFromTrips.route_TEXT_COLOR,ligneFromTrips.denomli_RET,ligneFromTrips.integ_BI,
       ligneFromTrips.decClie,ligneFromTrips.decAdmi,ligneFromTrips.sae,
-      ligneFromTrips.type,ligneFromTrips.centre
+      ligneFromTrips.type,ligneFromTrips.centre, ligneFromTrips.color
     );
     let agent = new Agent(recPrFromTrips.decagen,chauffPrFromTrips.decagen,recPrFromTrips.denagea,
-    chauffPrFromTrips.denagea,recPrFromTrips.denagen,chauffPrFromTrips.denagen,chauffPrFromTrips.decdeleg)
+    chauffPrFromTrips.denagea,recPrFromTrips.denagen,chauffPrFromTrips.denagen,chauffPrFromTrips.decdeleg, chauffPrFromTrips.color)
     
     agentResourceArray.add(agent);
     ligneResourceArray.add(ligne);
     busResourceArray.add(bus);
+    centreResourceArray.add(centre);
+    delegResourceArray.add(deleg);
     
     const tripEvent = new TripEvent(trip.tripsId.trip_id,moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(), moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      String(trip.busPr.bus_id),trip.tripName,"À rejeté",trip.serviceId,trip.directionId,trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
+      String(trip.busPr.bus_id),trip.tripName,"À rejeté",trip.serviceId,String(trip.directionId),trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
       String(chauffPrFromTrips.decagen),trip.chauffRe,trip.etat,trip.timeDepartR,trip.timeArriveR,trip.vMax,trip.avanceRetard,trip.changement,trip.metaData,
-      trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.bus_id,String(busPrFromTrips.bus_id)
-    )
+      trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.bus_id,String(busPrFromTrips.bus_id),
+      String(ligneFromTrips.deleg.decdeleg), String(ligneFromTrips.centre.deccentre))
     
     return tripEvent;
     
@@ -120,10 +137,34 @@ const loadTrips = ()=>{
 
 }
 
+const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
+  try{
+    let regexCentreString ="";
+    let regexDelegString ="";
+    selectedCentreCrit.map(valuer=>regexCentreString= regexCentreString+valuer.id+"|")
+    selectedDelegCrit.map(valuer=>regexDelegString= regexDelegString+valuer.id+"|")
+    let regexCentre = RegExp(regexCentreString.substring(0,regexCentreString.length-1))
+    let regexDeleg = RegExp(regexDelegString.substring(0,regexDelegString.length-1))
+    let includedResources = myTrips.value.map(trip=>{
+      if (regexCentre.test(trip.centreId) && regexDeleg.test(trip.delegId))
+      return trip.resource;
+    })
+    myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>includedResources.includes(resource.id))
+    myResources.value = myResourcesCriteria.value;
+
+    centreCriteria=selectedCentreCrit;
+    delegCriteria = selectedDelegCrit;
+  }catch(e){
+    console.error("Aucune critère n'est selectionnée")
+  }
+}
+
+
 watch(getLoading, (isLoading)=>{
   if(!isLoading && getTrips.value.length>0){
     loadTrips();
-    myResources.value = resourceMode.value.getMode(selectedResourceValue.value).values()
+    myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
+    myResources.value = myResourcesCriteria.value
   }
 })
 

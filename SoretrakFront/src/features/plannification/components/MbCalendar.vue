@@ -3,15 +3,15 @@
     :view="myView"
     :data="myTripsProp"
     :resources="myBusesProp"
-    clickToCreate="double"
     :dragToCreate="true"
     :dragToMove="true"
-    :dragToResize="false"
-    :dragInTime="false"
-    :selectedDate="mySelectedDate"
+    :dragToResize="true"
+    :dragInTime="dargInTime"
+    :selectedDate="new Date(2024,2,2,0,0,0,0)"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
-    @event-deleted="handleEventDeleted">
+    @event-deleted="handleEventDeleted"
+    className="md-timeline-template">
       <template #day="day">
         <div class="md-date-header-day">
           {{ formatDate('DD/MM/YYYY', day.date) }}
@@ -25,11 +25,11 @@
       <template #resource="res">   
         <div v-if="resourceModeLocal=='Agents'" class="md-resource-header-template-cont">
           <div class="md-resource-header-template-name">
-            <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+            <img :src="getIcon.chauff" style="width: 24px;margin-left: 1px;" alt="">
               {{res.chauffId}}
           </div>
           <div class="md-resource-header-template-seats">
-            <img :src="getIcon" style="width: 24px;margin-left: 1px;" alt="">
+            <img :src="getIcon.recev" style="width: 32px;margin-left: 1px;" alt="">
             {{ res.recId}}
           </div>
         </div>
@@ -48,7 +48,13 @@
     <template #header>
       <div class="custom-header-left">
         <MbscCalendarNav />
-        <div class="empty-box"></div>
+        <div class="left-criteria">
+          <SearchCriteriaInput :critLbl="'Centre: '" :data="props.centreProp"
+          @update:criteria-query="filterCentre"/>
+          <SearchCriteriaInput :critLbl="'Délégation: '" :data="props.delegProp"
+          @update:criteria-query="filterDeleg"/>
+        </div>
+        <div class="small-empty-box"></div>
         <div class="card" style="flex-shrink: 0;">
           <SelectButton 
           v-model="resourceModeLocal" 
@@ -57,9 +63,9 @@
           @change="checkSelection()" 
           v-tooltip.bottom="'Choisir le type des resources à afficher'" />
         </div>
-        <div class="empty-box"></div>
+        <div class="small-empty-box"></div>
         <div>
-          <DatePicker v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
+          <DatePicker style="width: 8rem;" v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
         </div>
         <Button label="" disabled text>
           <template #icon>
@@ -67,7 +73,7 @@
           </template>
         </Button>
         <div>
-          <DatePicker v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
+          <DatePicker style="width: 8rem;" v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
         </div>
         <div class="small-empty-box"></div>
         <div>
@@ -106,6 +112,17 @@
           <p class="mbsc-margin mbsc-medium mbsc-italic mbsc-txt-muted">
             Adjust your filters or try a different keyword.
           </p>
+        </div>
+      </div>
+    </template>
+    <template #scheduleEvent="data">
+      <div
+        class="md-timeline-template-event" :style="{borderColor: data.color, background: data.color}"
+        :class="data.original.directionId==0 ? 'aller' : 'retour'" @click="console.debug(data)">
+        <div class="md-timeline-template-event-cont">
+          
+          <span class="md-timeline-template-title">{{ data.original.title }}</span>
+          <span class="md-timeline-template-time">{{data.start}} - {{ data.end }}</span>
         </div>
       </div>
     </template>
@@ -232,6 +249,7 @@ import SplitButton from 'primevue/splitbutton';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import DatePicker from 'primevue/datepicker';
+import SearchCriteriaInput from "./SearchCriteriaInput"
 import {
   MbscButton,
   MbscDatepicker,
@@ -248,7 +266,7 @@ import {
 import {ref, computed} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
 
-const emits = defineEmits(["update:search-query","update:resource-mode"])
+const emits = defineEmits(["update:criteria-query","update:search-query","update:resource-mode"])
 
 const props = defineProps({
 
@@ -259,17 +277,28 @@ const props = defineProps({
   myBusesProp:{
     type:Array,
     required:true
+  },
+  centreProp:{
+    type:Array,
+    required:true
+  },
+  delegProp:{
+    type:Array,
+    required:true
   }
 })
 
 const timeDebutLocal = ref(new Date())
 const timeArriveLocal = ref(new Date())
-
+const dargInTime = ref(false);
 const searchValueLocal = ref("");
 const resourceModeLocal = ref("Bus");
 const myTripsLocal = ref(props.myTripsProp)
 let previousResourceValue="Bus";
 const loading = ref(false);
+
+let selectedCentreCrit=[];
+let selectedDelegCrit=[];
 
 const items=[
   {
@@ -303,7 +332,10 @@ const getIcon = computed(()=>{
   else if(resourceModeLocal.value=="Lignes")
     return require("../../../assets/images/lignes.svg")
   else
-    return require("../../../assets/images/agent.svg");
+    return {
+      recev: require("../../../assets/images/receveur.svg"),
+      chauff: require("../../../assets/images/busDriver.svg")
+    };
 })
 
 const filter= ()=>{
@@ -317,6 +349,16 @@ const checkSelection =()=>{
     previousResourceValue = resourceModeLocal.value;
     emits("update:resource-mode", resourceModeLocal);
   }
+}
+
+const filterDeleg =(selectedCrit)=>{
+  selectedDelegCrit = selectedCrit;
+  emits("update:criteria-query", selectedCentreCrit, selectedDelegCrit);
+}
+
+const filterCentre =(selectedCrit)=>{
+  selectedCentreCrit = selectedCrit;
+  emits("update:criteria-query", selectedCentreCrit, selectedDelegCrit);
 }
 
 setOptions({
@@ -532,6 +574,7 @@ function handleEventClick(args) {
 
 function handleEventCreated(args) {
   createAddPopup(args.event, args.target)
+  
 }
 
 function deleteEvent(event) {
@@ -663,10 +706,6 @@ function handleSnackbarClose() {
   flex-shrink: 0;
 }
 
-.empty-box{
-  width: 46px;
-}
-
 .md-resource-header-template-cont {
   line-height: 50px;
   height: 100%;
@@ -722,4 +761,56 @@ function handleSnackbarClose() {
 .selected-dropDownItem{
   color: var(--simple-soretrak-color);
 }
+
+
+.md-timeline-template .mbsc-schedule-event.mbsc-ltr {
+  height: auto !important;
+}
+
+.md-timeline-template-event {
+  border: 1px solid transparent;
+  margin: 2px 0;
+}
+
+.md-timeline-template-event-cont {
+  font-size: 12px;
+  height: 32px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  padding-left: 5px;
+}
+
+
+.md-timeline-template-time {
+  margin: 0 5px;
+  font-size: 10px;
+  color: rgb(236, 236, 236);
+}
+
+.md-timeline-template .mbsc-timeline-column,
+.md-timeline-template .mbsc-timeline-header-column {
+  min-width: 100px;
+}
+
+.md-timeline-template .mbsc-timeline-resource,
+.md-timeline-template .mbsc-timeline-row {
+  min-height: 100px;
+}
+.aller{
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.retour{
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px; 
+}
+.left-criteria{
+  display: flex;
+  align-items: flex-end;
+}
+
 </style>
