@@ -1,7 +1,7 @@
 class TripEvent{
     constructor(id, start, end, resourceId, title, description, serviceId , directionId , haveret , timeNret ,
         tripNid , grp , chauffPr , chauffRe , etat , timeDepartR , timeArriveR ,
-        vMax , avanceRetard , changement , metaData , deValid , alert,recPr, recRe, ligneId, busRe, busPrId) {
+        vMax , avanceRetard , changement , metaData , deValid , alert,recPr, recRe, ligneId, busRe, busPrId, decdeleg,deccent) {
     this.id = id;
     this.start = start;
     this.end = end;
@@ -30,6 +30,8 @@ class TripEvent{
     this.ligneId = ligneId;
     this.busReId = busRe;
     this.busPrId = busPrId;
+    this.delegId = decdeleg;
+    this.centreId=deccent;
     // Mbscroll-specific settings
     this.allDay= false;
     this.bufferBefore= 0;
@@ -52,17 +54,3 @@ class TripEvent{
     }
 }
 export {TripEvent}
-
-/* 
-    {
-      id: trip.tripsId.trip_id,
-      start: moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(),
-      end: moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      title:trip.tripName,
-      resource:trip.busRe.bus_id,
-      description: "Description of event Test",
-      allDay: false,
-      bufferBefore: 0,
-      free: false,
-    }
-    */

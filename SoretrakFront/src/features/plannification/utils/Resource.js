@@ -23,7 +23,8 @@ class Ligne {
     decadmi,
     sae,
     type,
-    centre
+    centre,
+    color
   ) {
     this.id = idLigne;
     this.name = nomLigne;
@@ -49,6 +50,7 @@ class Ligne {
     this.sae = sae;
     this.type = type;
     this.centre = centre;
+    this.color = color;
   }
   equals(other) {
     return other instanceof Ligne && this.id === other.id;
@@ -77,7 +79,7 @@ class Bus{
 }
 
 class Agent{
-  constructor( decagenRec, decagenChauff, denageaRec, denageaChauff, denagenRec, denagenChauff,decdeleg) {
+  constructor( decagenRec, decagenChauff, denageaRec, denageaChauff, denagenRec, denagenChauff,decdeleg, color) {
     this.id = `${decagenChauff}|${decagenRec}`;
     this.nameChauffAr = denageaChauff;
     this.nameRecAr = denageaRec;
@@ -86,6 +88,7 @@ class Agent{
     this.decdeleg = decdeleg;
     this.chauffId = decagenChauff;
     this.recId = decagenRec
+    this.color = color;
   }
 
   get hash() {
