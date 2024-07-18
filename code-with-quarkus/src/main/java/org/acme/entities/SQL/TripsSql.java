@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.acme.Embeddable.TripsId;
 import org.acme.entities.Agent;
-import org.acme.entities.Bus;
 import org.acme.entities.DrLigne;
+import org.acme.entities.DrVehicule;
 import org.acme.entities.StopTimes;
 
 
@@ -27,9 +27,9 @@ public class TripsSql {
     
     private Integer grp;
     
-    private Bus busPr;
+    private DrVehicule busPr;
 
-    private Bus busRe;
+    private DrVehicule busRe;
     
     private Agent chauffPr;
     
@@ -73,14 +73,6 @@ public class TripsSql {
         return ligne;
     }
 
-    
-    public Bus getBusPr() {
-        return busPr;
-    }
-
-    public void setBusPr(Bus busPr) {
-        this.busPr = busPr;
-    }
 
     // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
 
@@ -154,14 +146,6 @@ public class TripsSql {
 
     public void setGrp(Integer grp) {
         this.grp = grp;
-    }
-
-    public Bus getBusRe() {
-        return busRe;
-    }
-
-    public void setBusRe(Bus busRe) {
-        this.busRe = busRe;
     }
 
     public Integer getChauffRe() {
@@ -269,7 +253,22 @@ public class TripsSql {
         this.alert = alert;
     }
 
-    
+    public DrVehicule getBusPr() {
+        return busPr;
+    }
+
+    public void setBusPr(DrVehicule busPr) {
+        this.busPr = busPr;
+    }
+
+    public DrVehicule getBusRe() {
+        return busRe;
+    }
+
+    public void setBusRe(DrVehicule busRe) {
+        this.busRe = busRe;
+    }
+
     public TripsSql(TripsId tripsId, Integer serviceId, Integer directionId, Date timeDepart, Integer haveret,
             String timeNret, Integer tripNid, Integer grp, Integer chauffRe,
              Integer recRe, Integer etat, Date timeDepartR, Date timeArriveR, Integer vMax,

@@ -1,30 +1,17 @@
 package org.acme.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "DRVEHIC")
 public class DrVehicule {
 
-    @Id
-    @Column(name = "DECODVH", nullable = false)
     private Long decodvh;
 
-    @Column(name = "DEMATRI", length = 26)
     private String dematri;
 
-    @Column(name = "DECATVH")
-    private int decatvh;
-
-    @Column(name = "DECCENT")
     private int deccent;
-
-    @Column(name = "DECDELEG")
+      
     private int decdeleg;
-
+    
+    private TypeVehicule decatvh;
+   
     public String getDematri() {
         return dematri;
     }
@@ -33,11 +20,11 @@ public class DrVehicule {
         this.dematri = dematri;
     }
 
-    public int getDecatvh() {
+    public TypeVehicule getDecatvh() {
         return decatvh;
     }
 
-    public void setDecatvh(int decatvh) {
+    public void setDecatvh(TypeVehicule decatvh) {
         this.decatvh = decatvh;
     }
 

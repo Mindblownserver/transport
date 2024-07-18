@@ -15,7 +15,9 @@ import org.acme.entities.DrCentre;
 import org.acme.entities.DrDeleg;
 import org.acme.entities.DrLigne;
 import org.acme.entities.DrStati;
+import org.acme.entities.DrVehicule;
 import org.acme.entities.StopTimes;
+import org.acme.entities.TypeVehicule;
 import org.acme.entities.SQL.TripsSql;
 import org.acme.repositories.DrCentreRepository;
 import org.acme.repositories.DrDelegRepository;
@@ -168,23 +170,53 @@ public class TripsSqlRepository {
         return stopTimesList;
     }
 
-    public Bus getBusById(int busId) throws SQLException{
-        Bus bus= new Bus();
+
+    public TypeVehicule getTypeVehiculeById(int typeId)throws SQLException{
+        TypeVehicule type = new TypeVehicule();
+        
+        String sql = "select * from DrCatVe where DECATVH=?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, typeId);
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        type.setId(typeId);
+                        type.setDeacate(rs.getString("DEACATE"));
+                        type.setDecateg(rs.getString("DECATEG"));
+                        type.setDenbplc(rs.getInt("DENBPLC"));
+                        type.setDureeVie(rs.getLong("DUREE_VIE"));
+                        type.setPrixIm(rs.getLong("PRIXIM"));
+                        type.setPrixKm(rs.getFloat("PRIXKM"));
+                        type.setColor(rs.getString("COLORTYPE"));
+                    }
+                }
+        }
+        return type;
+    }
+
+
+    public DrVehicule getVehiculeById(int vehiculeId) throws SQLException{
+        DrVehicule vehicule= new DrVehicule();
         Connection conn = dataSource.getConnection();
-        String sql = "select * from BUS where bus_id=?";
+        String sql = "select * from DrVehic where DECODVH=?";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1,busId);
+        ps.setInt(1,vehiculeId);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
-            bus.setBus_id(rs.getLong("BUS_ID"));
-            bus.setBus_type(rs.getString("BUS_TYPE"));
-            bus.setColor(rs.getString("Color"));
+            vehicule.setDecodvh((long)vehiculeId);
+            vehicule.setDematri(rs.getString("DEMATRI"));
+            vehicule.setDeccent(rs.getInt("DECCENT"));
+            vehicule.setDecdeleg(rs.getInt("DECDELEG"));
+            TypeVehicule typeVehic = getTypeVehiculeById(rs.getInt("DECATVH"));
+            vehicule.setDecatvh(typeVehic);
+            
         }
         rs.close();
         ps.close();
         conn.close();
-        return bus;
+        return vehicule;
     }
+
     
     public List<TripsSql> getTripsByDate(Date date)throws SQLException{
         List<TripsSql> tripsList=  new ArrayList<>();
@@ -221,8 +253,8 @@ public class TripsSqlRepository {
             rs.getInt("ALERT")
             );
             List<StopTimes> stopTimesList = getStopTimesByTripsId(rs.getDate("DEDATED"), rs.getInt("TRIP_ID"));
-            Bus busPr = getBusById(rs.getInt("BUS_PR"));
-            Bus busRe = getBusById(rs.getInt("BUS_RE"));
+            DrVehicule busPr = getVehiculeById(rs.getInt("BUS_PR"));
+            DrVehicule busRe = getVehiculeById(rs.getInt("BUS_RE"));
             DrLigne ligne = getLigneById(rs.getInt("DENUMLI"));
             Agent chauffPr = getAgentById(rs.getInt("CHAUFF_PR"));
             Agent recPr = getAgentById(rs.getInt("REC_PR"));
