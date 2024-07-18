@@ -101,7 +101,7 @@ const loadTrips = ()=>{
     let deleg = new DrDeleg(ligneFromTrips.deleg.decdeleg,ligneFromTrips.deleg.frdeleg,ligneFromTrips.deleg.ardeleg);
     let centre = new DrCentre(ligneFromTrips.centre.deccentre, ligneFromTrips.centre.delcentre,ligneFromTrips.centre.arcentre);
 
-    let bus = new Bus(String(busReFromTrips.bus_id),"bus "+ busReFromTrips.bus_id, busReFromTrips.color)
+    let bus = new Bus(String(busPrFromTrips.decodvh),busPrFromTrips.dematri, busPrFromTrips.decatvh.id, busPrFromTrips.decatvh.decateg, busPrFromTrips.decatvh.color)
     let ligne = new Ligne(String(ligneFromTrips.idLigne),ligneFromTrips.nomLigne,ligneFromTrips.priorite,
       ligneFromTrips.dectyta,ligneFromTrips.dectyeq,ligneFromTrips.denomla,ligneFromTrips.detatec,
       ligneFromTrips.detatea,ligneFromTrips.destatu,ligneFromTrips.denbrkm,
@@ -121,9 +121,9 @@ const loadTrips = ()=>{
     delegResourceArray.add(deleg);
     
     const tripEvent = new TripEvent(trip.tripsId.trip_id,moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(), moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      String(trip.busPr.bus_id),trip.tripName,"À rejeté",trip.serviceId,String(trip.directionId),trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
+      String(trip.busPr.decodvh),trip.tripName,"À rejeté",trip.serviceId,String(trip.directionId),trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
       String(chauffPrFromTrips.decagen),trip.chauffRe,trip.etat,trip.timeDepartR,trip.timeArriveR,trip.vMax,trip.avanceRetard,trip.changement,trip.metaData,
-      trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.bus_id,String(busPrFromTrips.bus_id),
+      trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.decodvh,String(busPrFromTrips.decodvh),
       String(ligneFromTrips.deleg.decdeleg), String(ligneFromTrips.centre.deccentre))
     
     return tripEvent;

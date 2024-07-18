@@ -63,10 +63,12 @@ class Ligne {
 }
 
 class Bus{
-    constructor(id, name, color){
+    constructor(id, name, typeId, typeLbl, color){
         this.id = id;
         this.name=name;
         this.color = color;
+        this.typeId= typeId;
+        this.typeLbl = typeLbl;
     }
     equals(other) {
         return other instanceof Bus && this.id === other.id;

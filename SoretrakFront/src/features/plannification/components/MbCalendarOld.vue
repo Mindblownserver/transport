@@ -19,7 +19,7 @@
       </template>
       <template #hour="day">
         <div class="md-date-header-hour">
-          {{ formatDate('HH:mm', day.date) }}
+          {{ formatDate('hh:mm A', day.date) }}
         </div>
       </template>
       <template #resource="res">   
@@ -117,7 +117,7 @@
     </template>
     <template #scheduleEvent="data">
       <div
-        class="md-timeline-template-event" :style="{ background: data.color}"
+        class="md-timeline-template-event" :style="{borderColor: data.color, background: data.color}"
         :class="data.original.directionId==0 ? 'aller' : 'retour'" @click="console.debug(data)">
         <div class="md-timeline-template-event-cont">
           
@@ -140,79 +140,57 @@
     @close="handlePopupClose"
   >
     <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Trip Data</div>
-      <MbscInput inputStyle="outline"  labelStyle="floating" placeholder="dedated,tripId" v-model="popupEventTitle" label="ID" />
-      <MbscInput inputStyle="outline"  labelStyle="floating" placeholder="service" label="service Id" />
+      <div class="mbsc-form-group-title">User Data</div>
+      <MbscInput label="Titlee" v-model="popupEventTitle" />
+      <MbscTextarea label="Description" v-model="popupEventDescription" />
+    </div>
+    <div class="mbsc-form-group">
+      
+
+      <MbscInput ref="startInput" label="Starts" />
+      <MbscInput ref="endInput" label="Ends" />
+      <!-- <template v-if="!popupEventAllDay">
+        <MbscDropdown v-model="popupTravelTime" label="Travel time">
+          <option value="0">None</option>
+          <option value="5">5 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120">2 hours</option>
+        </MbscDropdown>
+      </template> -->
       <MbscDatepicker
-        :controls="['time']"
-        inputStyle="outline" labelStyle="floating" label="Temps Du depart"
-        timeFormat="HH:mm"
+        v-model="popupEventDates"
+        select="range"
+        :controls="popupEventAllDay ? datePickerControls : datetimePickerControls"
+        :responsive="popupEventAllDay ? datePickerResponsive : datetimePickerResponsive"
+        :startInput="startInput"
+        :endInput="endInput"
       />
-      <MbscDatepicker
-        :controls="['time']"
-        inputStyle="outline" labelStyle="floating" label="Temps d'arrivé"
-        timeFormat="HH:mm"
-      />
-      <MbscSegmentedGroup color="warning">
-        <MbscSegmented value="0" >Aller</MbscSegmented>
-        <MbscSegmented value="1">Retour</MbscSegmented>
+      <div ref="colorElm" class="event-color-c" @click="openColorPicker($event)">
+        <div class="event-color-label">Color</div>
+        <div class="event-color" :style="{ background: popupEventColor }"></div>
+      </div>
+      <MbscSegmentedGroup v-model="popupEventStatus">
+        <MbscSegmented value="busy" v-model="popupEventStatus">Show as busy</MbscSegmented>
+        <MbscSegmented value="free" v-model="popupEventStatus">Show as free</MbscSegmented>
       </MbscSegmentedGroup>
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Vehicule Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="Code"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Matricule" label="Matricule" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Chauffeur Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="decAgent"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom prenom" label="Nom et Prenom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Receveur Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="decAgent"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom prenom" label="Nom et Prenom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Ligne Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="deNumLi"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom" label="Nom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
+      <div v-if="isEdit" class="mbsc-button-group">
+        <MbscButton
+          cssClass="mbsc-button-block"
+          color="danger"
+          variant="outline"
+          @click="handleDeleteClick"
+          >Delete event
+        </MbscButton>
+        <MbscSnackbar
+          :button="snackbarButton"
+          message="Event deleted"
+          :isOpen="isSnackbarOpen"
+          @close="handleSnackbarClose"
+        />
+      </div>
     </div>
   </MbscPopup>
 
@@ -274,14 +252,16 @@ import SelectButton from 'primevue/selectbutton';
 import DatePicker from 'primevue/datepicker';
 import SearchCriteriaInput from "./SearchCriteriaInput"
 import {
+  MbscButton,
   MbscDatepicker,
   MbscEventcalendar,
   MbscInput,
   MbscPopup,
   MbscSegmented,
   MbscSegmentedGroup,
+  MbscSnackbar,
+  MbscTextarea,
   MbscCalendarNav,
-  MbscSelect,
   setOptions /* localeImport */
 } from '@mobiscroll/vue'
 import {ref, computed} from 'vue'
@@ -444,11 +424,28 @@ const popupHeaderText = ref('')
 const isPopupOpen = ref(false)
 
 // Datepicker
+const startInput = ref(null)
+const endInput = ref(null)
 
+const datePickerControls = ['date']
+const datePickerResponsive = {
+  medium: {
+    controls: ['calendar'],
+    touchUi: false
+  }
+}
+const datetimePickerControls = ['datetime']
+const datetimePickerResponsive = {
+  medium: {
+    controls: ['calendar', 'time'],
+    touchUi: false
+  }
+}
 
 const colorAnchor = ref(null)
 const isColorPickerOpen = ref(false)
 const tempColor = ref('')
+const colorElm = ref(null)
 const colorPopup = ref(null)
 
 const colorButtons = [
@@ -473,7 +470,12 @@ const colorResponsive = {
 
 // Snackbar
 const isSnackbarOpen = ref(false)
-
+const snackbarButton = {
+  action: () => {
+    myTripsLocal.value = [...myTripsLocal.value, editedEvent]
+  },
+  text: 'Undo'
+}
 
 // Fills the popup with the event's data
 function fillPopup(event) {
@@ -586,6 +588,9 @@ function handleEventDeleted(args) {
   isPopupOpen.value = false
 }
 
+function handleDeleteClick() {
+  deleteEvent(editedEvent)
+}
 
 function handlePopupClose() {
   // Remove event if popup is cancelled
@@ -596,6 +601,12 @@ function handlePopupClose() {
   isColorPickerOpen.value = false
 }
 
+function openColorPicker(event) {
+  tempColor.value = popupEventColor.value || ''
+  colorAnchor.value = event.currentTarget
+  isColorPickerOpen.value = true
+}
+
 function handleColorClick(event) {
   const color = event.currentTarget.getAttribute('data-value')
   tempColor.value = color
@@ -604,6 +615,10 @@ function handleColorClick(event) {
     popupEventColor.value = color
     isColorPickerOpen.value = false
   }
+}
+
+function handleSnackbarClose() {
+  isSnackbarOpen.value = false
 }
 
 
@@ -789,7 +804,6 @@ function handleColorClick(event) {
 .aller{
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-
 }
 .retour{
   border-top-left-radius: 20px;

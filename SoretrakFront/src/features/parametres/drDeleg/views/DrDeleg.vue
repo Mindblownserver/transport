@@ -53,14 +53,14 @@ export default {
       return{
         deleg:[],
         columns: [
-          { field: 'dec_deleg', header: 'Id Delegation' },
-          { field: 'ar_deleg', header: 'Delegation AR' },
-          { field: 'fr_deleg', header: 'Delegation FR' },
+          { field: 'decdeleg', header: 'Id Delegation' },
+          { field: 'ardeleg', header: 'Delegation AR' },
+          { field: 'frdeleg', header: 'Delegation FR' },
         ],
         filters: {
-            dec_deleg: { value: null, matchMode: FilterMatchMode.EQUALS },
-            ar_deleg: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-            fr_deleg: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+            decdeleg: { value: null, matchMode: FilterMatchMode.EQUALS },
+            ardeleg: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+            frdeleg: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         },
         selectedRow:null
       }

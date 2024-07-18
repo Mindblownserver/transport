@@ -414,14 +414,14 @@ export default {
     data(){
       return{
         columns: [
-          { field: 'dec_centre', header: 'Id Centre' },
-          { field: 'ar_centre', header: 'Centre AR' },
-          { field: 'del_centre', header: 'Centre FR' },
+          { field: 'deccentre', header: 'Id Centre' },
+          { field: 'arcentre', header: 'Centre AR' },
+          { field: 'delcentre', header: 'Centre FR' },
         ],
         filters: {
-          dec_centre: { value: null, matchMode: FilterMatchMode.EQUALS },
-          ar_centre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-          del_centre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          deccentre: { value: null, matchMode: FilterMatchMode.EQUALS },
+          arcentre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          delcentre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         },
         selectedRow:null
       }
