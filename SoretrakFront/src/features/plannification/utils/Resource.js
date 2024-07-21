@@ -51,6 +51,8 @@ class Ligne {
     this.type = type;
     this.centre = centre;
     this.color = color;
+    this.eventDragInTime=false;
+    this.eventDragBetweenResources=false;
   }
   equals(other) {
     return other instanceof Ligne && this.id === other.id;
@@ -59,6 +61,9 @@ class Ligne {
   // Custom method to get a unique hash (using the id)
   get hash() {
     return this.id;
+  }
+  toString(){
+    return this.id
   }
 }
 
@@ -69,15 +74,19 @@ class Bus{
         this.color = color;
         this.typeId= typeId;
         this.typeLbl = typeLbl;
+        this.eventDragInTime=false;
     }
     equals(other) {
         return other instanceof Bus && this.id === other.id;
       }
     
       // Custom method to get a unique hash (using the id)
-      get hash() {
+    get hash() {
         return this.id;
       }
+    toString() {
+        return this.id;
+    }
 }
 
 class Agent{
@@ -91,6 +100,24 @@ class Agent{
     this.chauffId = decagenChauff;
     this.recId = decagenRec
     this.color = color;
+    this.eventDragInTime=false;
+  }
+
+  get hash() {
+    return this.id;
+  }
+  toString(){
+    return this.id
+  }
+}
+
+class SingleAgent{
+  constructor( decagen, denagea, denagen ,decdeleg, color) {
+    this.id = decagen
+    this.nameAr = denagea;   
+    this.name = denagen;
+    this.decdeleg = decdeleg;
+    this.color = color;
   }
 
   get hash() {
@@ -103,6 +130,14 @@ class ResourceArray {
       this.map = new Map();
     }
   
+    /**
+     * Get The resource object by its Value
+     * @param {String|Integer} key ID of desired Object
+     */
+    getResource(key){
+      return this.map.get(key);
+    }
+    
     add(resource) {
       this.map.set(resource.hash, resource);
     }
@@ -172,4 +207,4 @@ class ResourceModes {
       this._agentResources = value;
     }
 }  
-export {Bus, ResourceArray, ResourceModes,Ligne, Agent};
+export {Bus, SingleAgent,ResourceArray, ResourceModes,Ligne, Agent};

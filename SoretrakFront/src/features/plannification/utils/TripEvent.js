@@ -1,5 +1,5 @@
 class TripEvent{
-    constructor(id, start, end, resourceId, title, description, serviceId , directionId , haveret , timeNret ,
+    constructor(id, start, end, resourceId, title, serviceId , directionId , haveret , timeNret ,
         tripNid , grp , chauffPr , chauffRe , etat , timeDepartR , timeArriveR ,
         vMax , avanceRetard , changement , metaData , deValid , alert,recPr, recRe, ligneId, busRe, busPrId, decdeleg,deccent) {
     this.id = id;
@@ -7,7 +7,6 @@ class TripEvent{
     this.end = end;
     this.resource = resourceId;
     this.title = title;
-    this.description = description;
     this.serviceId = serviceId;
     this.directionId = directionId;
     this.haveret = haveret;
