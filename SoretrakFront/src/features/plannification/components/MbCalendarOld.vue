@@ -6,11 +6,12 @@
     :dragToCreate="true"
     :dragToMove="true"
     :dragToResize="true"
-    :dragInTime="dargInTime"
+    :dragInTime="false"
     :selectedDate="new Date(2024,2,2,0,0,0,0)"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted"
+    @event-drag-end="handleEventDragEnd"
     className="md-timeline-template">
       <template #day="day">
         <div class="md-date-header-day">
@@ -621,7 +622,9 @@ function handleSnackbarClose() {
   isSnackbarOpen.value = false
 }
 
-
+function handleEventDragEnd(args){
+  console.debug(args.resource)
+}
 </script>
 
 <style>
