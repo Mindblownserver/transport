@@ -1,16 +1,17 @@
 <template>
   <MbscEventcalendar
     :view="myView"
-    :data="myTripsProp"
+    :data="myTripsLocal"
     :resources="myBusesProp"
     :dragToCreate="true"
     :dragToMove="true"
     :dragToResize="true"
-    :dragInTime="dargInTime"
+    :dragInTime="false"
     :selectedDate="new Date(2024,2,2,0,0,0,0)"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted"
+    @event-drag-end="handleEventDragEnd"
     className="md-timeline-template">
       <template #day="day">
         <div class="md-date-header-day">
@@ -118,7 +119,7 @@
     <template #scheduleEvent="data">
       <div
         class="md-timeline-template-event" :style="{ background: data.color}"
-        :class="data.original.directionId==0 ? 'aller' : 'retour'" @click="console.debug(data)">
+        :class="data.original.directionId==0 ? 'aller' : 'retour'">
         <div class="md-timeline-template-event-cont">
           
           <span class="md-timeline-template-title">{{ data.original.title }}</span>
@@ -128,141 +129,7 @@
     </template>
   </MbscEventcalendar>  
   
-  <MbscPopup
-    display="bottom"
-    :contentPadding="false"
-    :fullScreen="true"
-    :isOpen="isPopupOpen"
-    :responsive="myResponsive"
-    :anchor="popupAnchor"
-    :buttons="popupButtons"
-    :headerText="popupHeaderText"
-    @close="handlePopupClose"
-  >
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Trip Data</div>
-      <MbscInput inputStyle="outline"  labelStyle="floating" placeholder="dedated,tripId" v-model="popupEventTitle" label="ID" />
-      <MbscInput inputStyle="outline"  labelStyle="floating" placeholder="service" label="service Id" />
-      <MbscDatepicker
-        :controls="['time']"
-        inputStyle="outline" labelStyle="floating" label="Temps Du depart"
-        timeFormat="HH:mm"
-      />
-      <MbscDatepicker
-        :controls="['time']"
-        inputStyle="outline" labelStyle="floating" label="Temps d'arrivé"
-        timeFormat="HH:mm"
-      />
-      <MbscSegmentedGroup color="warning">
-        <MbscSegmented value="0" >Aller</MbscSegmented>
-        <MbscSegmented value="1">Retour</MbscSegmented>
-      </MbscSegmentedGroup>
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Vehicule Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="Code"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Matricule" label="Matricule" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Chauffeur Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="decAgent"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom prenom" label="Nom et Prenom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Receveur Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="decAgent"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom prenom" label="Nom et Prenom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-    <div class="mbsc-form-group">
-      <div class="mbsc-form-group-title">Ligne Data</div>
-      <MbscSelect
-      :data="['Data1','Data2']"
-      :itemHeight="64"
-      label="deNumLi"
-      display="anchored"
-      inputStyle="outline"
-      labelStyle="floating"
-      placeholder="Please select...">
-      </MbscSelect>
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="nom" label="Nom" />
-      <MbscInput inputStyle="outline" disabled labelStyle="floating" placeholder="Type" label="Type" />
-    </div>
-  </MbscPopup>
-
-  <MbscPopup
-    ref="colorPopup"
-    display="bottom"
-    :anchor="colorAnchor"
-    :contentPadding="false"
-    :showArrow="false"
-    :showOverlay="false"
-    :buttons="colorButtons"
-    :responsive="colorResponsive"
-    :isOpen="isColorPickerOpen"
-  >
-    <div class="crud-color-row">
-      <div v-for="(color, i) in colors" :key="color.value">
-        <div
-          v-if="i < 5"
-          class="crud-color-c"
-          :class="{ selected: tempColor === color }"
-          :data-value="color"
-          @click="handleColorClick($event)"
-        >
-         <!-- <span>{{ i }}</span> -->  <!-- This lets us add text to colors -->
-        <!-- Useful when attributing color to specific types, not necessairly existant in database -->
-        
-          <div
-            class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check"
-            :style="{ background: color }"
-          ></div>
-        </div>
-      </div>
-    </div>
-    <div class="crud-color-row">
-      <div v-for="(color, i) in colors" :key="color.value">
-        <div
-          v-if="i >= 5"
-          class="crud-color-c"
-          :class="{ selected: tempColor === color }"
-          :data-value="color"
-          @click="handleColorClick($event)"
-        >
-          <div
-            class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check"
-            :style="{ background: color }"
-          ></div>
-        </div>
-      </div>
-    </div>
-  </MbscPopup>
+  <MbPopup ref="myPopup" @cancelEventCreation="deleteEvent"/>
 </template>
 
 
@@ -273,18 +140,13 @@ import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import DatePicker from 'primevue/datepicker';
 import SearchCriteriaInput from "./SearchCriteriaInput"
+import MbPopup from './MbEventPopup.vue';
 import {
-  MbscDatepicker,
   MbscEventcalendar,
-  MbscInput,
-  MbscPopup,
-  MbscSegmented,
-  MbscSegmentedGroup,
   MbscCalendarNav,
-  MbscSelect,
   setOptions /* localeImport */
 } from '@mobiscroll/vue'
-import {ref, computed} from 'vue'
+import {ref, computed, watch} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
 
 const emits = defineEmits(["update:criteria-query","update:search-query","update:resource-mode"])
@@ -311,12 +173,13 @@ const props = defineProps({
 
 const timeDebutLocal = ref(new Date())
 const timeArriveLocal = ref(new Date())
-const dargInTime = ref(false);
 const searchValueLocal = ref("");
 const resourceModeLocal = ref("Bus");
-const myTripsLocal = ref(props.myTripsProp)
+const myTripsLocal = ref(props.myTripsProp) // the problem is here. Temporary fix is setting this into toRefs(prop, "myTripsProp")
 let previousResourceValue="Bus";
 const loading = ref(false);
+
+const myPopup = ref()
 
 let selectedCentreCrit=[];
 let selectedDelegCrit=[];
@@ -389,289 +252,50 @@ setOptions({
   theme: "material"
 })
 
-// MbScroll settings DO NOT TOUCH
-
-
-// Color picker
-let colors = [
-  '#ffeb3c',
-  "#00ff9f",
-  '#ff9900',
-  '#f44437',
-  '#ea1e63',
-  '#9c26b0',
-  '#3f51b5',
-  "#9f00ff",
-  "#ff0060",
-  "#00e0ff",
-  '#ff6f1d',
-  "#005678",
-  '#009788',
-  '#4baf4f',
-  '#7e5d4e'
-]
-
 const myView = {
   timeline: {
     type: 'day',
     timeCellStep: 30,
   }
 }
-const isEdit = ref(false)
-const popupEventColor = ref('')
-const mySelectedDate = ref()
-let addedEvent = null
-let editedEvent = null
 
-// Popup
-const myResponsive = {
-  medium: {
-    display: 'anchored',
-    width: 400,
-    fullScreen: false,
-    touchUi: false
-  }
-}
-const popupEventTitle = ref('')
-const popupEventDescription = ref('')
-const popupEventDates = ref([])
-const popupEventAllDay = ref(false)
-const popupTravelTime = ref(0)
-const popupEventStatus = ref('free')
-const popupAnchor = ref(null)
-const popupButtons = ref([])
-const popupHeaderText = ref('')
-const isPopupOpen = ref(false)
-
-// Datepicker
-
-
-const colorAnchor = ref(null)
-const isColorPickerOpen = ref(false)
-const tempColor = ref('')
-const colorPopup = ref(null)
-
-const colorButtons = [
-  'cancel',
-  {
-    text: 'Set',
-    keyCode: 'enter',
-    handler: () => {
-      popupEventColor.value = tempColor.value
-      isColorPickerOpen.value = false
-    },
-    cssClass: 'mbsc-popup-button-primary'
-  }
-]
-
-const colorResponsive = {
-  medium: {
-    display: 'anchored',
-    buttons: {}
-  }
-}
-
-// Snackbar
-const isSnackbarOpen = ref(false)
-
-
-// Fills the popup with the event's data
-function fillPopup(event) {
-  popupEventTitle.value = event.title
-  popupEventDescription.value = event.description
-  popupEventAllDay.value = event.allDay || false
-  popupTravelTime.value = event.bufferBefore || 0
-  popupEventDates.value = [event.start, event.end]
-  popupEventStatus.value = event.status || 'busy'
-  popupEventColor.value = event.color || ''
-}
-
-function createAddPopup(event, target) {
-  // Hide delete button inside add popup
-  isEdit.value = false
-
-  addedEvent = event
-
-  // Set popup header text and buttons
-  popupHeaderText.value = 'New event'
-  popupButtons.value = [
-    'cancel',
-    {
-      text: 'Add',
-      keyCode: 'enter',
-      handler: () => {
-        const newEvent = {
-          id: addedEvent.id,
-          title: popupEventTitle.value,
-          description: popupEventDescription.value,
-          allDay: popupEventAllDay.value,
-          bufferBefore: popupTravelTime.value,
-          status: popupEventStatus.value,
-          start: popupEventDates.value[0],
-          end: popupEventDates.value[1],
-          color: popupEventColor.value,
-          resource: event.resource
-        }
-        myTripsLocal.value = [...myTripsLocal.value, newEvent]
-        mySelectedDate.value = popupEventDates.value[0]
-        isPopupOpen.value = false
-      },
-      cssClass: 'mbsc-popup-button-primary'
-    }
-  ]
-  popupAnchor.value = target
-
-  fillPopup(event)
-  isPopupOpen.value = true
-}
-
-function createEditPopup(event, target) {
-  // Show delete button inside edit popup
-  isEdit.value = true
-
-  editedEvent = event
-  addedEvent = null
-
-  popupHeaderText.value = 'Edit event'
-
-  // Set popup header text and buttons
-  popupButtons.value = [
-    'cancel',
-    {
-      text: 'Save',
-      keyCode: 'enter',
-      handler: () => {
-        const updatedEvent = editedEvent
-        updatedEvent.title = popupEventTitle.value
-        updatedEvent.description = popupEventDescription.value
-        updatedEvent.allDay = popupEventAllDay.value
-        updatedEvent.bufferBefore = popupTravelTime.value
-        updatedEvent.start = popupEventDates.value[0]
-        updatedEvent.end = popupEventDates.value[1]
-        updatedEvent.color = popupEventColor.value
-        updatedEvent.status = popupEventStatus.value
-        // Update event
-        let newEventList = [...myTripsLocal.value]
-        const index = newEventList.findIndex((x) => x.id === updatedEvent.id)
-        newEventList[index] = updatedEvent
-        myTripsLocal.value = newEventList
-
-        isPopupOpen.value = false
-      },
-      cssClass: 'mbsc-popup-button-primary'
-    }
-  ]
-  popupAnchor.value = target
-  fillPopup(event)
-  isPopupOpen.value = true
-}
-
-// Calendar events
 function handleEventClick(args) {
-  createEditPopup(args.event, args.domEvent.currentTarget)
+  myPopup.value.createEditPopup(args.event, args.domEvent.currentTarget,resourceModeLocal.value)
 }
 
 function handleEventCreated(args) {
-  createAddPopup(args.event, args.target)
-  
+  myPopup.value.createAddPopup(args.event, args.target,resourceModeLocal.value)
 }
 
 function deleteEvent(event) {
   myTripsLocal.value = myTripsLocal.value.filter((item) => item.id !== event.id)
-  isSnackbarOpen.value = true
 }
 
 function handleEventDeleted(args) {
   deleteEvent(args.event)
-  isPopupOpen.value = false
+  myPopup.value.isPopupOpen.value = false
 }
 
-
-function handlePopupClose() {
-  // Remove event if popup is cancelled
-  if (addedEvent) {
-    deleteEvent(addedEvent)
-  }
-  isPopupOpen.value = false
-  isColorPickerOpen.value = false
-}
-
-function handleColorClick(event) {
-  const color = event.currentTarget.getAttribute('data-value')
-  tempColor.value = color
-
-  if (!colorPopup.value.instance.s.buttons.length) {
-    popupEventColor.value = color
-    isColorPickerOpen.value = false
+function handleEventDragEnd(args){
+  if(resourceModeLocal.value=="Bus")
+    args.event.busPrId = args.resource;
+  else if(resourceModeLocal.value == "Ligne")
+    args.event.ligneId = args.resource;
+  else{
+    const chauffRecArr = args.resource.split("|")
+    args.event.recPr = chauffRecArr[1];
+    args.event.chauffPr = chauffRecArr[0]
   }
 }
 
+
+watch(()=>props.myTripsProp, (newValue)=>{
+  myTripsLocal.value = newValue;
+})
 
 </script>
 
 <style>
-.event-color-c {
-  display: flex;
-  margin: 16px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.event-color-label {
-  flex: 1 0 auto;
-}
-
-.event-color {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  margin-right: 10px;
-  margin-left: 240px;
-  background: #5ac8fa;
-}
-
-.crud-color-row {
-  display: flex;
-  justify-content: center;
-  margin: 5px;
-}
-
-.crud-color-c {
-  padding: 3px;
-  margin: 2px;
-}
-
-.crud-color {
-  position: relative;
-  min-width: 46px;
-  min-height: 46px;
-  margin: 2px;
-  cursor: pointer;
-  border-radius: 23px;
-  background: #5ac8fa;
-}
-
-.crud-color-c.selected,
-.crud-color-c:hover {
-  box-shadow: inset 0 0 0 3px #007bff;
-  border-radius: 48px;
-}
-
-.crud-color:before {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -10px;
-  margin-left: -10px;
-  color: #f7f7f7;
-  font-size: 20px;
-  text-shadow: 0 0 3px #000;
-  display: none;
-}
-
-.crud-color-c.selected .crud-color:before {
-  display: block;
-}
 
 .md-resource-header-template-title{
   display: inline-block;

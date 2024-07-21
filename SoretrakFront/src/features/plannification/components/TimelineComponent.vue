@@ -111,7 +111,7 @@ const loadTrips = ()=>{
       ligneFromTrips.decClie,ligneFromTrips.decAdmi,ligneFromTrips.sae,
       ligneFromTrips.type,ligneFromTrips.centre, ligneFromTrips.color
     );
-    let agent = new Agent(recPrFromTrips.decagen,chauffPrFromTrips.decagen,recPrFromTrips.denagea,
+    let agent = new Agent(String(recPrFromTrips.decagen),String(chauffPrFromTrips.decagen),recPrFromTrips.denagea,
     chauffPrFromTrips.denagea,recPrFromTrips.denagen,chauffPrFromTrips.denagen,chauffPrFromTrips.decdeleg, chauffPrFromTrips.color)
     
     agentResourceArray.add(agent);
@@ -121,7 +121,7 @@ const loadTrips = ()=>{
     delegResourceArray.add(deleg);
     
     const tripEvent = new TripEvent(trip.tripsId.trip_id,moment(trip.timeDepart,"DD/MM/YYYY HH:mm:ss").toDate(), moment(trip.finalStopTime,"DD/MM/YYYY HH:mm:ss").toDate(),
-      String(trip.busPr.decodvh),trip.tripName,"À rejeté",trip.serviceId,String(trip.directionId),trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
+      String(trip.busPr.decodvh),trip.tripName,trip.serviceId,String(trip.directionId),trip.haveret,trip.timeNret,trip.tripNid,trip.grp,
       String(chauffPrFromTrips.decagen),trip.chauffRe,trip.etat,trip.timeDepartR,trip.timeArriveR,trip.vMax,trip.avanceRetard,trip.changement,trip.metaData,
       trip.deValid,trip.alert,String(recPrFromTrips.decagen),trip.recRe,String(ligneFromTrips.idLigne),busReFromTrips.decodvh,String(busPrFromTrips.decodvh),
       String(ligneFromTrips.deleg.decdeleg), String(ligneFromTrips.centre.deccentre))
@@ -132,9 +132,11 @@ const loadTrips = ()=>{
   resourceMode.value.busResources= busResourceArray;
   resourceMode.value.ligneResources= ligneResourceArray;
   resourceMode.value.agentResources = agentResourceArray;
-  
   myTrips.value = trips;
 
+  store.commit("tripsModule/setLignes", ligneResourceArray);
+  store.commit("tripsModule/setVehicules", busResourceArray);
+  store.commit("tripsModule/setAgents", agentResourceArray);
 }
 
 const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
