@@ -12,11 +12,14 @@ import org.acme.repositories.SQL.TripsSqlRepository;
 import org.jboss.logging.Logger;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 
 @Path("/api/trips")
 public class TripsResources {
@@ -39,6 +42,7 @@ public class TripsResources {
         }
 
     }
+    
     @GET
     @Path("/date/{date}")
     public Response getTripsByDate(@PathParam("date") String date) throws ParseException {
@@ -54,32 +58,5 @@ public class TripsResources {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-/* 
-    @GET
-    @Path("/test")
-    public Response getTripsTest(){
-        try{
-            List<TripsSql> trips = tripsSqlRepo.getTripsByDate();
-            log.debug("Trips=" + trips);
-            return Response.ok(trips).build();
-        }catch(Exception e){
-            log.error(e);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        
-    } */
    
-    // dev only
-    @GET
-    @Path("/{row}")
-    public Response getTripsByRow(@PathParam("row") int row) throws ParseException {
-        //List<Trips> listStops=tripsRepo.findAll().page(1, row).list();
-        List<Trips> listStops= tripsRepo.getTripsWithLastStop(row);
-        if(listStops.size()>0){
-            return Response.ok(listStops).build();
-        }else {
-            
-            return Response.status(Status.NOT_FOUND).build();
-        }
-    }
 }
