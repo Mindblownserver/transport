@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,17 +15,17 @@ import jakarta.persistence.FetchType;
 
 
 @Entity
-public class DrLigne{
+public class DrLigne extends PanacheEntityBase{
     @Id
     @Column(name="DENUMLI")
     private Long deNumLi;
-
+   
     @Column(name="DENOMLI")
     private String deNomLi;
-
+   
     @Column(name="DEPRIOR")
     private Long dePrior;
-
+   
     @Column(name="DECTYTA")
     private String decTyTa;
 
@@ -33,75 +34,79 @@ public class DrLigne{
 
     @Column(name="DENOMLA")
     private String deNomLa;
-
+   
     @Column(name="DEDATEC")
     private Date deTaTec;
-
+   
     @Column(name="DEDATEA")
     private Date deTaTea;
-
+   
     @Column(name="DESTATU")
     private String deStatu;
-
+   
     @Column(name="DENBRKM")
     private Integer deNbrkm;
-
+    
     @Column(name="DEACTIF")
     private Integer deActif;
-
+    
     @Column(name="AGENCY_ID")
     private String agencyId;
-
+    
     @Column(name="ROUTE_TYPE")
     private Long routeType;
-
+    
     @Column(name="ROUTE_URL")
     private String routeUrl;
-
+    
     @Column(name="ROUTE_COLOR")
     private Integer routeColor;
-
+    
     @Column(name="ROUTE_TEXT_COLOR")
     private Long routeTextColor;
-
+    
     @Column(name="DENOMLI_RET")
     private String deNomLiRet;
-
+    
     @Column(name="INTEG_BI")
     private Integer integBi;
-
+    
     @Column(name="DECCLIE")
     private Long decClie;
-
+    
     @Column(name="DECADMI")
     private Integer decAdmi;
-
+    
     @Column(name="SAE")
     private Integer sae;
-
-    @ManyToOne
-    @JoinColumn(name="DECDELEG")
-    private DrDeleg decDeleg;
-
+    
     @ManyToOne
     @JoinColumn(name="DECTYLI")
     private DrTypeLigne type;
-
+    
     @ManyToOne
     @JoinColumn(name="DECCENT")
     private DrCentre centre;
-
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
+    
+    @ManyToOne
+    @JoinColumn(name="DecDeleg")
+    private DrDeleg deleg;
+    
+    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SHAPS> shapList;
 
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
     @JsonManagedReference
+    private List<DrItin> itinList;
+
+    @OneToMany(mappedBy="ligne", fetch=FetchType.LAZY)
     private List<Trips> tripsList;
 
     public Long getIdLigne() {
         return deNumLi;
     }
+
 
     public void setIdLigne(Long deNumLi) {
         this.deNumLi = deNumLi;
@@ -177,6 +182,15 @@ public class DrLigne{
 
     public void setDENBRKM(Integer deNbrkm) {
         this.deNbrkm = deNbrkm;
+    }
+
+
+    public DrDeleg getDeleg() {
+        return deleg;
+    }
+
+    public void setDeleg(DrDeleg deleg) {
+        this.deleg = deleg;
     }
 
     public Integer getDEACTIF() {
@@ -287,10 +301,10 @@ public class DrLigne{
     }
 
     public DrLigne(Long deNumLi, String deNomLi, Long dePrior, String decTyTa, Integer decTyEq, String deNomLa,
-                   Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, Integer deActif,
-                   String agencyId, Long routeType, String routeUrl, Integer routeColor, Long routeTextColor,
-                   String deNomLiRet, Integer integBi, Long decClie, Integer decAdmi, Integer sae, DrTypeLigne type,
-                   DrCentre centre) {
+            Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, DrDeleg decDeleg, Integer deActif,
+            String agencyId, Long routeType, String routeUrl, Integer routeColor, Long routeTextColor,
+            String deNomLiRet, Integer integBi, Long decClie, Integer decAdmi, Integer sae, DrTypeLigne type,
+            DrCentre centre) {
         this.deNumLi = deNumLi;
         this.deNomLi = deNomLi;
         this.dePrior = dePrior;
@@ -301,6 +315,7 @@ public class DrLigne{
         this.deTaTea = deTaTea;
         this.deStatu = deStatu;
         this.deNbrkm = deNbrkm;
+        this.deleg = decDeleg;
         this.deActif = deActif;
         this.agencyId = agencyId;
         this.routeType = routeType;
@@ -315,6 +330,6 @@ public class DrLigne{
         this.type = type;
         this.centre = centre;
     }
-
-
+    
+    
 }

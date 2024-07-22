@@ -1,40 +1,51 @@
 package org.acme.entities;
 
+import java.util.List;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
-public class DrCentre {
+public class DrCentre extends PanacheEntityBase {
     @Id
     @Column(name="DECCENT")
-    private Long dec_centre;
+    private Long decCentre;
+    
     @Column(name="DELCENT")
-    private String del_centre;
+    private String delCent;
+    
     @Column(name="AR_DELCENT")
-    private String ar_centre;
+    private String arDelCent;
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "centre")
+    private List<DrLigne> lignes;
+
     public Long getDec_centre() {
-        return dec_centre;
+        return decCentre;
     }
-    public void setDec_centre(Long dec_centre) {
-        this.dec_centre = dec_centre;
+    public void setDec_centre(Long decCentre) {
+        this.decCentre = decCentre;
     }
     public String getDel_centre() {
-        return del_centre;
+        return delCent;
     }
-    public void setDel_centre(String del_centre) {
-        this.del_centre = del_centre;
+    public void setDel_centre(String delCent) {
+        this.delCent = delCent;
     }
     public String getAr_centre() {
-        return ar_centre;
+        return arDelCent;
     }
-    public void setAr_centre(String ar_centre) {
-        this.ar_centre = ar_centre;
+    public void setAr_centre(String arDelCent) {
+        this.arDelCent = arDelCent;
     }
-    public DrCentre(Long dec_centre, String del_centre, String ar_centre) {
-        this.dec_centre = dec_centre;
-        this.del_centre = del_centre;
-        this.ar_centre = ar_centre;
+    public DrCentre(Long decCentre, String delCent, String arDelCent) {
+        this.decCentre = decCentre;
+        this.delCent = delCent;
+        this.arDelCent = arDelCent;
     }
     public DrCentre() {
     }

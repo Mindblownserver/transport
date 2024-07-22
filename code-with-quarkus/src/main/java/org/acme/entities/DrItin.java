@@ -1,10 +1,10 @@
-
 package org.acme.entities;
 
 import org.acme.Embeddable.DrItinIdRecord;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class DrItin {
+public class DrItin extends PanacheEntityBase{
     @EmbeddedId
     private DrItinIdRecord id;
 
@@ -27,7 +27,7 @@ public class DrItin {
 
     @Column(name="DEDATES")
     private String deDates; // peut ne pas être avec les horraires
-
+    
     @Column(name="DETARIF")
     private Integer deTarif;
 
@@ -35,6 +35,10 @@ public class DrItin {
     @JoinColumn(name="DECSTAT")
     @JsonBackReference
     private DrStati station;
+
+    @ManyToOne
+    @JoinColumn(name="deNumLi", insertable = false, updatable = false)
+    private DrLigne ligne;
 
     public DrItinIdRecord getId() {
         return id;
@@ -105,5 +109,5 @@ public class DrItin {
         this.station = station;
     }
 
-
+    
 }

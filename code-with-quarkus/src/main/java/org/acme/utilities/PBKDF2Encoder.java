@@ -1,14 +1,13 @@
 package org.acme.utilities;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
+import jakarta.enterprise.context.RequestScoped;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import jakarta.enterprise.context.RequestScoped;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 @RequestScoped
 public class PBKDF2Encoder {

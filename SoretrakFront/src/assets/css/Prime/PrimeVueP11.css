@@ -1,0 +1,85 @@
+.p-toggleswitch {
+  display:inline-block;
+  width:var(--p-toggleswitch-width);
+  height:var(--p-toggleswitch-height);
+}
+.p-toggleswitch-input {
+  cursor:pointer;
+  appearance:none;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  padding:0;
+  margin:0;
+  opacity:0;
+  z-index:1;
+  outline:0 none;
+  border-radius:var(--p-toggleswitch-border-radius);
+}
+.p-toggleswitch-slider {
+  display:inline-block;
+  cursor:pointer;
+  width:100%;
+  height:100%;
+  border-width:var(--p-toggleswitch-border-width);
+  border-style:solid;
+  border-color:var(--p-toggleswitch-border-color);
+  background:var(--p-toggleswitch-background);
+  transition:background var(--p-toggleswitch-transition-duration),color var(--p-toggleswitch-transition-duration),border-color var(--p-toggleswitch-transition-duration),outline-color var(--p-toggleswitch-transition-duration),box-shadow var(--p-toggleswitch-transition-duration);
+  border-radius:var(--p-toggleswitch-border-radius);
+  outline-color:transparent;
+  box-shadow:var(--p-toggleswitch-shadow);
+}
+.p-toggleswitch-slider:before {
+  position:absolute;
+  content:"";
+  top:50%;
+  background:var(--p-toggleswitch-handle-background);
+  width:var(--p-toggleswitch-handle-size);
+  height:var(--p-toggleswitch-handle-size);
+  left:var(--p-toggleswitch-gap);
+  margin-top:calc(-1 * calc(var(--p-toggleswitch-handle-size) / 2));
+  border-radius:var(--p-toggleswitch-handle-border-radius);
+  transition:background var(--p-toggleswitch-transition-duration),left var(--p-toggleswitch-slide-duration);
+}
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+  background:var(--p-toggleswitch-checked-background);
+  border-color:var(--p-toggleswitch-checked-border-color);
+}
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider:before {
+  background:var(--p-toggleswitch-handle-checked-background);
+  left:calc(var(--p-toggleswitch-width) - calc(var(--p-toggleswitch-handle-size) + var(--p-toggleswitch-gap)));
+}
+.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-slider {
+  background:var(--p-toggleswitch-hover-background);
+  border-color:var(--p-toggleswitch-hover-border-color);
+}
+.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-slider:before {
+  background:var(--p-toggleswitch-handle-hover-background);
+}
+.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-slider {
+  background:var(--p-toggleswitch-checked-hover-background);
+  border-color:var(--p-toggleswitch-checked-hover-border-color);
+}
+.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-slider:before {
+  background:var(--p-toggleswitch-handle-checked-hover-background);
+}
+.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:focus-visible) .p-toggleswitch-slider {
+  box-shadow:var(--p-toggleswitch-focus-ring-shadow);
+  outline:var(--p-toggleswitch-focus-ring-width) var(--p-toggleswitch-focus-ring-style) var(--p-toggleswitch-focus-ring-color);
+  outline-offset:var(--p-toggleswitch-focus-ring-offset);
+}
+.p-toggleswitch.p-invalid > .p-toggleswitch-slider {
+  border-color:var(--p-toggleswitch-invalid-border-color);
+}
+.p-toggleswitch.p-disabled {
+  opacity:1;
+}
+.p-toggleswitch.p-disabled .p-toggleswitch-slider {
+  background:var(--p-toggleswitch-disabled-background);
+}
+.p-toggleswitch.p-disabled .p-toggleswitch-slider:before {
+  background:var(--p-toggleswitch-handle-disabled-background);
+}

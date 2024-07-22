@@ -1,22 +1,26 @@
 package org.acme.resources;
 
-
+import java.time.LocalTime;
 import java.util.List;
 
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.*;
 import org.acme.entities.*;
-import org.acme.repositories.DrCentreRepo;
-import org.acme.repositories.DrDelegRepo;
-import org.acme.repositories.DrItinRepo;
-import org.acme.repositories.DrLigneRepo;
-import org.acme.repositories.DrStatiRepo;
-import org.acme.repositories.DrTypeLigneRepo;
-import org.acme.repositories.SHAPSRepo;
-import org.acme.repositories.StopTimesRepo;
 
+import org.acme.repositories.*;
+
+import org.acme.repositories.SQL.AgentSqlRepository;
+import org.acme.repositories.SQL.DrVehiculeSqlRepository;
+import org.jboss.logging.Logger;
+
+import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -26,81 +30,102 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ParamResources {
     @Inject
-    DrDelegRepo delegRepo;
-    
+    DrDelegRepository delegRespository;
 
     @Inject
-    DrTypeLigneRepo tpliRepo;
-
-
-    @Inject
-    DrLigneRepo ligneRepo;
-
-    @Inject
-    SHAPSRepo shapsRepo;
+    DrTypeLigneRepository typeLigneRespository;
 
 
     @Inject
-    DrItinRepo itinRepo;
+    DrLigneRepository ligneRespository;
 
     @Inject
-    DrStatiRepo statRepo;
+    SHAPSRepository shapeRespository;
 
     @Inject
-    DrCentreRepo centreRepo;
+    DrItinRepository itinRespository;
 
-    /*
-     * CENTRE
-     */
+    @Inject
+    DrStatiRepository stateRespository;
 
+    @Inject
+    DrCentreRepository centreRespository;
+
+    @Inject
+    BusRepository busRespository;
+
+    @Inject
+    AgentSqlRepository agentSqlRepository;
+
+    @Inject
+    AgentRepository agentRepository;
+
+    @Inject
+    DrVehiculeRepository vehiculeRepository;
+
+    @Inject
+    DrVehiculeSqlRepository vehiculeSqlRepository;
+
+    @Inject
+    Logger log;
+
+    @Path("/bus")
     @GET
-    @Path("/centre")
-    @PermitAll
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCentres(){
+    public Response getAllBus(){
+        List<Bus> busListes= busRespository.listAll(Sort.by("bus_id").ascending());
+        if(!busListes.isEmpty()){
+            return Response.ok(busListes).build();
+        }else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
 
-        List<DrCentre> listCentres=centreRepo.listAll();
+    @Path("/test")
+    @GET
+    public Response getTestData(){
+        JsonObject test = Json.createObjectBuilder()
+        .add("id","1")
+        .add("start", LocalTime.now().toString())
+        .add("end", LocalTime.now().plusHours(3).toString())
+        .add("text","TEST 1")
+        .add("resource", "R1").build();
+        return Response.ok(test).build();
+    }
+    // Centre
+
+    @RolesAllowed("USER")
+    @Path("/centre")
+    @GET
+    public Response getCentres(){
+        List<DrCentre> listCentres=centreRespository.listAll();
         if(!listCentres.isEmpty()){
             return Response.ok(listCentres).build();
         }else {
             return Response.status(Status.NOT_FOUND).build();
         }
-       
     }
 
-    /*
-     * DELEG
-     */
-
+    @RolesAllowed("ADMIN")
     @Path("/deleg")
-    @RolesAllowed("USER")
     @GET
     public Response getDeleg(){
-        return Response.ok(delegRepo.listAll()).build();
+        return Response.ok(delegRespository.listAll()).build();
     }
+    
 
-
-    /*
-     * STATIONS
-     */
     
     @Path("/stations")
     @GET
     public Response getStati(){
-        return Response.ok(statRepo.listAll()).build();
-    }
+        return Response.ok(stateRespository.listAll()).build();
+    }   
 
-
-    /*
-     * ITIN
-     */
 
 
     @Path("/itin")
     @GET
-    @RolesAllowed("ADMIN")
     public Response getItin(){
-        List<DrItin> intins = itinRepo.listAll();
+        List<DrItin> intins = itinRespository.listAll();
         if(!intins.isEmpty()) {
             return Response.ok(intins).build();
         }
@@ -108,68 +133,91 @@ public class ParamResources {
         
     }
 
-
-    /*
-     * SHAPE
-     */
-
+    
+    @Path("/Stati")
+    @GET
+    public Response get(){
+        return Response.ok(stateRespository.listAll()).build();
+    }  
+    
+   
     
     @Path("shaps")
     @GET
     public Response getShaps(){
-        return Response.ok(shapsRepo.listAll()).build();
+        return Response.ok(shapeRespository.listAll()).build();
     }
 
+    // lignes 
 
-    /*
-     * LIGNES
-     */
-
-    
     @Path("/ligne")
     @GET
     public Response getligne(){
-        return Response.ok(ligneRepo.listAll()).build();
+        return Response.ok(ligneRespository.listAll()).build();
     }
 
-    @Path("/ligne/{deccent}")
+    @Path("/ligne/type/{type}")
     @GET
-    public Response getByDeccent(@PathParam("deccent") Long deccent){
-        DrCentre centre = centreRepo.findById(deccent);
-        List<DrLigne> listLignes = ligneRepo.findByDeccent(centre);
-        if(!listLignes.isEmpty()) {
-            return Response.ok(listLignes).build();
-        }return Response.status(Status.NOT_FOUND).build();
+    public Response getLigneByType(@PathParam("type") Long type){
+        if(typeLigneRespository.existe(type)){
+            log.debug("Finding by Type");
+            List<DrLigne> lignes = ligneRespository.findByTypeLigne(type);
+            return Response.ok(lignes).build();
+        }else{
+            return Response.status(Response.Status.NOT_FOUND).entity("Type ="+type+" does not exist").build();
+        }
     }
-
-    @Path("/ligne/{decdeleg}")
-    @GET
-    public Response getByDecdeleg(@PathParam("decdeleg") Long decdeleg){
-        DrDeleg deleg = delegRepo.findById(decdeleg);
-        List<DrLigne> listLignes = ligneRepo.findByDeleg(deleg);
-        if(!listLignes.isEmpty()) {
-            return Response.ok(listLignes).build();
-        }return Response.status(Status.NOT_FOUND).build();
-    }
-
-    @Path("/ligne/{typeligne}")
-    @GET
-    public Response getByTypLi(@PathParam("typeligne") Long typId){
-        DrTypeLigne typligne = tpliRepo.findById(typId);
-        List<DrLigne> listLignes = ligneRepo.findByTypLi(typligne);
-        if(!listLignes.isEmpty()) {
-            return Response.ok(listLignes).build();
-        }return Response.status(Status.NOT_FOUND).build();
-    }
-
-    /*
-     * LIGNES TYPE
-     */
     
+    @Path("/ligne/deleg/{deleg}")
+    @GET
+    public Response getligneByDeleg(@PathParam("deleg") Long deleg){
+        if(delegRespository.findById(deleg)!=null){
+            List<DrLigne> delegs = ligneRespository.findByDeleg(deleg);
+            return Response.ok(delegs).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity("deleg not Found").build();
+    }
+
     @Path("/ligne/type")
     @GET
     public Response getlignetype(){
-        return Response.ok(tpliRepo.listAll()).build();
+        return Response.ok(typeLigneRespository.listAll()).build();
+    }
+
+    @Path("/agent")
+    @GET
+    public Response getAgents(){
+        return Response.ok(agentRepository.listAll()).build();
+    }
+
+
+    @Path("/agent/{dec}")
+    @GET
+    public Response getAgentByName(@PathParam("dec") long dec){
+        try{
+            return Response.ok(agentSqlRepository.findByDec(dec)).build();
+        }catch(Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+
+    @Path("/vehicule")
+    @GET
+    public Response getVehicules(){
+        return Response.ok(vehiculeRepository.listAll()).build();
+    }
+
+
+    @Path("/vehicule/{matricule}")
+    @GET
+    public Response getVehiculesByMatricule(@PathParam("matricule") String matri){
+        try{
+            return Response.ok(vehiculeSqlRepository.findByMatricule(matri)).build();
+        }catch(Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
         
 }

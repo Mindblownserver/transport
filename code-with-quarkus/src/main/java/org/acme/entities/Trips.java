@@ -1,5 +1,6 @@
 package org.acme.entities;
 
+
 import jakarta.persistence.*;
 import org.acme.Embeddable.TripsId;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(indexes = {@Index(name="IDX_TRIPS_DEDATED", columnList = "deDated")})
 public class Trips {
     @EmbeddedId
     private TripsId tripsId;
@@ -52,40 +54,38 @@ public class Trips {
     private Integer deValid;
     @Column(name="ALERT")
     private Integer alert;
+    
     @JoinColumn(name="DENUMLI", insertable=false, updatable=false)
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DrLigne ligne;
-    @Transient  
-    public Date finalStopTime;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="BUS_PR")
     private Bus busPr;
-
-    @OneToMany(mappedBy = "trip")
-    public List<StopTimes> stopTimesList;
+    
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
+    //@Fetch(FetchMode.JOIN)
+    @OrderBy("id.stopSeq DESC")
+    private List<StopTimes> stopTimesList; 
 
     // for info to be exposed into your JSON response, you need to prepare their getters & setters(optional)
-    public Bus getBusPr() {
-        return busPr;
+    public Date getFinalStopTime() {
+        return stopTimesList.get(stopTimesList.size()-1).getArrival_time();
+    }
+
+    public String getTripName(){
+        return String.format("%s - %s", stopTimesList.get(0), stopTimesList.get(stopTimesList.size()-1));
     }
 
     public void setBusPr(Bus busPr) {
         this.busPr = busPr;
     }
 
-    public Date getFinalStopTime() {
-        return finalStopTime;
-    }
-
-    public void setFinalStopTime(Date finalStopTime) {
-        this.finalStopTime = finalStopTime;
-    }
 
     public TripsId getTripsId() {
         return tripsId;
     }
-
+    
     public void setTripsId(TripsId tripsId) {
         this.tripsId = tripsId;
     }

@@ -1,7 +1,7 @@
-
 package org.acme.entities;
 import java.util.List;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="DRTYPLI")
-public class DrTypeLigne {
+public class DrTypeLigne extends PanacheEntityBase{
     @Id
     @Column(name="DECTYLI")
     private Long decTyLi;

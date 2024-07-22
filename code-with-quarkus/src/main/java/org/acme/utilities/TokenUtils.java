@@ -1,37 +1,28 @@
 package org.acme.utilities;
 
+import io.smallrye.jwt.build.Jwt;
+import io.smallrye.jwt.build.JwtClaimsBuilder;
+
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.acme.model.Role;
-
-import io.smallrye.jwt.build.Jwt;
-import io.smallrye.jwt.build.JwtClaimsBuilder;
 
 public class TokenUtils {
 
-    public static String generateToken(String username, Set<Role> roles, Long duration, String issuer) throws Exception {
+    public static String generateToken(String username, String role, Long duration, String issuer) throws Exception {
         String privateKeyLocation = "/privatekey.pem";
         PrivateKey privateKey = readPrivateKey(privateKeyLocation);
 
         JwtClaimsBuilder claimsBuilder = Jwt.claims();
         long currentTimeInSecs = currentTimeInSecs();
 
-        Set<String> groups = new HashSet<>();
-        for (Role role : roles) {
-            groups.add(role.toString());
-        }
-
         claimsBuilder.issuer(issuer);
         claimsBuilder.subject(username);
         claimsBuilder.issuedAt(currentTimeInSecs);
         claimsBuilder.expiresAt(currentTimeInSecs + duration);
-        claimsBuilder.groups(groups);
+        claimsBuilder.groups(role);
 
         try {
             return claimsBuilder.jws().signatureKeyId(privateKeyLocation).sign(privateKey);

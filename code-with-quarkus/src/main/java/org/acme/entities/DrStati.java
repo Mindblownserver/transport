@@ -3,8 +3,8 @@ package org.acme.entities;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class DrStati {
+public class DrStati extends PanacheEntityBase {
     @Id
     @Column(name="DECSTAT")
     private Long decStat;
@@ -38,9 +38,11 @@ public class DrStati {
     @Column(name="RAYON")
     private int rayon;
 
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "station")
     private List<DrItin> itineraires;
+
+    @OneToMany(mappedBy = "station")
+    private List<StopTimes> stopTimesList;
 
     public Long getDecStat() {
         return decStat;
@@ -110,7 +112,7 @@ public class DrStati {
     }
 
     public DrStati(Long decStat, String delStat, String delStaA, int decTySt, Float stopLat, Float stopLon, Date dateSys,
-                   int rayon) {
+            int rayon) {
         this.decStat = decStat;
         this.delStat = delStat;
         this.delStaA = delStaA;
@@ -120,6 +122,6 @@ public class DrStati {
         this.dateSys = dateSys;
         this.rayon = rayon;
     }
-
-
+    
+    
 }

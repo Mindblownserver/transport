@@ -1,18 +1,28 @@
 package org.acme.entities;
 
+import java.util.List;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
-public class DrDeleg {
+public class DrDeleg extends PanacheEntityBase{
     @Id
     @Column(name="DECDELEG")
     private Long decDeleg;
+    
     @Column(name="LIBDELEGAR")
     private String libDelegAr;
+    
     @Column(name="LIBDELEGFR")
     private String libDelegFr;
+
+    @OneToMany(mappedBy = "deleg")
+    private List<DrLigne> lignes;
+
     public Long getDec_deleg() {
         return decDeleg;
     }
@@ -38,5 +48,5 @@ public class DrDeleg {
     }
     public DrDeleg() {
     }
-
+    
 }
