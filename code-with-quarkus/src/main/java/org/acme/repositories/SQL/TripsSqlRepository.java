@@ -21,6 +21,9 @@ import org.acme.entities.TypeVehicule;
 import org.acme.entities.SQL.TripsSql;
 import org.acme.repositories.DrCentreRepository;
 import org.acme.repositories.DrDelegRepository;
+import org.acme.resources.TripsResources;
+import org.acme.resources.TripsResources.Statistics;
+import org.acme.resources.TripsResources.Statistics.StatisticsItem;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -170,7 +173,6 @@ public class TripsSqlRepository {
         return stopTimesList;
     }
 
-
     public TypeVehicule getTypeVehiculeById(int typeId)throws SQLException{
         TypeVehicule type = new TypeVehicule();
         
@@ -194,7 +196,6 @@ public class TripsSqlRepository {
         return type;
     }
 
-
     public DrVehicule getVehiculeById(int vehiculeId) throws SQLException{
         DrVehicule vehicule= new DrVehicule();
         Connection conn = dataSource.getConnection();
@@ -216,8 +217,7 @@ public class TripsSqlRepository {
         conn.close();
         return vehicule;
     }
-
-    
+   
     public List<TripsSql> getTripsByDate(Date date)throws SQLException{
         List<TripsSql> tripsList=  new ArrayList<>();
 
@@ -270,6 +270,114 @@ public class TripsSqlRepository {
         ps.close();
         conn.close();
         return tripsList;
+    }
+
+    public TripsResources.Statistics getTripsStatisticsByDate(Date date) throws SQLException {
+        TripsResources.Statistics stat = new TripsResources.Statistics(0, 0, 0, 0, 0);
+        String sqlVoyage = "select count(*) nbrVoyages from TRIPS where DEDATED=? and TRIP_NID is not null";
+        String sqlAller = "select count(*) nbrAller from TRIPS where DEDATED=? and TRIP_NID is null and DIRECTION_ID=0";
+        String sqlRetour= "select count(*) nbrRetour from TRIPS where DEDATED=? and TRIP_NID is null and DIRECTION_ID=1";
+        String sqlNbrLignes = "select count(distinct denumli) nbrLignes from TRIPS where DEDATED=?";
+        String sqlNbrVehicules = "select count(distinct bus_pr) nbrBus from TRIPS where DEDATED=?";
+        String sqlNbrAgents= "select nature , count(*) agents from (select distinct chauff_pr ag , 'ch' nature from trips where dedated=? union select distinct rec_pr ag  , 'rec' nature from TRIPS where dedated=? ) group by nature";
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement ps = conn.prepareStatement(sqlVoyage);
+        ps.setDate(1, sqlDate);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next())
+            stat.setNbrVoyages(rs.getInt("nbrVoyages")/2);
+        
+        ps = conn.prepareStatement(sqlAller);
+        ps.setDate(1,sqlDate);
+        rs = ps.executeQuery();
+        while(rs.next())
+            stat.setNbrAller(rs.getInt("nbrAller"));
+        
+        ps = conn.prepareStatement(sqlRetour);
+        ps.setDate(1,sqlDate);
+        rs = ps.executeQuery();
+        while(rs.next())
+            stat.setNbrRetour(rs.getInt("nbrRetour"));
+
+        ps = conn.prepareStatement(sqlNbrLignes);
+        ps.setDate(1,sqlDate);
+        rs = ps.executeQuery();
+        while(rs.next())
+            stat.setNbrLignesAffectes(rs.getInt("nbrLignes"));
+        
+        ps = conn.prepareStatement(sqlNbrVehicules);
+        ps.setDate(1,sqlDate);
+        rs = ps.executeQuery();
+        while(rs.next())
+            stat.setNbrBusAffectes(rs.getInt("nbrBus"));
+        
+        ps = conn.prepareStatement(sqlNbrAgents);
+        ps.setDate(1,sqlDate);
+        ps.setDate(2,sqlDate);
+        rs = ps.executeQuery();
+        int i=0;
+        int[] agents=new int[2];
+        while(rs.next()){
+            agents[i] = rs.getInt("agents");
+            i++;
+        }
+        stat.setNbrChauffRecAffectes(agents);
+
+        stat.setLignesParCentre(getStatistiqueLigneParCentre(sqlDate));
+        stat.setBusParCentre(getStatistiqueBusParCentre(sqlDate));
+        stat.setAgentParCentre(getStatistiqueAgentParCentre(sqlDate));
+        rs.close();ps.close();conn.close();
+        return stat;
+    }
+
+    private List<StatisticsItem> getStatistiqueAgentParCentre(java.sql.Date sqlDate) throws SQLException{
+        List<StatisticsItem> agentList = new ArrayList<>();
+        String sql = "select l.deccent cent, count(distinct t.chauff_pr) nbrAgent from TRIPS t,DrLigne l where t.dedated=? and t.denumli= l.denumli group by l.deccent order by l.deccent asc";
+        Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setDate(1, sqlDate);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next())
+            agentList.add(new StatisticsItem(rs.getInt("cent"), rs.getInt("nbrAgent")));
+        
+        rs.close();
+        ps.close();
+        conn.close();
+        return  agentList;
+    }
+
+    private List<StatisticsItem> getStatistiqueBusParCentre(java.sql.Date sqlDate)throws SQLException {
+        List<StatisticsItem> busList = new ArrayList<>();
+        String sql = "select v.deccent cent, count(distinct t.bus_pr) nbrBus from TRIPS t, DrVehic v where t.bus_pr=v.decodvh and t.dedated=? group by v.deccent order by v.deccent asc";
+        Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setDate(1, sqlDate);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next())
+            busList.add(new StatisticsItem(rs.getInt("cent"), rs.getInt("nbrBus")));
+        
+        rs.close();
+        ps.close();
+        conn.close();
+        return  busList;
+    }
+
+    private List<StatisticsItem> getStatistiqueLigneParCentre(java.sql.Date sqlDate)throws SQLException {
+        List<StatisticsItem> ligneList = new ArrayList<>();
+        String sql = "select l.deccent cent, count(distinct t.denumli) nbrLigne from TRIPS t,DrLigne l where t.dedated=? and t.denumli= l.denumli group by l.deccent order by l.deccent asc";
+        Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setDate(1, sqlDate);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next())
+        ligneList.add(new StatisticsItem(rs.getInt("cent"), rs.getInt("nbrLigne")));
+        
+        rs.close();
+        ps.close();
+        conn.close();
+        return  ligneList;    
     }
 
 }

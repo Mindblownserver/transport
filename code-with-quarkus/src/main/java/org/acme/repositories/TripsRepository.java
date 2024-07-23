@@ -30,4 +30,22 @@ public class TripsRepository  implements PanacheRepository<Trips> {
         return trips;
     }
 
+    public int getVoyagesByDate(Date date) {
+        return find("tripsId.deDated= ?1 and tripNid is not null", date).list().size()/2;
+    }
+    public int getAllerByDate(Date date){
+        return find("tripsId.deDated= ?1 and directionId=?2 and tripNid is null",date,0).list().size();
+    }
+    public int getRetourByDate(Date date){
+        return find("tripsId.deDated= ?1 and directionId=?2 and tripNid is null",date,1).list().size();
+    }
+    public int getNbrLignesByDate(Date date){
+        return find("select distinct t.ligne from Trips t where t.tripsId.deDated= ?1",date).list().size();
+    }
+    public int getNbrVehicByDate(Date date){
+        return find("select distinct t.busPr from Trips t where t.tripsId.deDated= ?1",date).list().size();
+    }
+    public int getNbrAgentsByDate(Date date){
+        return find("select distinct t.chauffPr, t.RecPr from Trips t where t.tripsId.deDated= ?1",date).list().size();
+    }
 }
