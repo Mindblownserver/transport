@@ -5,10 +5,10 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <mini-statistics-card
-              :title="{ text: 'Today\'s Money', value: '$53k' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+55%</span> than last week"
+              :title="{ text: 'Les voyages d\'aujourd\'hui', value: statistics.nbrVoyages|| 0 }"
+              :detail="(statistics.nbrAller || 0) +' aller et '+(statistics.nbrRetour || 0) +' retours'"
               :icon="{
-                name: 'weekend',
+                name: 'trending_up',
                 color: 'text-white',
                 background: 'dark',
               }"
@@ -16,10 +16,20 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
-              :title="{ text: 'Today\'s Users', value: '2,300' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+3%</span> than last month"
+              :title="{ text: 'Les agents affectées', value: (statistics.nbrChauffRecAffectes[0] + statistics.nbrChauffRecAffectes[1]) || 0 }"
+              :detail="(statistics.nbrChauffRecAffectes[0] || 0) + ' Chauffeurs et '+ (statistics.nbrChauffRecAffectes[1] || 0 )+ ' receveurs'"
               :icon="{
-                name: 'leaderboard',
+                name: 'person',
+                color: 'text-white',
+                background: 'info',
+              }"
+            />
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
+            <mini-statistics-card
+              :title="{ text: 'Les lignes affectées', value: statistics.nbrLignesAffectes|| 0  }"
+              :icon="{
+                name: 'route',
                 color: 'text-white',
                 background: 'primary',
               }"
@@ -27,254 +37,80 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
-              :title="{ text: 'New Clients', value: '3,462' }"
-              detail="<span class='text-danger text-sm font-weight-bolder'>-2%</span> than yesterday"
+              :title="{ text: 'Les bus affectées', value: statistics.nbrBusAffectes|| 0  }"
               :icon="{
-                name: 'person',
+                name: 'directions_bus',
                 color: 'text-white',
                 background: 'success',
               }"
             />
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-            <mini-statistics-card
-              :title="{ text: 'Sales', value: '$103,430' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+5%</span> Just updated"
-              :icon="{
-                name: 'weekend',
-                color: 'text-white',
-                background: 'info',
-              }"
-            />
-          </div>
         </div>
         <div class="row mt-4">
-          <div class="col-lg-4 col-md-6 mt-4">
+          <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
-              title="Website Views"
-              subtitle="Last Campaign Performance"
-              update="campaign sent 2 days ago"
+              title="Les differentes lignes affectées par centre"
             >
-              <reports-bar-chart
-                :chart="{
-                  labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                  datasets: {
-                    label: 'Sales',
-                    data: [50, 20, 10, 22, 50, 10, 40],
-                  },
-                }"
-              />
+              <ReportsDoughnutChart ref="ligneParCentreChart"/>
             </chart-holder-card>
           </div>
-          <div class="col-lg-4 col-md-6 mt-4">
+          <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
-              title="Daily Sales"
-              subtitle="(<span class='font-weight-bolder'>+15%</span>) increase in today sales."
-              update="updated 4 min ago"
+              title="Les differentes vehicules affectées par centre"
               color="success"
             >
-              <reports-line-chart
-                :chart="{
-                  labels: [
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ],
-                  datasets: {
-                    label: 'Mobile apps',
-                    data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-                  },
-                }"
-              />
+            <ReportsDoughnutChart ref="busParCentreChart"/>
             </chart-holder-card>
           </div>
-          <div class="col-lg-4 mt-4">
+          <div class="col-lg-6 mt-5">
             <chart-holder-card
-              title="Completed Tasks"
-              subtitle="Last Campaign Performance"
-              update="just updated"
-              color="dark"
+              title="Les agents affectés par centre"
+              color="info"
             >
-              <reports-line-chart
-                id="tasks-chart"
-                :chart="{
-                  labels: [
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ],
-                  datasets: {
-                    label: 'Mobile apps',
-                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                  },
-                }"
-              />
+              <ReportsDoughnutChart ref="agentsParCentreChart"/>
             </chart-holder-card>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-        <project-card
-          title="Projects"
-          description="<i class='fa fa-check text-info' aria-hidden='true'></i> <span class='font-weight-bold ms-1'>30 done</span> this month"
-          :headers="['Companies', 'Members', 'Budget', 'Progress']"
-          :projects="[
-            {
-              logo: logoXD,
-              title: 'Material XD Material XD Version',
-              members: [team1, team2, team3, team4],
-              budget: '$14,000',
-              progress: { percentage: 60, color: 'info' },
-            },
-            {
-              logo: logoAtlassian,
-              title: 'Add Progress Track',
-              members: [team2, team4],
-              budget: '$3,000',
-              progress: { percentage: 10, color: 'info' },
-            },
-            {
-              logo: logoSlack,
-              title: 'Fix Platform Errors',
-              members: [team3, team1],
-              budget: 'Not set',
-              progress: { percentage: 100, color: 'success' },
-            },
-            {
-              logo: logoSpotify,
-              title: 'Launch our Mobile App',
-              members: [team4, team3, team4, team1],
-              budget: '$20,500',
-              progress: { percentage: 100, color: 'success' },
-            },
-            {
-              logo: logoJira,
-              title: 'Add the New Pricing Page',
-              members: [team4],
-              budget: '$500',
-              progress: { percentage: 25, color: 'info' },
-            },
-            {
-              logo: logoJira,
-              title: 'Redesign New Online Shop',
-              members: [team1, team4],
-              budget: '$2,000',
-              progress: { percentage: 40, color: 'info' },
-            },
-          ]"
-        />
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <timeline-list
-          class="h-100"
-          title="Orders overview"
-          description="<i class='fa fa-arrow-up text-success' aria-hidden='true'></i>
-        <span class='font-weight-bold'>24%</span> this month"
-        >
-          <timeline-item
-            :icon="{
-              component: 'notifications',
-              class: 'text-success',
-            }"
-            title="$2400 Design changes"
-            date-time="22 DEC 7:20 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'code',
-              class: 'text-danger',
-            }"
-            title="New order #1832412"
-            date-time="21 DEC 11 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'shopping_cart',
-              class: 'text-info',
-            }"
-            title="Server payments for April"
-            date-time="21 DEC 9:34 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'credit_card',
-              class: 'text-warning',
-            }"
-            title="New card added for order #4395133"
-            date-time="20 DEC 2:20 AM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'vpn_key',
-              class: 'text-primary',
-            }"
-            title="Unlock packages for development"
-            date-time="18 DEC 4:54 AM"
-            class="pb-1"
-          />
-        </timeline-list>
       </div>
     </div>
   </div>
 </template>
 <script>
 import ChartHolderCard from "../components/ChartHolderCard.vue";
-import ReportsBarChart from "@/components/Charts/ReportsBarChart.vue";
-import ReportsLineChart from "@/components/Charts/ReportsLineChart.vue";
+import ReportsDoughnutChart from "../components/ReportsDoughnutChart.vue";
 import MiniStatisticsCard from "../components/MiniStatisticsCard.vue";
-import ProjectCard from "../components/ProjectCard.vue";
-import TimelineList from "@/components/Cards/TimelineList.vue";
-import TimelineItem from "@/components/Cards/TimelineItem.vue";
-import logoXD from "@/assets/images/small-logos/logo-xd.svg";
-import logoAtlassian from "@/assets/images/small-logos/logo-atlassian.svg";
-import logoSlack from "@/assets/images/small-logos/logo-slack.svg";
-import logoSpotify from "@/assets/images/small-logos/logo-spotify.svg";
-import logoJira from "@/assets/images/small-logos/logo-jira.svg";
-import logoInvision from "@/assets/images/small-logos/logo-invision.svg";
-import team1 from "@/assets/images/team-1.jpg";
-import team2 from "@/assets/images/team-2.jpg";
-import team3 from "@/assets/images/team-3.jpg";
-import team4 from "@/assets/images/team-4.jpg";
+
+
 
 export default {
   name: "dashboard-default",
   data() {
     return {
-      logoXD,
-      team1,
-      team2,
-      team3,
-      team4,
-      logoAtlassian,
-      logoSlack,
-      logoSpotify,
-      logoJira,
-      logoInvision,
+      statistics:{
+        nbrChauffRecAffectes:Array
+      },
+      lignesParCentreValues: [],
+      busParCentreChartValues:[],
+      agentsParCentreChartValues:[]
     };
   },
   components: {
     ChartHolderCard,
-    ReportsBarChart,
-    ReportsLineChart,
+    ReportsDoughnutChart,
     MiniStatisticsCard,
-    ProjectCard,
-    TimelineList,
-    TimelineItem,
   },
+  mounted(){
+    this.$store.dispatch("dashboardModule/getStatisticsByDate", new Date(2024,3,2,0,0,0,0)).then(()=>{
+      this.statistics= this.$store.state.dashboardModule.statistics;
+      this.lignesParCentreValues = this.statistics.lignesParCentre.map(item=>item.value);
+      this.busParCentreChartValues = this.statistics.busParCentre.map(item=>item.value);
+      this.agentsParCentreChartValues = this.statistics.agentParCentre.map(item=>item.value)
+      
+      this.$refs.ligneParCentreChart.createChart("Lignes",this.lignesParCentreValues);
+      this.$refs.busParCentreChart.createChart("Vehicules",this.busParCentreChartValues);
+      this.$refs.agentsParCentreChart.createChart("Agents",this.agentsParCentreChartValues);
+
+    })
+  }
 };
 </script>

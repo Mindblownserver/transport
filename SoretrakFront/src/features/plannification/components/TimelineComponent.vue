@@ -13,7 +13,7 @@
 <script setup>
 import MbCalendar from './MbCalendar.vue';
 import { Bus, Ligne, Agent, ResourceArray,ResourceModes } from '../utils/Resource'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {useStore} from "vuex"
 import moment from 'moment'
 import { TripEvent } from '../utils/TripEvent';
@@ -40,7 +40,6 @@ let centreResourceArray = new ResourceArray();
 let delegResourceArray = new ResourceArray();
 
 // computing values
-const getLoading = computed(()=>store.state.tripsModule.loading)
 
 const getTrips= computed(()=>{
   const trips= store.state.tripsModule.trips;
@@ -161,17 +160,20 @@ const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
   }
 }
 
-
-watch(getLoading, (isLoading)=>{
+/* watch(getLoading, (isLoading)=>{
   if(!isLoading && getTrips.value.length>0){
     loadTrips();
     myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
     myResources.value = myResourcesCriteria.value
   }
-})
+})*/
 
 onMounted(()=>{
-  store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0));
+  store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0)).then(()=>{
+    loadTrips();
+    myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
+    myResources.value = myResourcesCriteria.value
+  });
 })
 
 

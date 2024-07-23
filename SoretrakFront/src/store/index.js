@@ -7,6 +7,7 @@ import { delegModule } from "../features/parametres/drDeleg/service/deleg.module
 import { typeLigneModule } from "../features/parametres/typeLigne/service/typeligne.module";
 import { stationModule } from "../features/parametres/station/store/station.module";
 import { tripsModule } from "../features/plannification/store/trips.module";
+import { dashboardModule } from "../features/dashboard/store/dashboard.module";
 
 export default createStore({
   modules: {
@@ -17,7 +18,8 @@ export default createStore({
     delegModule,
     typeLigneModule,
     stationModule,
-    tripsModule
+    tripsModule,
+    dashboardModule
   },
   state: {
     hideConfigButton: false,

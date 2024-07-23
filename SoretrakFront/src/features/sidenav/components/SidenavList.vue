@@ -138,7 +138,7 @@
       <li class="nav-item">
         <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/trips" navText="Trips">
           <template v-slot:icon>
-            <i class="material-icons-round opacity-10 fs-5">person</i>
+            <img src="../../../assets/images/trip.svg" style="width: 24px;" alt="">
           </template>
         </sidenav-collapse>
       </li>

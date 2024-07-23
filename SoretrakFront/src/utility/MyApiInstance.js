@@ -17,7 +17,7 @@ class AxiosInstance {
       }],
     });
   }
- getCentres(){
+  getCentres(){
     return this.instance.get("/api/centre");
   }
   getDeleg(){
@@ -35,32 +35,13 @@ class AxiosInstance {
    */
   getTrips(date){
     return this.instance.get(`/api/trips/date/${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`)
-  }/* 
-  get(url, config) {
-    return this.instance.get(url, config);
   }
-
-  post(url, data, config) {
-    return this.instance.post(url, data, config);
+  /**
+   * Get Statistics of a given date
+   * @param {Date} date - specify a date to provide statistics 
+   */
+  getStatisticsByDate(date){
+    return this.instance.get(`api/trips/statistics/${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`)
   }
-
-  // You can add other HTTP methods (put, delete, etc.) similarly
-  put(url, data, config) {
-    return this.instance.put(url, data, config);
-  }
-
-  delete(url, config) {
-    return this.instance.delete(url, config);
-  }
-
-  // Method to set new baseURL
-  setBaseURL(newBaseURL) {
-    this.instance.defaults.baseURL = newBaseURL;
-  }
-
-  // Method to add headers
-  addHeader(key, value) {
-    this.instance.defaults.headers.common[key] = value;
-  } */
 }
 export default AxiosInstance;
