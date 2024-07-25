@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       mapStyle: "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
-      zoom: 10,
+      zoom: 13,
     }
   },
   mounted() {
@@ -59,7 +59,8 @@ export default {
     markers(newMarkers) {
       console.log('Markers changed:', newMarkers);
     }
-  }
+  },
+
 }
 </script>
 

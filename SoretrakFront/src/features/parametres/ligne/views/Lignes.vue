@@ -12,7 +12,7 @@
             <div class="table-responsive p-0">
               <DataTable
                 :value="getLignes"
-                paginator :rows="6"
+                paginator :rows="4"
                 tableStyle="min-width: 50rem"
                 :stripedRows="true"
                 v-model:expandedRows="expandedRows"
@@ -44,11 +44,6 @@
                 <Column>
                   <template #body="slotProps">
                     <DialogButton @click="openDialog(slotProps.data)" icon="pi pi-search"></DialogButton>
-                    <CustomDialog v-model:visible="visible" modal header="Map" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-                      <template>
-                        <MapLibre v-if="visible" :center="center" :markers="markers" />                  
-                      </template>
-                    </CustomDialog>
                   </template>
                 </Column>
                 <template #expansion="slotProps">
@@ -72,15 +67,18 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <MapLibre v-if="mapVisible" :center="center" :markers="markers" style="width: 100%; height: 500px;" ref="map"/>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import { FilterMatchMode } from '@primevue/core/api';
-import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import MapLibre from '../components/Map.vue';  // Adjust the import path as needed
 import { MyMarker } from '../repo/MyMarker';  // Adjust the import path as needed
@@ -91,7 +89,6 @@ export default {
     DataTable,
     Column,
     InputText,
-    CustomDialog: PrimeDialog,
     DialogButton: PrimeButton,
     MapLibre,
   },
@@ -109,7 +106,7 @@ export default {
       },
       selectedRow: null,
       expandedRows: null,
-      visible: false,
+      mapVisible: false,
       center: [0, 0],  // Default center to avoid issues with uninitialized center
       markers: [],
     };
@@ -151,9 +148,9 @@ export default {
         if (statiData.length > 0) {
           this.center = [statiData[0].longetude, statiData[0].latitude]; // Center map on the first station
         }
-        this.markers = statiData.map(stati => new MyMarker(stati.latitude, stati.longetude));
+        this.markers = statiData.map(stati => new MyMarker(stati.latitude, stati.longetude, stati.nomFr));
 
-        this.visible = true;
+        this.mapVisible = true;
       } catch (error) {
         console.error('Fetch error:', error);
       }
@@ -161,9 +158,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.material-icons-round {
-  font-family: 'Material Icons Round';
-}
-</style>
