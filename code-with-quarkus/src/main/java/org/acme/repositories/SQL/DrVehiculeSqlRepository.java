@@ -10,11 +10,35 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class DrVehiculeSqlRepository {
     @Inject
     DataSource dataSource;
+
+    public List<DrVehiculeSql> findAll() throws SQLException {
+        List<DrVehiculeSql> vehicules = new ArrayList<>();
+        String sql = "SELECT * FROM DRVEHIC";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                DrVehiculeSql vehic = new DrVehiculeSql();
+                vehic.setDecodvh(rs.getLong("DECODVH"));
+                vehic.setDematri(rs.getString("DEMATRI"));
+                vehic.setDecatvh(rs.getInt("DECATVH"));
+                vehic.setDeccent(rs.getInt("DECCENT"));
+                vehic.setDecdeleg(rs.getInt("DECDELEG"));
+                vehicules.add(vehic);
+            }
+        }
+
+        return vehicules;
+    }
 
     public DrVehiculeSql findByDec(long dec)throws SQLException {
         DrVehiculeSql vehic = new DrVehiculeSql();

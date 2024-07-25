@@ -20,6 +20,9 @@ class AxiosInstance {
  getCentres(){
     return this.instance.get("/api/centre");
   }
+  getLignes(){
+    return this.instance.get("/api/ligne");
+  }
   getDeleg(){
     return this.instance.get("/api/deleg")
   }

@@ -71,7 +71,9 @@ public class TripsSql {
     public DrLigne getLigne(){
         return ligne;
     }
-
+    public void setLigne(DrLigne ligne) {
+        this.ligne = ligne;
+    }
     
     public Bus getBusPr() {
         return busPr;
@@ -298,8 +300,5 @@ public class TripsSql {
 
     public TripsSql(){}
 
-    public void setLigne(DrLigne ligne) {
-        this.ligne = ligne;
-    }
 
 }

@@ -1,15 +1,16 @@
 package org.acme.resources;
 
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import org.acme.entities.*;
 
+import org.acme.entities.SQL.DrItinSql;
 import org.acme.repositories.*;
 
-import org.acme.repositories.SQL.AgentSqlRepository;
-import org.acme.repositories.SQL.DrVehiculeSqlRepository;
+import org.acme.repositories.SQL.*;
 import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
@@ -40,13 +41,22 @@ public class ParamResources {
     DrLigneRepository ligneRespository;
 
     @Inject
+    DrLigneSqlRepository ligneSqlRespository;
+
+
+    @Inject
     SHAPSRepository shapeRespository;
 
     @Inject
     DrItinRepository itinRespository;
+    @Inject
+    DrItinSqlRepository itinSqlRepository;
 
     @Inject
     DrStatiRepository stateRespository;
+
+    @Inject
+    DrStatiSqlRepository statiSqlRepository;
 
     @Inject
     DrCentreRepository centreRespository;
@@ -93,7 +103,6 @@ public class ParamResources {
     }
     // Centre
 
-    @RolesAllowed("USER")
     @Path("/centre")
     @GET
     public Response getCentres(){
@@ -105,7 +114,6 @@ public class ParamResources {
         }
     }
 
-    @RolesAllowed("ADMIN")
     @Path("/deleg")
     @GET
     public Response getDeleg(){
@@ -124,8 +132,8 @@ public class ParamResources {
 
     @Path("/itin")
     @GET
-    public Response getItin(){
-        List<DrItin> intins = itinRespository.listAll();
+    public Response getItin() throws SQLException {
+        List<DrItinSql> intins = itinSqlRepository.getAll();
         if(!intins.isEmpty()) {
             return Response.ok(intins).build();
         }
@@ -138,10 +146,16 @@ public class ParamResources {
     @GET
     public Response get(){
         return Response.ok(stateRespository.listAll()).build();
-    }  
-    
-   
-    
+    }
+
+
+    @Path("/Stati/{id}")
+    @GET
+    public Response getStatiById(@PathParam("id") Long id) throws SQLException {
+        return Response.ok(statiSqlRepository.getDrStatiById(id)).build();
+    }
+
+
     @Path("shaps")
     @GET
     public Response getShaps(){
@@ -152,8 +166,8 @@ public class ParamResources {
 
     @Path("/ligne")
     @GET
-    public Response getligne(){
-        return Response.ok(ligneRespository.listAll()).build();
+    public Response getligne() throws SQLException {
+        return Response.ok(ligneSqlRespository.listAll()).build();
     }
 
     @Path("/ligne/type/{type}")

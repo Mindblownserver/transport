@@ -3,6 +3,7 @@ import { auth } from "./auth.module";
 import { profile } from "./profile.module";
 import {sidebar} from "../features/sidenav/store/sidebar.module"
 import {centreModule} from "../features/parametres/centre/store/centre.module";
+import {ligneModule} from "../features/parametres/ligne/store/ligne.module";
 import { delegModule } from "../features/parametres/drDeleg/service/deleg.module";
 import { typeLigneModule } from "../features/parametres/typeLigne/service/typeligne.module";
 import { stationModule } from "../features/parametres/station/store/station.module";
@@ -14,6 +15,7 @@ export default createStore({
     profile,
     sidebar,
     centreModule,
+    ligneModule,
     delegModule,
     typeLigneModule,
     stationModule,

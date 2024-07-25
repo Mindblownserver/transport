@@ -1,11 +1,13 @@
 <template>
-  <mgl-map 
+  <mgl-map
     id="map"
     v-if="center"
     :mapStyle="mapStyle"
     :zoom="zoom"
     :center="center">
-    <mgl-marker v-for="(marker, index) in markers" :key="index"
+    <mgl-marker
+      v-for="(marker, index) in markers"
+      :key="index"
       color="#fb8c00"
       :coordinates="marker.getCoords()">
     </mgl-marker>
@@ -13,8 +15,8 @@
 </template>
 
 <script>
-import { MglMap, MglMarker } from 'vue-maplibre-gl'
-import maplibregl from 'maplibre-gl'
+import { MglMap, MglMarker } from 'vue-maplibre-gl';
+import maplibregl from 'maplibre-gl';
 
 export default {
   name: 'MapLibre',
@@ -25,12 +27,12 @@ export default {
   props: {
     center: {
       type: Array,
-      required: true,
+      default: () => [0, 0]
     },
     markers: {
       type: Array,
-      default: null,
-    },
+      default: () => []
+    }
   },
   data() {
     return {
@@ -39,12 +41,23 @@ export default {
     }
   },
   mounted() {
-    if (maplibregl.getRTLTextPluginStatus === 'unavailable') {
+    console.log('MapLibre mounted, center:', this.center);
+    console.log('MapLibre mounted, markers:', this.markers);
+
+    if (maplibregl.getRTLTextPluginStatus() === 'unavailable') {
       maplibregl.setRTLTextPlugin(
         'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
         null,
         true // Lazy load the plugin
       );
+    }
+  },
+  watch: {
+    center(newCenter) {
+      console.log('Center changed:', newCenter);
+    },
+    markers(newMarkers) {
+      console.log('Markers changed:', newMarkers);
     }
   }
 }
@@ -66,13 +79,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-#app{
-  width:100%;
-  height:100vh;
+#app {
+  width: 100%;
+  height: 100vh;
 }
 
 #map-container {
-  font-family: 'KacstPoster', "DejaVuSansMono-Bold"; /* Use a font that supports Arabic */
-  direction: rtl; /* Ensure text direction is right-to-left */
+  position: relative;
+  width: 100%;
+  height: 100vh;
 }
 </style>
