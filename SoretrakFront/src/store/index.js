@@ -8,6 +8,8 @@ import { typeLigneModule } from "../features/parametres/typeLigne/service/typeli
 import { stationModule } from "../features/parametres/station/store/station.module";
 import { tripsModule } from "../features/plannification/store/trips.module";
 import { dashboardModule } from "../features/dashboard/store/dashboard.module";
+import { vehiculeModule } from "../features/parametres/vehicule/store/vehicule.module";
+import { agentModule } from "../features/parametres/agent/store/agent.module";
 
 export default createStore({
   modules: {
@@ -19,7 +21,9 @@ export default createStore({
     typeLigneModule,
     stationModule,
     tripsModule,
-    dashboardModule
+    dashboardModule,
+    vehiculeModule,
+    agentModule
   },
   state: {
     hideConfigButton: false,

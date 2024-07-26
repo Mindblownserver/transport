@@ -14,6 +14,7 @@
 
 
 <script>
+// to be replaced by the native maplibreGl library
 import { MglMap, MglMarker} from 'vue-maplibre-gl'
 import maplibregl from 'maplibre-gl'
 

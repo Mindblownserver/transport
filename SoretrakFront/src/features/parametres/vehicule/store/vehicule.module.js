@@ -1,14 +1,14 @@
 import myApi from "@/services/myApi.service.js"
-export const stationModule={
+export const vehiculeModule={
     namespaced: true,
     state: {
-      stations:[],
+      vehicules:[],
       loading:true,
       error:null,
     },
     mutations: {
-      setStations(state, stations){
-        state.stations = stations;
+      setVehicules(state, vehic){
+        state.vehicules = vehic;
       },
       setLoading(state,loading){
         state.loading = loading
@@ -18,11 +18,11 @@ export const stationModule={
       },
     },
     actions: {
-      getStation({commit}){
+      getVehicule({commit}){
         commit("setError", null);
         try{
-            myApi.getStations().then(res=>{
-              commit("setStations", res.data);
+            myApi.getVehicules().then(res=>{
+              commit("setVehicules", res.data);
             })
             
         }catch(err){

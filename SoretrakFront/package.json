@@ -20,7 +20,6 @@
     "dev": "npm run serve"
   },
   "dependencies": {
-    "@mapbox/mapbox-gl-rtl-text": "github:mapbox/mapbox-gl-rtl-text",
     "@mobiscroll/vue": "npm:@mobiscroll/vue-trial@^5.31.1",
     "@popperjs/core": "2.10.2",
     "@primevue/themes": "^4.0.0",

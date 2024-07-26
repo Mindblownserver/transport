@@ -17,15 +17,14 @@
     />
     <router-view />
     <app-footer v-show="showFooter" />
-    <configurator
+    <!-- <configurator
       :toggle="toggleConfigurator"
       :class="[showConfig ? 'show' : '', hideConfigButton ? 'd-none' : '']"
-    />
+    /> -->
   </main>
 </template>
 <script>
 import Sidenav from "./features/sidenav/components/";
-import Configurator from "@/components/Configurator.vue";
 import Navbar from "@/components/Navbars/Navbar.vue";
 import { mapMutations, mapState } from "vuex";
 
@@ -33,7 +32,6 @@ export default {
   name: "App",
   components: {
     Sidenav,
-    Configurator,
     Navbar,
   },
   methods: {

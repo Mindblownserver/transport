@@ -6,13 +6,34 @@ import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import MaterialDashboard from "./material-dashboard";
 import PrimeVue from 'primevue/config';
-import * as mobiscroll from '@mobiscroll/vue';
+import {
+    MbscPopup,
+    MbscSelect, 
+    MbscEventcalendar,
+    MbscCalendarNav,
+    setOptions,
+    MbscDatepicker,
+    MbscInput,
+    MbscSegmented,
+    MbscSegmentedGroup,
+    formatDate
+} from '@mobiscroll/vue';
 import '@mobiscroll/vue/dist/css/mobiscroll.min.css';
 import Tooltip from "primevue/tooltip";
 import Aura from '@primevue/themes/aura';
 
 const appInstance = createApp(App);
 appInstance.directive("tooltip",Tooltip)
+appInstance.use(MbscPopup)
+appInstance.use(MbscSelect)
+appInstance.use(MbscEventcalendar)
+appInstance.use(MbscCalendarNav)
+appInstance.use(setOptions)
+appInstance.use(MbscInput)
+appInstance.use(MbscDatepicker)
+appInstance.use(MbscSegmented)
+appInstance.use(MbscSegmentedGroup)
+appInstance.use(formatDate)
 appInstance.use(store);
 appInstance.use(router);
 appInstance.use(MaterialDashboard);
@@ -25,5 +46,4 @@ appInstance.use(PrimeVue,{
         }
     }
 });
-appInstance.use(mobiscroll);
 appInstance.mount("#app");

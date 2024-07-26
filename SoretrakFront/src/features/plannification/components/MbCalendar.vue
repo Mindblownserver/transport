@@ -7,11 +7,11 @@
     :dragToMove="true"
     :dragToResize="true"
     :dragInTime="false"
-    :selectedDate="new Date(2024,2,2,0,0,0,0)"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted"
     @event-drag-end="handleEventDragEnd"
+    @selected-date-change="handleDateChange"
     className="md-timeline-template">
       <template #day="day">
         <div class="md-date-header-day">
@@ -48,7 +48,7 @@
     </template>
     <template #header>
       <div class="custom-header-left">
-        <MbscCalendarNav />
+        <MbscCalendarNav/>
         <div class="left-criteria">
           <SearchCriteriaInput :critLbl="'Centre: '" :data="props.centreProp"
           @update:criteria-query="filterCentre"/>
@@ -149,7 +149,7 @@ import {
 import {ref, computed, watch} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
 
-const emits = defineEmits(["update:criteria-query","update:search-query","update:resource-mode"])
+const emits = defineEmits(["update:criteria-query","update:search-query","update:resource-mode", "update:date"])
 
 const props = defineProps({
 
@@ -246,8 +246,6 @@ const filterCentre =(selectedCrit)=>{
 }
 
 setOptions({
-  // locale,
-  // theme
   themeVariant: "light",
   theme: "material"
 })
@@ -288,9 +286,18 @@ function handleEventDragEnd(args){
   }
 }
 
+function handleDateChange(args){
+  if(args.date){
+    console.log(args.date.getDate())
+    emits("update:date", args.date);
+  }
+}
 
+// Pas à rejeter
 watch(()=>props.myTripsProp, (newValue)=>{
+  console.log("The flipping component is refreshed!!")
   myTripsLocal.value = newValue;
+  console.log(myTripsLocal.value)
 })
 
 </script>

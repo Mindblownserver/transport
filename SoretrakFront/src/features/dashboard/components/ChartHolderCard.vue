@@ -4,9 +4,7 @@
       class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
     >
       <div
-        class="border-radius-lg py-4 pe-1"
-        :class="`bg-gradient-${color} shadow-${color}`"
-      >
+        class="border-radius-lg py-4 pe-1" :style="{backgroundColor: bgColor, boxShadow: `${shadowColor} 0px 5px 15px`}">
         <slot />
       </div>
     </div>
@@ -14,6 +12,7 @@
       <h6 class="mb-0">{{ title }}</h6>
     </div>
   </div>
+  <!-- :class="`bg-gradient-${color} shadow-${color}`" -->
 </template>
 
 <script>
@@ -29,6 +28,12 @@ export default {
       type: String,
       default: "primary",
     },
+    bgColor:{
+      type:String,
+    },
+    shadowColor:{
+      type:String
+    }
   },
 };
 </script>

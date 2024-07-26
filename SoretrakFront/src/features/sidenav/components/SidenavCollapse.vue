@@ -5,7 +5,7 @@
     :aria-controls="collapseRef"
     :aria-expanded="isExpanded"
     class="nav-link"
-    :class="getRoute() === collapseRef ? `active bg-gradient-${getColor}` : ''"
+    :class="getRoute() === collapseRef ? `active bg-gradient-${getColor} fw-bold` : ''"
     v-bind="$attrs"
     @click="isExpanded = !isExpanded"
   >
@@ -15,7 +15,7 @@
     >
       <slot name="icon"></slot>
     </div>
-    <span class="nav-link-text" :class="isRTL ? ' me-1' : 'ms-1'">{{
+    <span class="nav-link-text fs-6"  :class="isRTL ? ' me-1' : 'ms-1'">{{
       navText
     }}</span>
   </router-link>

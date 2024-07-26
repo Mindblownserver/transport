@@ -34,14 +34,20 @@ class AxiosInstance {
    * @param {Date} date - specify the date of the desired trips 
    */
   getTrips(date){
-    return this.instance.get(`/api/trips/date/${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`)
+    return this.instance.get(`/api/trips/date/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`)
   }
   /**
    * Get Statistics of a given date
    * @param {Date} date - specify a date to provide statistics 
    */
   getStatisticsByDate(date){
-    return this.instance.get(`api/trips/statistics/${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`)
+    return this.instance.get(`api/trips/statistics/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`)
+  }
+  getVehicules(){
+    return this.instance.get("/api/vehicules");
+  }
+  getAgents(){
+    return this.instance.get("/api/agents")
   }
 }
 export default AxiosInstance;

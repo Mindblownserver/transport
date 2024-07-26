@@ -17,9 +17,12 @@ export default {
 
   methods: {
     createChart(lbl,arr){
+      let ctx;
+      ctx = document.getElementById("id");
+      if(ctx !=null)
+        ctx.id = lbl;
+      
 
-      var ctx = document.getElementById("id");
-      ctx.id = lbl;
       ctx = document.getElementById(lbl).getContext("2d")
       let chartStatus = Chart.getChart(lbl);
       if (chartStatus != undefined) {

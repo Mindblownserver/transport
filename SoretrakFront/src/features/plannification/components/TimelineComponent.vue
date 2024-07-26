@@ -7,7 +7,8 @@
     @update:search-query="filter" 
     @update:resource-mode="checkSelection"
     @update:search-by-time-query="filerByTime"
-    @update:criteria-query="filterByCrit"/>
+    @update:criteria-query="filterByCrit"
+    @update:date="fetchData"/>
 </template>
 
 <script setup>
@@ -168,12 +169,18 @@ const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
   }
 })*/
 
-onMounted(()=>{
-  store.dispatch("tripsModule/getTrips", new Date(2024,3,2,0,0,0,0)).then(()=>{
+
+const fetchData=(date)=>{
+  store.dispatch("tripsModule/getTrips", date).then(()=>{
     loadTrips();
     myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
     myResources.value = myResourcesCriteria.value
   });
+}
+
+onMounted(()=>{
+  fetchData(new Date(2024,2,2,0,0,0,0));
+  
 })
 
 

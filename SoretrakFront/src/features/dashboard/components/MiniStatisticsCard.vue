@@ -13,14 +13,15 @@
         >
       </div>
       <div class="pt-1" :class="isRTL ? 'text-start' : 'text-end'">
-        <p class="text-sm mb-0 text-capitalize">{{ title.text }}</p>
-        <h4 class="mb-0">{{ title.value }}</h4>
+        <h4 class="fw-bold fs-5 mb-0 text-capitalize" style="color: black;">{{ title.text }}</h4>
+        <h4 class="mb-0 fs-5 fw-light">{{ title.value }}</h4>
+        <h5 class="mb-0 fs-5 fw-light" v-html="detail"></h5>
       </div>
     </div>
     <hr class="dark horizontal my-0" />
     <div class="card-footer p-3" :class="isRTL ? 'text-start' : 'text-end'">
       <!--  eslint-disable-next-line vue/no-v-html -->
-      <p class="mb-0" v-html="detail"></p>
+      <!-- <p class="mb-0" v-html="detail"></p> -->
     </div>
   </div>
 </template>

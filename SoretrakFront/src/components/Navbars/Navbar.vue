@@ -5,7 +5,7 @@
       <breadcrumbs :currentPage="currentRouteName" :color="color" />
       <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4" :class="isRTL ? 'px-0' : 'me-sm-4'" id="navbar">
         <div class="pe-md-3 d-flex align-items-center" :class="isRTL ? 'me-md-auto' : 'ms-md-auto'">
-          <material-input id="search" label="Search" :color="color ? 'light' : 'dark'"/>
+          
         </div>
         <ul class="navbar-nav justify-content-end">
 
@@ -148,7 +148,6 @@
   </nav>
 </template>
 <script>
-import MaterialInput from "@/components/MaterialComponents/MaterialInput.vue";
 import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapState } from "vuex";
 
@@ -176,7 +175,6 @@ export default {
   },
   components: {
     Breadcrumbs,
-    MaterialInput,
   },
   computed: {
     ...mapState(["isRTL", "isAbsolute"]),
