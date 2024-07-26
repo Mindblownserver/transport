@@ -1,12 +1,14 @@
 package org.acme.resources;
 
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.List;
 
 import org.acme.entities.*;
 
 import org.acme.repositories.*;
-
+import org.acme.repositories.SQL.AgentSqlRepository;
+import org.acme.repositories.SQL.DrVehiculeSqlRepository;
 import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
@@ -50,33 +52,44 @@ public class ParamResources {
     DrCentreRepository centreRespository;
 
     @Inject
-    BusRepository busRespository;
+    DrVehiculeSqlRepository vehicRepository;
+
+    @Inject
+    AgentSqlRepository agentSqlRepository;
 
     @Inject
     Logger log;
 
-    @Path("/bus")
+    @Path("/agents")
     @GET
-    public Response getAllBus(){
-        List<Bus> busListes= busRespository.listAll(Sort.by("bus_id").ascending());
-        if(busListes.size()>0){
-            return Response.ok(busListes).build();
-        }else {
-            return Response.status(Status.NOT_FOUND).build();
+    public Response getAgents(){
+        try{
+            List<Agent> agentList = agentSqlRepository.getAgents();
+            if(agentList.size()>0)
+                return Response.ok(agentList).build();
+            return Response.status(404).entity("Agent Not Found").build();
+        }catch(Exception e){
+            return Response.status(403).entity(e).build();
         }
     }
 
-    @Path("/test")
+
+    @Path("/vehicules")
     @GET
-    public Response getTestData(){
-        JsonObject test = Json.createObjectBuilder()
-        .add("id","1")
-        .add("start", LocalTime.now().toString())
-        .add("end", LocalTime.now().plusHours(3).toString())
-        .add("text","TEST 1")
-        .add("resource", "R1").build();
-        return Response.ok(test).build();
+    public Response getAllBus(){
+        try{
+            List<DrVehicule> vehicList= vehicRepository.getVehicules();
+            log.info(vehicList);
+            if(vehicList.size()>0){
+                return Response.ok(vehicList).build();
+            }else {
+                return Response.status(Status.NOT_FOUND).build();
+            }
+        }catch(Exception e){
+            return Response.status(403).entity(e).build();
+        }
     }
+
     // Centre
 
     @GET
