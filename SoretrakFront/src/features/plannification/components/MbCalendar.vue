@@ -295,7 +295,6 @@ function handleDateChange(args){
 
 // Pas à rejeter
 watch(()=>props.myTripsProp, (newValue)=>{
-  console.log("The flipping component is refreshed!!")
   myTripsLocal.value = newValue;
   console.log(myTripsLocal.value)
 })

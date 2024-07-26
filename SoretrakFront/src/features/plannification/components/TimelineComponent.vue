@@ -161,15 +161,6 @@ const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
   }
 }
 
-/* watch(getLoading, (isLoading)=>{
-  if(!isLoading && getTrips.value.length>0){
-    loadTrips();
-    myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
-    myResources.value = myResourcesCriteria.value
-  }
-})*/
-
-
 const fetchData=(date)=>{
   store.dispatch("tripsModule/getTrips", date).then(()=>{
     loadTrips();
