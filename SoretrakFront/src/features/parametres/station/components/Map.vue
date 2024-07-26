@@ -1,79 +1,68 @@
 <template>
-    <mgl-map 
-      id="map"
-        v-if="center"
-        :mapStyle="mapStyle"
-        :zoom="zoom"
-        :center="center">
-        <mgl-marker v-for="(marker, index) in markers" :key="index"
-          color="#fb8c00"
-          :coordinates="marker.getCoords()">
-        </mgl-marker>
-    </mgl-map>
+  <div class="map-wrap">
+    <div class="map" ref="mapContainer"></div>
+  </div>
 </template>
 
+<script setup>
+import { Map, setRTLTextPlugin,getRTLTextPluginStatus, Marker,Popup } from 'maplibre-gl';
+import { shallowRef, onUnmounted, markRaw } from 'vue';
 
-<script>
-// to be replaced by the native maplibreGl library
-import { MglMap, MglMarker} from 'vue-maplibre-gl'
-import maplibregl from 'maplibre-gl'
+const mapContainer = shallowRef(null);
+const map = shallowRef(null);
 
-export default {
-  name: 'MapLibre',
-  components: {
-    MglMap,
-    MglMarker,
-  },
-  data() {
-    return {
-      mapStyle: "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
-      zoom: 10,
-      center: [10.1063907,35.6757932],  // Initial center is null, to be updated by geolocation
-    }
-  },
-  props:{
-    markers:{
-      type:Array,
-      default:null
-    }
-  },
-  mounted() {
-    if(maplibregl.getRTLTextPluginStatus==='unavailable'){
-      maplibregl.setRTLTextPlugin(
-        'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
-        null,
-        true // Lazy load the plugin
-      );
-    }
-    console.log(this.markers)
+function setupMap(markersList){
+  let mapWidget = new Map({
+    container: mapContainer.value,
+    style:  "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
+    center: [10.1063907, 35.6757932],
+    zoom: 14,
+  });
 
+  // add RTL support
+  if(getRTLTextPluginStatus() == "unavailable"){
+    setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.js', false);
   }
+
+
+  markersList.forEach(marker=>{
+    
+    new Marker({
+      color: "#fb8c00",
+      draggable: false
+    }).setLngLat(marker.getCoords())
+    .setPopup(new Popup().setHTML(`<p>Station ${marker.getStatId()}:</p><p style="color:#fb8c00"><b>${marker.getStatNom()}</b></p>`))
+    .addTo(mapWidget);
+  })
+  // append map.value to the actual map widget
+  map.value = markRaw(mapWidget);
+
 }
+
+onUnmounted(() => {
+  map.value?.remove();
+})
+defineExpose({
+  setupMap
+})
 </script>
 
-<style lang="scss">
-@import "~vue-maplibre-gl/src/css/maplibre.scss";
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style >
+@import '~maplibre-gl/dist/maplibre-gl.css';
+
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Adjust as needed */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+.map {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
 }
 
-#app{
-  width:100%;
-  height:100vh;
-}
-
-#map-container {
-  font-family: 'KacstPoster', "DejaVuSansMono-Bold"; /* Use a font that supports Arabic */
-  direction: rtl; /* Ensure text direction is right-to-left */
-}
 </style>

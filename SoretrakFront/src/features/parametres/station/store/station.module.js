@@ -18,12 +18,11 @@ export const stationModule={
       },
     },
     actions: {
-      getStation({commit}){
+      async getStation({commit}){
         commit("setError", null);
         try{
-            myApi.getStations().then(res=>{
-              commit("setStations", res.data);
-            })
+            const res = await myApi.getStations()
+            commit("setStations", res.data);
             
         }catch(err){
             commit("setError", err);

@@ -1,8 +1,9 @@
 export class MyMarker{
-    constructor(lat,lng,text){
+    constructor(lat,lng,statId, statNom){
         this.lat=lat;
         this.lng=lng;
-        this.text=text;
+        this.statId=statId;
+        this.statNom = statNom
     }
     getLat(){
         return this.lat;
@@ -13,7 +14,10 @@ export class MyMarker{
     getCoords(){
         return [this.lat,this.lng];
     }
-    getText(){
-        return this.text;
+    getStatId(){
+        return this.statId;
+    }
+    getStatNom(){
+        return this.statNom;
     }
 }

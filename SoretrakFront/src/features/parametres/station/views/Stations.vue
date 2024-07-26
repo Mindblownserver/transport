@@ -21,7 +21,7 @@
                   <div class="table-responsive p-0">
                     <DataTable
                     paginator :rows="10" :loading="getLoading"
-                    :value="getStations()" size="large" 
+                    :value="getStations" size="large" 
                     :stripedRows="true" 
                     tableStyle="min-width: 50rem;" 
                     v-model:filters="filters" filterDisplay="row"
@@ -58,7 +58,7 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                   <div class="table-responsive p-0" style="height: 80vh;">
-                    <MapLibre :markers="markers"/>
+                    <MapLibre ref="mapWidgetRef" />
                   </div>
                 </div>
               </div>
@@ -69,7 +69,7 @@
     </Tabs>
 </div>
 </template>
-<script>
+<script setup>
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
@@ -82,65 +82,78 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-export default {
-  name: "Station",
-  components:{
-    DataTable,
-    Column,
-    InputText,
-    MapLibre,
-    TabPanel,
-    TabPanels,
-    Tab,
-    TabList,
-    Tabs
-  },
-  data(){
-    return{
-      columns: [
-        { field: 'decStat', header: 'Id Station' },
-        { field: 'rayon', header: 'Rayon' },
-        { field: 'date', header: 'Date' },
-        { field: 'nomFr', header: 'Nom FR' },
-        { field: 'nomAr', header: 'Nom AR' },
-        { field: 'typeSt', header: 'Type' },
-        { field: 'latitude', header: 'latitude' },
-        { field: 'longetude', header: 'longetude' },
-      ],
-      filters: {
-        decStat: { value: null, matchMode: FilterMatchMode.EQUALS },
-        rayon: { value: null, matchMode: FilterMatchMode.EQUALS },
-        date: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        nomFr: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        nomAr: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        typeSt: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        latitude: { value: null, matchMode: FilterMatchMode.EQUALS },
-        longetude: { value: null, matchMode: FilterMatchMode.EQUALS },
-        
-      },
-      selectedRow:null,
-      markers:[]
-    }
-  },
-  computed:{
-    
-    getLoading(){
-      return this.$store.state.stationModule.loading
-    }
-  },
+import { computed, onMounted, ref } from 'vue';
+import {useStore} from "vuex"
+
+const columns = ref([
+  { field: 'decStat', header: 'Id Station' },
+  { field: 'rayon', header: 'Rayon' },
+  { field: 'date', header: 'Date' },
+  { field: 'nomFr', header: 'Nom FR' },
+  { field: 'nomAr', header: 'Nom AR' },
+  { field: 'typeSt', header: 'Type' },
+  { field: 'latitude', header: 'latitude' },
+  { field: 'longetude', header: 'longetude' },
+])
+
+const filters = ref({
+  decStat: { value: null, matchMode: FilterMatchMode.EQUALS },
+  rayon: { value: null, matchMode: FilterMatchMode.EQUALS },
+  date: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  nomFr: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  nomAr: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  typeSt: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  latitude: { value: null, matchMode: FilterMatchMode.EQUALS },
+  longetude: { value: null, matchMode: FilterMatchMode.EQUALS },
+  
+})
+const selectedRow = ref(null);
+const markers = ref([])
+const mapWidgetRef = ref(null);
+
+const getLoading= computed(()=>store.state.stationModule.loading)
+const getStations = computed(()=>store.state.stationModule.stations)
+const store = useStore();
+
+function onRowSelect(e){
+  selectedRow.value= e.data
+  console.log(selectedRow)
+}
+
+function onRowUnselect(e){
+  selectedRow.value= e.data
+  console.log(selectedRow)
+}
+
+function initMarkers(){
+  const stations =getStations.value;
+  stations.forEach(station => {
+    markers.value.push(new MyMarker(station.longetude,station.latitude,station.decStat, station.nomFr));
+  });
+}
+
+onMounted(()=>{
+  store.dispatch("stationModule/getStation").then(()=>{
+    initMarkers();
+    mapWidgetRef.value.setupMap(markers.value)
+
+  });
+})
+/* export default {
+
   mounted(){
     this.$store.dispatch("stationModule/getStation");
   },
   methods:{
-    onRowSelect(e){
+    function onRowSelect(e){
       this.selectedRow= e.data
       console.log(this.selectedRow)
     },
-    onRowUnselect(e){
+    function onRowUnselect(e){
       this.selectedRow= e.data
       console.log(this.selectedRow)
     },
-    getStations(){
+    function getStations(){
       const stations =this.$store.state.stationModule.stations; 
       stations.forEach(station => {
           this.markers.push(new MyMarker(station.longetude,station.latitude,station.decStat));
@@ -149,4 +162,5 @@ export default {
     },
   }
 }
-</script>
+ */
+ </script>
