@@ -50,7 +50,7 @@
         <div class="row mt-4">
           <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
-              title="Les differentes lignes affectées par centre"
+              title="Les lignes plannifiées par centre"
               bgColor="#ed78a1"
               shadowColor="#b4184f"
             >
@@ -59,7 +59,7 @@
           </div>
           <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
-              title="Les differentes vehicules affectées par centre"
+              title="Les vehicules plannifiées par centre"
               bgColor="#98cd9a"
               shadowColor="#428a46"
 
@@ -69,7 +69,7 @@
           </div>
           <div class="col-lg-6 mt-5">
             <chart-holder-card
-              title="Les agents affectés par centre"
+              title="Les agents plannifiés par centre"
               bgColor="#8abdf5"
               shadowColor="#1270d3"
             >

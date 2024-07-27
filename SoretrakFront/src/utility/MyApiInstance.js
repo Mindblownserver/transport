@@ -49,5 +49,8 @@ class AxiosInstance {
   getAgents(){
     return this.instance.get("/api/agents")
   }
+  getLignes(){
+    return this.instance.get("/api/lignes")
+  }
 }
 export default AxiosInstance;
