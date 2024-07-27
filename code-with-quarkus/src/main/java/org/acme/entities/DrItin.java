@@ -10,6 +10,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 @Entity
 public class DrItin extends PanacheEntityBase{
@@ -31,6 +32,10 @@ public class DrItin extends PanacheEntityBase{
     @Column(name="DETARIF")
     private Integer deTarif;
 
+
+    @Transient
+    private int stat;
+
     @ManyToOne
     @JoinColumn(name="DECSTAT")
     @JsonBackReference
@@ -42,6 +47,14 @@ public class DrItin extends PanacheEntityBase{
 
     public DrItinIdRecord getId() {
         return id;
+    }
+
+    public int getStat() {
+        return stat;
+    }
+
+    public void setStat(int stat) {
+        this.stat = stat;
     }
 
     public void setId(DrItinIdRecord id) {
@@ -95,6 +108,7 @@ public class DrItin extends PanacheEntityBase{
     public void setStation(DrStati station) {
         this.station = station;
     }
+    
 
     public DrItin() {
     }

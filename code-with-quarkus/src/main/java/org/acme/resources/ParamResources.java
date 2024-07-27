@@ -8,6 +8,7 @@ import org.acme.entities.*;
 
 import org.acme.repositories.*;
 import org.acme.repositories.SQL.AgentSqlRepository;
+import org.acme.repositories.SQL.DrLigneSqlRespository;
 import org.acme.repositories.SQL.DrVehiculeSqlRepository;
 import org.jboss.logging.Logger;
 
@@ -36,14 +37,10 @@ public class ParamResources {
 
 
     @Inject
-    DrLigneRepository ligneRespository;
+    DrLigneSqlRespository ligneSqlRepository;
 
     @Inject
     SHAPSRepository shapeRespository;
-
-
-    @Inject
-    DrItinRepository itinRespository;
 
     @Inject
     DrStatiRepository stateRespository;
@@ -118,70 +115,29 @@ public class ParamResources {
         return Response.ok(stateRespository.listAll()).build();
     }   
 
-
-
-    @Path("/itin")
-    @GET
-    public Response getItin(){
-        List<DrItin> intins = itinRespository.listAll();
-        if(intins.size()> 0) {
-            return Response.ok(intins).build();
-        }
-        return Response.status(Status.NOT_FOUND).build();
-        
-    }
-
     
     @Path("/Stati")
     @GET
     public Response get(){
         return Response.ok(stateRespository.listAll()).build();
-    }  
-    
-   
-    
-    @Path("shaps")
-    @GET
-    public Response getShaps(){
-        return Response.ok(shapeRespository.listAll()).build();
-    }
+    } 
 
     // lignes 
 
-    @Path("/ligne")
+    @Path("/lignes")
     @GET
-    public Response getligne(){
-        return Response.ok(ligneRespository.listAll()).build();
+    public Response getlignes(){
+        try{
+            List<DrLigne> ligneList = ligneSqlRepository.getLignes();
+            if(ligneList.size()>0)
+                return Response.ok(ligneList).build();
+            return Response.status(404).build();    
+        }catch(Exception e){
+            return Response.status(403).entity(e).build();
+        }
+        
     }
 
-    @Path("/ligne/type/{type}")
-    @GET
-    public Response getLigneByType(@PathParam("type") Long type){
-        if(typeLigneRespository.existe(type)){
-            log.debug("Finding by Type");
-            List<DrLigne> lignes = ligneRespository.findByTypeLigne(type);
-            return Response.ok(lignes).build();
-        }else{
-            return Response.status(Response.Status.NOT_FOUND).entity("Type ="+type+" does not exist").build();
-        }
-    }
-    
-    @Path("/ligne/deleg/{deleg}")
-    @GET
-    public Response getligneByDeleg(@PathParam("deleg") Long deleg){
-        if(delegRespository.findById(deleg)!=null){
-            List<DrLigne> delegs = ligneRespository.findByDeleg(deleg);
-            return Response.ok(delegs).build();
-        }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity("deleg not Found").build();
-    }
-
-    @Path("/ligne/type")
-    @GET
-    public Response getlignetype(){
-        return Response.ok(typeLigneRespository.listAll()).build();
-    }
         
 }
 

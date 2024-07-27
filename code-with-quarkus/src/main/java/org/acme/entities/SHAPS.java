@@ -18,14 +18,14 @@ public class SHAPS extends PanacheEntityBase{
     @EmbeddedId
     private ShapsId idShaps;
     @Column(name="LAT")
-    private Integer lat;
+    private double lat;
     @Column(name="LON")
-    private Long lon;
+    private double lon;
     @Column(name="MAX_VITESSE")
     private Integer maxVitesse;
     @Column(name="KM")
     private Integer km;
-
+ 
     @JoinColumn(name="deNumLi", insertable=false, updatable=false)
     @ManyToOne
     @MapsId("deNumLi")
@@ -37,16 +37,16 @@ public class SHAPS extends PanacheEntityBase{
     public void setIdShaps(ShapsId idShaps) {
         this.idShaps = idShaps;
     }
-    public Integer getLAT() {
+    public double getLAT() {
         return lat;
     }
-    public void setLAT(Integer lat) {
+    public void setLAT(double lat) {
         this.lat = lat;
     }
-    public Long getLON() {
+    public double getLON() {
         return lon;
     }
-    public void setLON(Long lON) {
+    public void setLON(double lON) {
         lon = lON;
     }
     public Integer getMAX_VITESSE() {
@@ -63,7 +63,7 @@ public class SHAPS extends PanacheEntityBase{
     }
     public SHAPS() {
     }
-    public SHAPS(ShapsId idShaps, Integer lat, Long lON, Integer mAX_VITESSE, Integer kM) {
+    public SHAPS(ShapsId idShaps, double lat, double lON, Integer mAX_VITESSE, Integer kM) {
         this.idShaps = idShaps;
         this.lat = lat;
         lon = lON;

@@ -117,6 +117,31 @@ public class DrLigne extends PanacheEntityBase{
         return deNumLi;
     }
 
+    
+
+    public List<SHAPS> getShapList() {
+        return shapList;
+    }
+
+
+
+    public void setShapList(List<SHAPS> shapList) {
+        this.shapList = shapList;
+    }
+
+
+
+    public List<DrItin> getItinList() {
+        return itinList;
+    }
+
+
+
+    public void setItinList(List<DrItin> itinList) {
+        this.itinList = itinList;
+    }
+
+
 
     public void setIdLigne(Long deNumLi) {
         this.deNumLi = deNumLi;

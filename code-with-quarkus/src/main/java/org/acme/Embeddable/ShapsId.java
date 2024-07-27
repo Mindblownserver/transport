@@ -7,6 +7,6 @@ import jakarta.persistence.Embeddable;
 public record ShapsId(
     @Column(name="DENUMLI") Long deNumLi,
     @Column(name="N") Integer N,
-    @Column(name="DIRECTION_ID") Long DIRECTION_ID){
+    @Column(name="DIRECTION_ID") int DIRECTION_ID){
 
 }
