@@ -24,7 +24,7 @@ class AxiosInstance {
     return this.instance.get("/api/deleg")
   }
   getTypeLignes(){
-    return this.instance.get("/api/ligne/type")
+    return this.instance.get("/api/lignes/type")
   }
   getStations(){
     return this.instance.get("/api/stations")

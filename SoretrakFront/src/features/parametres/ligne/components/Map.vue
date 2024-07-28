@@ -11,11 +11,12 @@ import { shallowRef, onUnmounted, markRaw } from 'vue';
 const mapContainer = shallowRef(null);
 const map = shallowRef(null);
 
-function setupMap(markersList){
+function setupMap(center, markersList, lineGeoJson){
+  const finalMarkerIndex = markersList.length-1;
   let mapWidget = new Map({
     container: mapContainer.value,
     style:  "https://api.maptiler.com/maps/streets/style.json?key=iEA5nD2zUFH2DzzdYBT0",
-    center: [10.1063907, 35.6757932],
+    center: center,
     zoom: 14,
   });
 
@@ -25,15 +26,36 @@ function setupMap(markersList){
   }
 
 
-  markersList.forEach(marker=>{
+  markersList.forEach((marker, index)=>{
     
     new Marker({
-      color: "#fb8c00",
+      color: (index==0)?"#03C03C":(index==finalMarkerIndex)?"#CC0000":"#fb8c00",
       draggable: false
     }).setLngLat(marker.getCoords())
-    .setPopup(new Popup().setHTML(`<p>Station ${marker.getStatId()}:</p><p style="color:#fb8c00"><b>${marker.getStatNom()}</b></p>`))
+    .setPopup(new Popup().setHTML(`<p>Station ${marker.getStatId()}:</p><p style="color:${(index==0)?"#03C03C":(index==finalMarkerIndex)?"#CC0000":"#fb8c00"};font-weight:bold">${marker.getStatNom()}</p>`))
     .addTo(mapWidget);
   })
+
+  // add line layer
+  if(lineGeoJson!=undefined){
+    mapWidget.on('load', () => {
+      mapWidget.addSource('route', lineGeoJson);
+      mapWidget.addLayer({
+              'id': 'route',
+              'type': 'line',
+              'source': 'route',
+              'layout': {
+                  'line-join': 'round',
+                  'line-cap': 'round'
+              },
+              'paint': {
+                  'line-color': '#17B169',
+                  'line-width': 5
+              }
+          });
+    });
+  }
+  
   // append map.value to the actual map widget
   map.value = markRaw(mapWidget);
 

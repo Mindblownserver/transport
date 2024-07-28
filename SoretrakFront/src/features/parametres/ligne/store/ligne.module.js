@@ -4,7 +4,7 @@ export const ligneModule={
     namespaced: true,
     state: {
       lignes:[],
-      loading:false,
+      loading:true,
       error:null
     },
     mutations: {
@@ -19,13 +19,12 @@ export const ligneModule={
       }
     },
     actions: {
-      getLignes({commit}){
+       async getLignes({commit}){
         commit("setLoading", true);
         commit("setError", null);
         try{
-            myApi.getLignes().then(res=>{
-                commit("setLignes", res.data);
-            })
+            const res = await myApi.getLignes();
+            commit("setLignes", res.data);
         }catch(err){
             commit("setError", err);
         }finally{
