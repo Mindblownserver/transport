@@ -30,8 +30,8 @@ public class ShapesSqlRepository {
                 shape.setDeNumLi(rs.getLong("DENUMLI"));
                 shape.setN(rs.getInt("N"));
                 shape.setDIRECTION_ID(rs.getLong("DIRECTION_ID"));
-                shape.setLat(rs.getLong("LAT"));
-                shape.setLon(rs.getLong("LON"));
+                shape.setLat(rs.getFloat("LAT"));
+                shape.setLon(rs.getFloat("LON"));
                 shape.setMaxVitesse(rs.getInt("MAX_VITESSE"));
                 shape.setKm(rs.getInt("KM"));
                 shapes.add(shape);
@@ -54,8 +54,8 @@ public class ShapesSqlRepository {
                     shape.setDeNumLi(rs.getLong("DENUMLI"));
                     shape.setN(rs.getInt("N"));
                     shape.setDIRECTION_ID(rs.getLong("DIRECTION_ID"));
-                    shape.setLat(rs.getLong("LAT"));
-                    shape.setLon(rs.getLong("LON"));
+                    shape.setLat(rs.getFloat("LAT"));
+                    shape.setLon(rs.getFloat("LON"));
                     shape.setMaxVitesse(rs.getInt("MAX_VITESSE"));
                     shape.setKm(rs.getInt("KM"));
                     shapes.add(shape);

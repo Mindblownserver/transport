@@ -10,8 +10,8 @@ public class ShapesSql extends PanacheEntityBase{
     private Long deNumLi;
     private Integer N;
     private Long DIRECTION_ID;
-    private Long lat;
-    private Long lon;
+    private Float lat;
+    private Float lon;
     private Integer maxVitesse;
     private Integer km;
     private DrLigne ligne;
@@ -40,19 +40,19 @@ public class ShapesSql extends PanacheEntityBase{
         this.DIRECTION_ID = DIRECTION_ID;
     }
 
-    public Long getLat() {
+    public Float getLat() {
         return lat;
     }
 
-    public void setLat(Long lat) {
+    public void setLat(Float lat) {
         this.lat = lat;
     }
 
-    public Long getLon() {
+    public Float getLon() {
         return lon;
     }
 
-    public void setLon(Long lon) {
+    public void setLon(Float lon) {
         this.lon = lon;
     }
 
@@ -83,7 +83,7 @@ public class ShapesSql extends PanacheEntityBase{
     public ShapesSql() {
     }
 
-    public ShapesSql(Long deNumLi, Integer n, Long DIRECTION_ID, Long lat, Long lon, Integer maxVitesse, Integer km, DrLigne ligne) {
+    public ShapesSql(Long deNumLi, Integer n, Long DIRECTION_ID, Float lat, Float lon, Integer maxVitesse, Integer km, DrLigne ligne) {
         this.deNumLi = deNumLi;
         N = n;
         this.DIRECTION_ID = DIRECTION_ID;

@@ -69,7 +69,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <MapLibre v-if="mapVisible" :center="center" :markers="markers" style="width: 100%; height: 500px;" ref="map"/>
+        <MapLibre v-if="mapVisible" :center="center" :markers="markers" :routes="routes" style="width: 100%; height: 500px;" ref="map"/>
       </div>
     </div>
   </div>
@@ -109,6 +109,7 @@ export default {
       mapVisible: false,
       center: [0, 0],  // Default center to avoid issues with uninitialized center
       markers: [],
+      routes: [],  // Initialize routes as an empty array
     };
   },
   computed: {
@@ -144,11 +145,24 @@ export default {
 
         console.log('Fetched station data:', statiData);
 
+        // Fetch shape data for each ligne
+        const shapeResponse = await fetch(`http://localhost:8081/api/shaps/${ligneData.idLigne}`);
+        if (!shapeResponse.ok) throw new Error('Network response was not ok');
+        const shapeData = await shapeResponse.json();
+        console.log('Fetched shape data:', shapeData);
+
         // Set map center and markers
         if (statiData.length > 0) {
           this.center = [statiData[0].longetude, statiData[0].latitude]; // Center map on the first station
         }
         this.markers = statiData.map(stati => new MyMarker(stati.latitude, stati.longetude, stati.nomFr));
+
+      // Pass shape data as routes
+        if (shapeData) {
+          this.routes = [shapeData];  
+          console.log('Routes data set:', this.routes);
+        }
+
 
         this.mapVisible = true;
       } catch (error) {

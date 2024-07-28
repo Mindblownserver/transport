@@ -18,6 +18,10 @@ export default {
     markers: {
       type: Array,
       default: () => []
+    },
+    routes: {
+      type: Array,
+      default: () => []
     }
   },
   setup(props) {
@@ -25,14 +29,17 @@ export default {
     const map = shallowRef(null);
     const mapMarkers = shallowRef([]);
 
-    const drawRoute = (map, markers) => {
-      const coordinates = markers.map(marker => marker.getCoords());
+    const drawRoute = (map, routes) => {
+      console.log('Drawing route with data:', routes);
       const geojson = {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: coordinates
-        }
+        type: 'FeatureCollection',
+        features: routes.map(route => ({
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: route.map(coord => [coord.lon, coord.lat])
+          }
+        }))
       };
 
       if (map.getSource('route')) {
@@ -52,7 +59,7 @@ export default {
             'line-cap': 'round'
           },
           paint: {
-            'line-color': '#ff7f00',
+            'line-color': '#4899F1',
             'line-width': 5
           }
         });
@@ -72,7 +79,7 @@ export default {
 
     onMounted(() => {
       const apiKey = 'iEA5nD2zUFH2DzzdYBT0';
-      const { markers } = props;
+      const { markers, routes } = props;
 
       const initialCenter = markers.length > 0 ? markers[0].getCoords() : [0, 0];
 
@@ -88,7 +95,7 @@ export default {
       addMarkersToMap(map.value, markers);
 
       map.value.on('load', () => {
-        drawRoute(map.value, markers);
+        drawRoute(map.value, routes);
       });
 
       if (maplibregl.getRTLTextPluginStatus() === 'unavailable') {
@@ -104,12 +111,12 @@ export default {
       map.value?.remove();
     });
 
-    watch(() => props.markers, (newMarkers) => {
+    watch(() => [props.markers, props.routes], ([newMarkers, newRoutes]) => {
       if (map.value) {
         addMarkersToMap(map.value, newMarkers);
-        drawRoute(map.value, newMarkers);
+        drawRoute(map.value, newRoutes);
       }
-    });
+    }, { deep: true });
 
     return {
       map, mapContainer
