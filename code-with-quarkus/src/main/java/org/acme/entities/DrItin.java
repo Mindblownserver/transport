@@ -34,7 +34,7 @@ public class DrItin extends PanacheEntityBase{
 
 
     @Transient
-    private int stat;
+    private DrStati stat;
 
     @ManyToOne
     @JoinColumn(name="DECSTAT")
@@ -49,11 +49,11 @@ public class DrItin extends PanacheEntityBase{
         return id;
     }
 
-    public int getStat() {
+    public DrStati getStat() {
         return stat;
     }
 
-    public void setStat(int stat) {
+    public void setStat(DrStati stat) {
         this.stat = stat;
     }
 

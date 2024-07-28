@@ -13,6 +13,7 @@ import org.acme.Embeddable.ShapsId;
 import org.acme.entities.DrCentre;
 import org.acme.entities.DrItin;
 import org.acme.entities.DrLigne;
+import org.acme.entities.DrStati;
 import org.acme.entities.DrTypeLigne;
 import org.acme.entities.SHAPS;
 
@@ -89,7 +90,7 @@ public class DrLigneSqlRespository {
                     itin.setEscale(rs.getInt("DEESCALE"));
                     itin.setDates(rs.getString("DEDATES"));
                     itin.setTarif(rs.getInt("DETARIF"));
-                    itin.setStat(rs.getInt("DECSTAT"));
+                    itin.setStat(getStationById(rs.getInt("DECSTAT")));
                     itins.add(itin);
                     
                 }
@@ -118,7 +119,7 @@ public class DrLigneSqlRespository {
 
     private List<SHAPS> getShapesByLigneId(int denumli) throws SQLException{
         List<SHAPS> shapList = new ArrayList<>();
-        String sql = "SELECT * FROM SHAPE where DENUMLI = ?";
+        String sql = "SELECT * FROM SHAPE where DENUMLI = ? order by N asc";
 
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
@@ -136,4 +137,25 @@ public class DrLigneSqlRespository {
 
         return shapList;
     }
+
+    public DrStati getStationById(int decStat) throws SQLException{
+        DrStati station = new DrStati();
+        String sql = "SELECT * from DRSTATI where DECSTAT=?";
+        
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, decStat);
+            
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()){
+                    station.setDecStat((long)decStat);
+                    station.setNomFr(rs.getString("DELSTAT"));
+                    station.setLatitude(rs.getFloat("STOP_LAT"));
+                    station.setLongetude(rs.getFloat("STOP_LON"));
+
+                }
+            }
+        }
+        return station;
+    }   
 }

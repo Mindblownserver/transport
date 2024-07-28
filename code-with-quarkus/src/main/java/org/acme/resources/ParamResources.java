@@ -138,6 +138,20 @@ public class ParamResources {
         
     }
 
+    @Path("/lignes/type")
+    @GET
+    public Response getTypeLignes(){
+        try{
+            List<DrTypeLigne> typeLigneList = typeLigneRespository.listAll();
+            if(typeLigneList.size()>0)
+                return Response.ok(typeLigneList).build();
+            return Response.status(404).build();    
+        }catch(Exception e){
+            return Response.status(403).entity(e).build();
+        }
+        
+    }
+
         
 }
 
