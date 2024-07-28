@@ -1,5 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header';
+import myApi from "@/services/myApi.service.js"
 
 const API_URL = process.env.VUE_APP_API_BASE_URL
 const BASE_URL = process.env.VUE_APP_BASE_URL
@@ -7,8 +8,8 @@ const BASE_URL = process.env.VUE_APP_BASE_URL
 export default {
 
   async login(user) {
-    var response = await axios.post(API_URL + '/login', {
-      email: user.email,
+    var response = await axios.post(myApi + '/login', {
+      username: user.username,
       password: user.password
     }, 
     {
@@ -24,14 +25,14 @@ export default {
   },
 
   async logout() {
-    await axios.post(API_URL + "/logout", {}, { headers: authHeader() })
+    await axios.post(myApi + "/logout", {}, { headers: authHeader() })
     localStorage.removeItem('user_free');
   },
 
   async register(user) {
-    var response = await axios.post(API_URL + '/register', {
+    var response = await axios.post(myApi + '/register', {
       name: user.name,
-      email: user.email,
+      username: user.username,
       password: user.password,
       password_confirmation: user.confirmPassword
     });
@@ -41,11 +42,11 @@ export default {
     return response.data;
   },
 
-  async passwordForgot(userEmail) {
+  async passwordForgot(userusername) {
 
     var response = await axios.post(API_URL + '/password-forgot', {
       redirect_url: BASE_URL + "/password-reset",
-      email: userEmail
+      username: userusername
     })
     return response.status;
   },
@@ -55,7 +56,7 @@ export default {
     var response = await axios.post(API_URL + '/password-reset', {
       password: passwordDTO.newPassword,
       password_confirmation: passwordDTO.confirmPassword,
-      email: passwordDTO.email,
+      username: passwordDTO.username,
       token: passwordDTO.token
     })
     return response.status;

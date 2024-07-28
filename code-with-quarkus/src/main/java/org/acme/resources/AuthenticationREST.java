@@ -31,9 +31,9 @@ public class AuthenticationREST {
 
 	@POST
 	@PermitAll
-	@Path("/signin")
+	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response signin(AuthRequest authRequest) {
+	public Response login(AuthRequest authRequest) {
 
 		Compte userRemote = compteRepo.findByUsername(authRequest.username);
 

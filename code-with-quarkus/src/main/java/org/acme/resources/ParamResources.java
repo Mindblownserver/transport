@@ -45,7 +45,7 @@ public class ParamResources {
 
 
     @Inject
-    SHAPSRepository shapeRespository;
+    ShapesSqlRepository shapeRespository;
 
     @Inject
     DrItinRepository itinRespository;
@@ -156,12 +156,18 @@ public class ParamResources {
     }
 
 
-    @Path("shaps")
+    @Path("/shaps")
     @GET
-    public Response getShaps(){
-        return Response.ok(shapeRespository.listAll()).build();
+    public Response getShaps() throws SQLException {
+        return Response.ok(shapeRespository.getAll()).build();
     }
 
+    @Path("/shaps/{numli}")
+    @GET
+    public Response getShapesByNumli(@PathParam("numli") Long numli) throws SQLException {
+        return Response.ok(shapeRespository.getShapsByNumli(numli)).build();
+
+    }
     // lignes 
 
     @Path("/ligne")

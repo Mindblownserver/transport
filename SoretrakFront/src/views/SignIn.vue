@@ -38,42 +38,46 @@
               </div>
             </div>
             <div class="card-body">
-              <form role="form" class="text-start mt-3">
+              <form @submit.prevent="handleLogin" role="form" class="text-start mt-3">
                 <div class="mb-3">
                   <material-input
+                    v-model="username"
                     id="email"
-                    type="email"
-                    label="Email"
-                    name="email"
+                    label="Username"
+                    name="username"
                   />
                 </div>
                 <div class="mb-3">
                   <material-input
+                    v-model="password"
                     id="password"
                     type="password"
                     label="Password"
                     name="password"
                   />
                 </div>
-                <material-switch id="rememberMe" name="rememberMe"
-                  >Remember me</material-switch
-                >
+                <material-switch v-model="rememberMe" id="rememberMe" name="rememberMe">
+                  Remember me
+                </material-switch>
                 <div class="text-center">
                   <material-button
+                    type="submit"
                     class="my-4 mb-2"
                     variant="gradient"
                     color="success"
                     fullWidth
-                    >Sign in</material-button
                   >
+                    Sign in
+                  </material-button>
                 </div>
                 <p class="mt-4 text-sm text-center">
                   Don't have an account?
                   <router-link
                     :to="{ name: 'SignUp' }"
                     class="text-success text-gradient font-weight-bold"
-                    >Sign up</router-link
                   >
+                    Sign up
+                  </router-link>
                 </p>
               </form>
             </div>
@@ -92,46 +96,49 @@
                 href="https://www.creative-tim.com"
                 class="font-weight-bold text-white"
                 target="_blank"
-                >Creative Tim</a
               >
+                Creative Tim
+              </a>
               for a better web.
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <ul
-              class="nav nav-footer justify-content-center justify-content-lg-end"
-            >
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
               <li class="nav-item">
                 <a
                   href="https://www.creative-tim.com"
                   class="nav-link text-white"
                   target="_blank"
-                  >Creative Tim</a
                 >
+                  Creative Tim
+                </a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://www.creative-tim.com/presentation"
                   class="nav-link text-white"
                   target="_blank"
-                  >About Us</a
                 >
+                  About Us
+                </a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://www.creative-tim.com/blog"
                   class="nav-link text-white"
                   target="_blank"
-                  >Blog</a
                 >
+                  Blog
+                </a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://www.creative-tim.com/license"
                   class="nav-link pe-0 text-white"
                   target="_blank"
-                  >License</a
                 >
+                  License
+                </a>
               </li>
             </ul>
           </div>
@@ -147,6 +154,7 @@ import MaterialInput from "@/components/MaterialComponents/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialComponents/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialComponents/MaterialButton.vue";
 import { mapMutations } from "vuex";
+import authService from '@/services/auth.service.js'; // Adjust the import path as necessary
 
 export default {
   name: "sign-in",
@@ -155,6 +163,13 @@ export default {
     MaterialInput,
     MaterialSwitch,
     MaterialButton,
+  },
+  data() {
+    return {
+      username: '',
+      password: '',
+      rememberMe: false,
+    };
   },
   beforeMount() {
     this.toggleEveryDisplay();
@@ -166,6 +181,20 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    async handleLogin() {
+      try {
+        const response = await authService.login({
+          username: this.username,
+          password: this.password,
+        });
+        console.log('Login successful:', response);
+        // Handle successful login (e.g., redirect or show a message)
+        // For example: this.$router.push({ name: 'Home' });
+      } catch (error) {
+        console.error('Login failed:', error);
+        // Handle login error (e.g., show an error message)
+      }
+    },
   },
 };
 </script>

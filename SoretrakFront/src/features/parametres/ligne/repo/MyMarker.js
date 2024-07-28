@@ -1,7 +1,8 @@
 export class MyMarker {
-  constructor(lat, lng) {
+  constructor(lat, lng, name) {
     this.lat = lat;
     this.lng = lng;
+    this.name = name;
   }
 
   getLat() {
@@ -14,5 +15,8 @@ export class MyMarker {
 
   getCoords() {
     return [this.lng, this.lat]; // Note: Coordinates should be in [lng, lat] format for MapLibre GL
+  }
+  getName() {
+    return this.name
   }
 }
