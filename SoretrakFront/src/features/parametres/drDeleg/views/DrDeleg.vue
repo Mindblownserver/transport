@@ -18,6 +18,7 @@
               tableStyle="min-width: 50rem;" 
               v-model:filters="filters" filterDisplay="row"
               selectionMode="single"
+              :loading="getLoading"
               v-model:selection="selectedRow">
                   <template #empty> Aucun deleg  trouvé </template>
                   <template #loading> Veuillez patienter </template>
@@ -67,8 +68,11 @@ export default {
     },
     computed:{
         getDeleg(){
-            return this.$store.state.delegModule.deleg;
-      }
+          return this.$store.state.delegModule.deleg;
+        },
+        getLoading(){
+          return this.$store.state.delegModule.loading;
+        }
     },
     mounted(){
       this.$store.dispatch("delegModule/getDeleg");

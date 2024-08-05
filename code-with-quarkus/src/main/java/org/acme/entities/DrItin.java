@@ -2,46 +2,38 @@ package org.acme.entities;
 
 import org.acme.Embeddable.DrItinIdRecord;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-@Entity
-public class DrItin extends PanacheEntityBase{
-    @EmbeddedId
+public class DrItin{
+    
     private DrItinIdRecord id;
-
-    @Column(name="DEKMSTA")
+    
     private Integer deKmsTa;
-
-    @Column(name="DEDURTR")
+ 
     private Integer deDureeTr;
 
-    @Column(name="DEESCALE", nullable = true)
     private Integer deEscale;
 
-    @Column(name="DEDATES")
     private String deDates; // peut ne pas être avec les horraires
     
-    @Column(name="DETARIF")
     private Integer deTarif;
 
-    @ManyToOne
-    @JoinColumn(name="DECSTAT")
-    @JsonBackReference
+    private DrStati stat;
+
     private DrStati station;
 
-    @ManyToOne
-    @JoinColumn(name="deNumLi", insertable = false, updatable = false)
-    private DrLigne ligne;
+    
+    
 
     public DrItinIdRecord getId() {
         return id;
+    }
+
+    public DrStati getStat() {
+        return stat;
+    }
+
+    public void setStat(DrStati stat) {
+        this.stat = stat;
     }
 
     public void setId(DrItinIdRecord id) {
@@ -95,6 +87,7 @@ public class DrItin extends PanacheEntityBase{
     public void setStation(DrStati station) {
         this.station = station;
     }
+    
 
     public DrItin() {
     }

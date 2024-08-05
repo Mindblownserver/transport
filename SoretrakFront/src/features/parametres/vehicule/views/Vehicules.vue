@@ -17,6 +17,7 @@
               tableStyle="min-width: 50rem;" 
               v-model:filters="filters" filterDisplay="row"
               selectionMode="single"
+              :loading="getLoading"
               v-model:selection="selectedRow">
                   <template #empty> Aucune vehicule n'est trouvée </template>
                   <template #loading> Veuillez patienter </template>
@@ -73,6 +74,9 @@ export default {
     computed:{
       getVehicules(){
         return this.$store.state.vehiculeModule.vehicules;
+      },
+      getLoading(){
+        return this.$store.state.vehiculeModule.loading;
       }
     },
     mounted(){

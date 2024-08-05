@@ -4,13 +4,13 @@ package org.acme.entities;
 
 public class TypeVehicule {
 
-    private Integer id;
+    private int id;
    
     private String decateg;
    
     private String deacate;
 
-    private Integer denbplc;
+    private int denbplc;
     
     private Long dureeVie;
     
@@ -22,11 +22,11 @@ public class TypeVehicule {
 
 
     
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -77,17 +77,17 @@ public class TypeVehicule {
     public void setPrixIm(Long prixIm) {
         this.prixIm = prixIm;
     }
-
-    public TypeVehicule() {
-    }
-
+    
     public String getColor() {
         return color;
     }
-
+    
     public void setColor(String color) {
         this.color = color;
     }
-
+    
+    public TypeVehicule() {
+    }
+    
     
 }

@@ -34,9 +34,9 @@ const selectedResourceValue = ref("Bus")
 const resourceMode = new ref(new ResourceModes());
 
 
-let busResourceArray = new ResourceArray();
-let ligneResourceArray = new ResourceArray();
-let agentResourceArray = new ResourceArray();
+let busResourceArray;
+let ligneResourceArray;
+let agentResourceArray;
 let centreResourceArray = new ResourceArray();
 let delegResourceArray = new ResourceArray();
 
@@ -91,6 +91,11 @@ const compareTime = (dateTime1, dateTime2)=>{
 }
 
 const loadTrips = ()=>{
+  busResourceArray = new ResourceArray();
+  ligneResourceArray = new ResourceArray();
+  agentResourceArray = new ResourceArray();
+  
+
   const trips = getTrips.value.map((trip)=>{
     const busReFromTrips = trip.busRe;
     const busPrFromTrips = trip.busPr;
@@ -170,7 +175,7 @@ const fetchData=(date)=>{
 }
 
 onMounted(()=>{
-  fetchData(new Date(2024,2,2,0,0,0,0));
+  fetchData(new Date());
   
 })
 

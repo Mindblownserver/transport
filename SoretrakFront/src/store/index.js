@@ -10,6 +10,7 @@ import { tripsModule } from "../features/plannification/store/trips.module";
 import { dashboardModule } from "../features/dashboard/store/dashboard.module";
 import { vehiculeModule } from "../features/parametres/vehicule/store/vehicule.module";
 import { agentModule } from "../features/parametres/agent/store/agent.module";
+import { ligneModule } from "../features/parametres/ligne/store/ligne.module";
 
 export default createStore({
   modules: {
@@ -23,7 +24,8 @@ export default createStore({
     tripsModule,
     dashboardModule,
     vehiculeModule,
-    agentModule
+    agentModule,
+    ligneModule
   },
   state: {
     hideConfigButton: false,

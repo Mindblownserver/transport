@@ -19,13 +19,12 @@ export const delegModule={
     }
   },
   actions: {
-    getDeleg({commit}){
+    async getDeleg({commit}){
       commit("setLoading", true);
       commit("setError", null);
       try{
-          myApi.getDeleg().then(res=>{
-              commit("setDeleg", res.data);
-          })
+          const res = await myApi.getDeleg()
+          commit("setDeleg", res.data);
       }catch(err){
           commit("setError", err);
       }finally{

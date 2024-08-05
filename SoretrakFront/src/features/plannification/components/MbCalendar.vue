@@ -43,7 +43,7 @@
       </template>
       <template #resourceHeader>
       <div class="md-resource-header-template-title">  
-        <InputText id="search" v-model="searchValueLocal" placeholder="Chercher par bus" @input="filter()"/>
+        <InputText id="search" v-model="searchValueLocal" placeholder="Chercher" @input="filter()"/>
       </div>
     </template>
     <template #header>

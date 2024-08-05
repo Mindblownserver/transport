@@ -3,31 +3,25 @@ package org.acme.entities;
 import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
-@Entity
-public class DrCentre extends PanacheEntityBase {
-    @Id
-    @Column(name="DECCENT")
-    private Long decCentre;
+
+public class DrCentre  {
     
-    @Column(name="DELCENT")
+    
+    private int decCentre;
+    
+    
     private String delCent;
     
-    @Column(name="AR_DELCENT")
+    
     private String arDelCent;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "centre")
-    private List<DrLigne> lignes;
+    
 
-    public Long getDeccentre() {
+    public int getDeccentre() {
         return decCentre;
     }
-    public void setDec_centre(Long decCentre) {
+    public void setDec_centre(int decCentre) {
         this.decCentre = decCentre;
     }
     public String getDelcentre() {
@@ -44,7 +38,7 @@ public class DrCentre extends PanacheEntityBase {
     }
 
     
-    public DrCentre(Long decCentre, String delCent, String arDelCent) {
+    public DrCentre(int decCentre, String delCent, String arDelCent) {
         this.decCentre = decCentre;
         this.delCent = delCent;
         this.arDelCent = arDelCent;

@@ -1,35 +1,29 @@
 package org.acme.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
-@Entity
-@Table(name = "DrAGENT")
+
 public class Agent {
-    @Id
-    @Column(name = "DECAGEN", nullable = false)
-    public Long decagen;
+    
+    
+    public int decagen;
 
-    @Column(name = "DENAGEA", length = 50)
+    
     public String denagea;
 
-    @Column(name = "DENAGEN", length = 50)
+    
     public String denagen;
 
-    @Column(name = "DECDELEG")
+    
     public int decdeleg;
 
-    @Transient
+    
     public String color ="#18851a";
 
-    public Long getDecagen() {
+    public int getDecagen() {
         return decagen;
     }
 
-    public void setDecagen(Long decagen) {
+    public void setDecagen(int decagen) {
         this.decagen = decagen;
     }
 

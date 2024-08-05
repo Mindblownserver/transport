@@ -17,6 +17,7 @@
               tableStyle="min-width: 50rem;" 
               v-model:filters="filters" filterDisplay="row"
               selectionMode="single"
+              :loading="getLoading"
               v-model:selection="selectedRow">
                   <template #empty> Aucun centre trouvé </template>
                   <template #loading> Veuillez patienter </template>
@@ -65,6 +66,9 @@ export default {
     computed:{
       getCentres(){
         return this.$store.state.centreModule.centres;
+      },
+      getLoading(){
+        return this.$store.state.centreModule.loading;
       }
     },
     mounted(){

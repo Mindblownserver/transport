@@ -1,33 +1,21 @@
 package org.acme.entities;
-import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 
-@Entity
-@Table(name="DRTYPLI")
 public class DrTypeLigne extends PanacheEntityBase{
-    @Id
-    @Column(name="DECTYLI")
-    private Long decTyLi;
-    @Column(name="DELTYLA")
+    
+    
+    private int decTyLi;
+    
     private String delTyLA;
-    @Column(name="DELTYLI")
+    
     private String delTyLi;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="type")
-    private List<DrLigne> lignes;
-
-    public Long getDec_tpli() {
+    public int getDec_tpli() {
         return decTyLi;
     }
-    public void setDec_tpli(Long decTyLi) {
+    public void setDec_tpli(int decTyLi) {
         this.decTyLi = decTyLi;
     }
     public String getAr_tpli() {

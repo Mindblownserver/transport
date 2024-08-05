@@ -19,13 +19,12 @@ export const typeLigneModule={
     }
   },
   actions: {
-    getTypeLigne({commit}){
+    async getTypeLigne({commit}){
       commit("setLoading", true);
       commit("setError", null);
       try{
-          myApi.getTypeLignes().then(res=>{
-              commit("setTypeLigne", res.data);
-          })
+          const res = await myApi.getTypeLignes()
+          commit("setTypeLigne", res.data);
       }catch(err){
           commit("setError", err);
       }finally{

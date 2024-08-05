@@ -1,54 +1,37 @@
 package org.acme.entities;
 
 import java.util.Date;
-import java.util.List;
 
+public class DrStati {
+    
+    private int decStat;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class DrStati extends PanacheEntityBase {
-    @Id
-    @Column(name="DECSTAT")
-    private Long decStat;
-
-    @Column(name="DELSTAT")
+    
     private String delStat;
 
-    @Column(name="DELSTAA")
+    
     private String delStaA;
 
-    @Column(name="DECTYST")
+    
     private int decTySt;
 
-    @Column(name="STOP_LAT")
+    
     private Float stopLat;
 
-    @Column(name="STOP_LON")
+    
     private Float stopLon;
 
-    @Column(name="DATE_SYS")
+    
     private Date dateSys;
 
-    @Column(name="RAYON")
+    
     private int rayon;
 
-    @OneToMany(mappedBy = "station")
-    private List<DrItin> itineraires;
-
-    @OneToMany(mappedBy = "station")
-    private List<StopTimes> stopTimesList;
-
-    public Long getDecStat() {
+    public int getDecStat() {
         return decStat;
     }
 
-    public void setDecStat(Long decStat) {
+    public void setDecStat(int decStat) {
         this.decStat = decStat;
     }
 
@@ -111,7 +94,7 @@ public class DrStati extends PanacheEntityBase {
     public DrStati() {
     }
 
-    public DrStati(Long decStat, String delStat, String delStaA, int decTySt, Float stopLat, Float stopLon, Date dateSys,
+    public DrStati(int decStat, String delStat, String delStaA, int decTySt, Float stopLat, Float stopLon, Date dateSys,
             int rayon) {
         this.decStat = decStat;
         this.delStat = delStat;

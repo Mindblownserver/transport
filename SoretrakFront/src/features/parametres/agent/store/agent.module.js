@@ -3,7 +3,7 @@ export const agentModule={
     namespaced: true,
     state: {
       agents:[],
-      loading:true,
+      loading:false,
       error:null,
     },
     mutations: {
@@ -18,12 +18,12 @@ export const agentModule={
       },
     },
     actions: {
-      getAgents({commit}){
+      async getAgents({commit}){
+        commit("setLoading", true);
         commit("setError", null);
         try{
-            myApi.getAgents().then(res=>{
-              commit("setAgents", res.data);
-            })
+            const res = await myApi.getAgents();
+            commit("setAgents", res.data);
             
         }catch(err){
             commit("setError", err);

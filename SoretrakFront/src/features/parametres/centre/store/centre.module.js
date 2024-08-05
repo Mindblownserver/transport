@@ -19,13 +19,12 @@ export const centreModule={
       }
     },
     actions: {
-      getCentres({commit}){
+      async getCentres({commit}){
         commit("setLoading", true);
         commit("setError", null);
         try{
-            myApi.getCentres().then(res=>{
-                commit("setCentres", res.data);
-            })
+            const res = await myApi.getCentres()
+            commit("setCentres", res.data);
         }catch(err){
             commit("setError", err);
         }finally{

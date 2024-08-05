@@ -2,123 +2,123 @@ package org.acme.entities;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
-import jakarta.persistence.FetchType;
 
 
-@Entity
-public class DrLigne extends PanacheEntityBase{
-    @Id
-    @Column(name="DENUMLI")
-    private Long deNumLi;
+
+
+public class DrLigne{
+    
+    
+    private int deNumLi;
    
-    @Column(name="DENOMLI")
+    
     private String deNomLi;
    
-    @Column(name="DEPRIOR")
+    
     private Long dePrior;
    
-    @Column(name="DECTYTA")
+    
     private String decTyTa;
 
-    @Column(name="DECTYEQ")
+    
     private Integer decTyEq;
 
-    @Column(name="DENOMLA")
+    
     private String deNomLa;
    
-    @Column(name="DEDATEC")
+    
     private Date deTaTec;
    
-    @Column(name="DEDATEA")
+    
     private Date deTaTea;
    
-    @Column(name="DESTATU")
+    
     private String deStatu;
    
-    @Column(name="DENBRKM")
+    
     private Integer deNbrkm;
     
-    @Column(name="DEACTIF")
+    
     private Integer deActif;
     
-    @Column(name="AGENCY_ID")
+    
     private String agencyId;
     
-    @Column(name="ROUTE_TYPE")
+    
     private Long routeType;
     
-    @Column(name="ROUTE_URL")
+    
     private String routeUrl;
     
-    @Column(name="ROUTE_COLOR")
+    
     private Integer routeColor;
     
-    @Column(name="ROUTE_TEXT_COLOR")
+    
     private Long routeTextColor;
     
-    @Column(name="DENOMLI_RET")
+    
     private String deNomLiRet;
     
-    @Column(name="INTEG_BI")
+    
     private Integer integBi;
     
-    @Column(name="DECCLIE")
+    
     private Long decClie;
     
-    @Column(name="DECADMI")
+    
     private Integer decAdmi;
     
-    @Column(name="SAE")
+    
     private Integer sae;
 
-    @Transient
+    
     private String color = "#18851a";
-
-    @Transient
-    private int decCentre;
     
-    @Transient
-    private int decDeleg;
+    private DrTypeLigne type; 
     
-    @ManyToOne
-    @JoinColumn(name="DECTYLI")
-    private DrTypeLigne type;
-    
-    @ManyToOne
-    @JoinColumn(name="DECCENT")
     private DrCentre centre;
     
-    @ManyToOne
-    @JoinColumn(name="DecDeleg")
     private DrDeleg deleg;
     
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<SHAPS> shapList;
+    private List<Shapes> shapList;
 
-    @OneToMany(mappedBy = "ligne", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    
+    
     private List<DrItin> itinList;
 
-    @OneToMany(mappedBy="ligne", fetch=FetchType.LAZY)
-    private List<Trips> tripsList;
+    
 
-    public Long getIdLigne() {
+    public int getIdLigne() {
         return deNumLi;
     }
 
+    
 
-    public void setIdLigne(Long deNumLi) {
+    public List<Shapes> getShapList() {
+        return shapList;
+    }
+
+
+
+    public void setShapList(List<Shapes> shapList) {
+        this.shapList = shapList;
+    }
+
+
+
+    public List<DrItin> getItinList() {
+        return itinList;
+    }
+
+
+
+    public void setItinList(List<DrItin> itinList) {
+        this.itinList = itinList;
+    }
+
+
+
+    public void setIdLigne(int deNumLi) {
         this.deNumLi = deNumLi;
     }
 
@@ -317,31 +317,10 @@ public class DrLigne extends PanacheEntityBase{
         this.centre = centre;
     }
 
-
-    public int getDecCentre() {
-        return decCentre;
-    }
-
-
-    public void setDecCentre(int decCentre) {
-        this.decCentre = decCentre;
-    }
-
-
-    public int getDecDeleg() {
-        return decDeleg;
-    }
-
-
-    public void setDecDeleg(int decDeleg) {
-        this.decDeleg = decDeleg;
-    }
-
-
     public DrLigne() {
     }
 
-    public DrLigne(Long deNumLi, String deNomLi, Long dePrior, String decTyTa, Integer decTyEq, String deNomLa,
+    public DrLigne(int deNumLi, String deNomLi, Long dePrior, String decTyTa, Integer decTyEq, String deNomLa,
             Date deTaTec, Date deTaTea, String deStatu, Integer deNbrkm, DrDeleg decDeleg, Integer deActif,
             String agencyId, Long routeType, String routeUrl, Integer routeColor, Long routeTextColor,
             String deNomLiRet, Integer integBi, Long decClie, Integer decAdmi, Integer sae, DrTypeLigne type,

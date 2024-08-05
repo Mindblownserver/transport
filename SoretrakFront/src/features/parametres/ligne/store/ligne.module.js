@@ -1,35 +1,36 @@
 import myApi from "@/services/myApi.service.js"
-export const vehiculeModule={
+
+export const ligneModule={
     namespaced: true,
     state: {
-      vehicules:[],
+      lignes:[],
       loading:true,
-      error:null,
+      error:null
     },
     mutations: {
-      setVehicules(state, vehic){
-        state.vehicules = vehic;
+      setLignes(state, lignes){
+        state.lignes = lignes;
       },
       setLoading(state,loading){
         state.loading = loading
       },
       setError(state,err){
         state.error =err;
-      },
+      }
     },
     actions: {
-      async getVehicule({commit}){
+       async getLignes({commit}){
+        commit("setLoading", true);
         commit("setError", null);
         try{
-            const res = await myApi.getVehicules()
-            commit("setVehicules", res.data);
+            const res = await myApi.getLignes();
+            commit("setLignes", res.data);
         }catch(err){
             commit("setError", err);
         }finally{
-
             commit("setLoading", false);
         }
-      },
+      }
     },
     getters: {},
   }

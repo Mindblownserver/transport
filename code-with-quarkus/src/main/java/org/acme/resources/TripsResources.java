@@ -2,14 +2,11 @@ package org.acme.resources;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.acme.entities.Trips;
 import org.acme.entities.SQL.TripsSql;
-import org.acme.repositories.TripsRepository;
-import org.acme.repositories.SQL.TripsSqlRepository;
+import org.acme.repositories.TripsSqlRepository;
 import org.jboss.logging.Logger;
 
 import jakarta.inject.Inject;
@@ -142,24 +139,10 @@ public class TripsResources {
     }
     
     @Inject
-    TripsRepository tripsRepo;
-
-    @Inject
     TripsSqlRepository tripsSqlRepo;
 
     @Inject
     Logger log;
-
-    @GET
-    public Response getTrips(){
-        List<Trips> listTrips=tripsRepo.listAll();
-        if(listTrips.size()>0){
-            return Response.ok(listTrips.size()).build();
-        }else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-    }
     
     @GET
     @Path("/date/{date}")

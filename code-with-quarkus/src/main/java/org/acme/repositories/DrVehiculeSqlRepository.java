@@ -1,4 +1,4 @@
-package org.acme.repositories.SQL;
+package org.acme.repositories;
 
 import javax.sql.DataSource;
 
@@ -23,13 +23,13 @@ public class DrVehiculeSqlRepository {
     public List<DrVehicule> getVehicules()throws SQLException{
         List<DrVehicule> vehicList = new ArrayList<>();
         DrVehicule vehic;
-        String sql = "Select * from DRVEHIC";
+        String sql = "Select DECODVH, DEMATRI, DECDELEG, DECCENT, DECATVH from DRVEHIC";
         try(Connection conn = datasource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()){
                 while(rs.next()){
                     vehic = new DrVehicule();
-                    vehic.setDecodvh(rs.getLong("DECODVH"));
+                    vehic.setDecodvh(rs.getInt("DECODVH"));
                     vehic.setDematri(rs.getString("DEMATRI"));
                     vehic.setDecdeleg(rs.getInt("DECDELEG"));
                     vehic.setDeccent(rs.getInt("DECCENT"));
@@ -42,7 +42,7 @@ public class DrVehiculeSqlRepository {
 
     private TypeVehicule getTypeVehiculeByIdVehic(int decatvh) throws SQLException{
         TypeVehicule type = new TypeVehicule();
-        String sql = "select * from DRCATVE where DECATVH=?";
+        String sql = "select DEACATE, DECATEG, DENBPLC, DUREE_VIE, PRIXIM, PRIXKM, COLORTYPE from DrCatVe where DECATVH=?";
         try(Connection conn = datasource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, decatvh);

@@ -35,7 +35,7 @@ setOptions({
 })
 const emits = defineEmits(["Update:date"])
 
-const defaultDate= ref(new Date(2024,2,2,0,0,0,0));
+const defaultDate= ref(new Date());
 const maxDate = new Date()
 
 const handleDateChange=(args)=>{

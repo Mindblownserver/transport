@@ -1,4 +1,4 @@
-package org.acme.repositories.SQL;
+package org.acme.repositories;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,19 +10,14 @@ import javax.sql.DataSource;
 import org.acme.Embeddable.StopTimesId;
 import org.acme.Embeddable.TripsId;
 import org.acme.entities.Agent;
-import org.acme.entities.Bus;
-import org.acme.entities.DrCentre;
-import org.acme.entities.DrDeleg;
+
 import org.acme.entities.DrLigne;
 import org.acme.entities.DrStati;
 import org.acme.entities.DrVehicule;
 import org.acme.entities.StopTimes;
 import org.acme.entities.TypeVehicule;
 import org.acme.entities.SQL.TripsSql;
-import org.acme.repositories.DrCentreRepository;
-import org.acme.repositories.DrDelegRepository;
 import org.acme.resources.TripsResources;
-import org.acme.resources.TripsResources.Statistics;
 import org.acme.resources.TripsResources.Statistics.StatisticsItem;
 
 import java.sql.Connection;
@@ -39,13 +34,13 @@ public class TripsSqlRepository {
 
     public Agent getAgentById(int decAgen)throws SQLException{
         Agent agent = new Agent();
-        String sql = "select * from DrAgent where decagen=?";
+        String sql = "select DECDELEG, DENAGEA, DENAGEN from DrAgent where decagen=?";
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, decAgen);
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
-                        agent.setDecagen((long)decAgen);
+                        agent.setDecagen(decAgen);
                         agent.setDecdeleg(rs.getInt("DECDELEG"));
                         agent.setDenagea(rs.getString("DENAGEA"));
                         agent.setDenagen(rs.getString("DENAGEN"));
@@ -55,49 +50,16 @@ public class TripsSqlRepository {
         return agent;
     }
 
-    public DrCentre getCentreById(int deccent)throws SQLException{
-        DrCentre centre = new DrCentre();
-        String sql = "select * from DRCENTRE where deccent=?";
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setInt(1, deccent);
-                try(ResultSet rs = ps.executeQuery()){
-                    while(rs.next()){
-                        centre.setDec_centre((long)deccent);
-                        centre.setDel_centre(rs.getString("DELCENT"));
-                        centre.setAr_centre(rs.getString("AR_DELCENT"));
-                    }
-                }
-        } 
-        return centre;
-    }
-
-    public DrDeleg getDelegById(int decdeleg)throws SQLException{
-        DrDeleg deleg = new DrDeleg();
-        String sql = "select * from DRDELEG where decdeleg=?";
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setInt(1, decdeleg);
-                try(ResultSet rs = ps.executeQuery()){
-                    while(rs.next()){
-                        deleg.setDec_deleg((long)decdeleg);
-                        deleg.setAr_deleg(rs.getString("LIBDELEGAR"));
-                        deleg.setFr_deleg(rs.getString("LIBDELEGFR"));
-                    }
-                }
-        } 
-        return deleg;
-    }
-
     public DrLigne getLigneById(int denumli)throws SQLException{
         DrLigne ligne = new DrLigne();
-        String sql = "select * from DrLigne where denumli = ?";
+        String sql = "SELECT DENUMLI, DENOMLI, DECTYLI, DEPRIOR, DECTYTA, DECTYEQ, DECCENT, DENOMLA, DEDATEC, DEDATEA, DESTATU, DENBRKM, DECDELEG, DEACTIF, AGENCY_ID, ROUTE_TYPE, ROUTE_URL, ROUTE_COLOR, ROUTE_TEXT_COLOR, DENOMLI_RET, INTEG_BI, DECCLIE, DECADMI, SAE FROM DrLigne WHERE denumli = ?";
+
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1,denumli);
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
-                        ligne.setIdLigne((long)denumli);
+                        ligne.setIdLigne(denumli);
                         ligne.setNomLigne(rs.getString("DENOMLI"));
                         ligne.setPriorite(rs.getLong("DEPRIOR"));
                         ligne.setDECTYTA(rs.getString("DECTYTA"));
@@ -118,49 +80,26 @@ public class TripsSqlRepository {
                         ligne.setDECCLIE(rs.getLong("DECCLIE"));
                         ligne.setDECADMI(rs.getInt("DECADMI"));
                         ligne.setSAE(rs.getInt("SAE"));
-                        ligne.setCentre(getCentreById(rs.getInt("DECCENT")));
-                        ligne.setDeleg(getDelegById(rs.getInt("DECDELEG")));
+                        ligne.setCentre(GeneralSqlOperations.getCentreById(rs.getInt("DECCENT"), dataSource));
+                        ligne.setDeleg(GeneralSqlOperations.getDelegById(rs.getInt("DECDELEG"), dataSource));
                     }
                 }
             }
             return ligne;
     }
 
-    public DrStati getStationById(int decStat) throws SQLException{
-        DrStati station = new DrStati();
-        String sql = "SELECT * from DRSTATI where DECSTAT=?";
-        
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, decStat);
-            
-            try(ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
-                    station.setDecStat((long)decStat);
-                    station.setNomFr(rs.getString("DELSTAT"));
-                    station.setNomAr(rs.getString("DELSTAA"));
-                    station.setDate(rs.getTimestamp("DATE_SYS"));
-                    station.setTypeSt(rs.getInt("DECTYST"));
-                    station.setLatitude(rs.getFloat("STOP_LAT"));
-                    station.setLongetude(rs.getFloat("STOP_LON"));
-                    station.setRayon(rs.getInt("RAYON"));
-                }
-            }
-        }
-        return station;
-    }
-    
     public List<StopTimes> getStopTimesByTripsId(Date dedated, int trip_id)throws SQLException{
         List<StopTimes> stopTimesList = new ArrayList<>();
         TripsId tipsId = new TripsId(dedated, trip_id);
         Connection conn = dataSource.getConnection();
-        String sql = "SELECT * FROM STOP_TIMES where trip_id=? and dedated = ? order by stop_sequence asc";
+        String sql = "SELECT DECSTAT, STOP_SEQUENCE, ARRIVAL_TIME, DEPARTURE_TIME, PICKUP_TYPE, SHAPE_DIST_TRAVELED, TIMEPOINT, RT_ARRIVAL_TIME,"+
+        "RT_DEPARTURE_TIME, STATE FROM STOP_TIMES where trip_id=? and dedated = ? order by stop_sequence asc";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, trip_id);
         ps.setDate(2,new java.sql.Date(dedated.getTime()));
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
-            DrStati station = getStationById(rs.getInt("DECSTAT"));
+            DrStati station = GeneralSqlOperations.getStationById(rs.getInt("DECSTAT"), dataSource);
             stopTimesList.add(new StopTimes(new StopTimesId(tipsId, rs.getInt("STOP_SEQUENCE")),rs.getTimestamp("ARRIVAL_TIME"), 
             rs.getTimestamp("DEPARTURE_TIME"), station, 
             rs.getLong("PICKUP_TYPE"), rs.getString("SHAPE_DIST_TRAVELED"), 
@@ -173,42 +112,20 @@ public class TripsSqlRepository {
         return stopTimesList;
     }
 
-    public TypeVehicule getTypeVehiculeById(int typeId)throws SQLException{
-        TypeVehicule type = new TypeVehicule();
-        
-        String sql = "select * from DrCatVe where DECATVH=?";
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setInt(1, typeId);
-                try(ResultSet rs = ps.executeQuery()){
-                    while(rs.next()){
-                        type.setId(typeId);
-                        type.setDeacate(rs.getString("DEACATE"));
-                        type.setDecateg(rs.getString("DECATEG"));
-                        type.setDenbplc(rs.getInt("DENBPLC"));
-                        type.setDureeVie(rs.getLong("DUREE_VIE"));
-                        type.setPrixIm(rs.getLong("PRIXIM"));
-                        type.setPrixKm(rs.getFloat("PRIXKM"));
-                        type.setColor(rs.getString("COLORTYPE"));
-                    }
-                }
-        }
-        return type;
-    }
-
+    
     public DrVehicule getVehiculeById(int vehiculeId) throws SQLException{
         DrVehicule vehicule= new DrVehicule();
         Connection conn = dataSource.getConnection();
-        String sql = "select * from DrVehic where DECODVH=?";
+        String sql = "select DEMATRI, DECCENT, DECDELEG, DECATVH from DrVehic where DECODVH=?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1,vehiculeId);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
-            vehicule.setDecodvh((long)vehiculeId);
+            vehicule.setDecodvh(vehiculeId);
             vehicule.setDematri(rs.getString("DEMATRI"));
             vehicule.setDeccent(rs.getInt("DECCENT"));
             vehicule.setDecdeleg(rs.getInt("DECDELEG"));
-            TypeVehicule typeVehic = getTypeVehiculeById(rs.getInt("DECATVH"));
+            TypeVehicule typeVehic = GeneralSqlOperations.getTypeVehiculeById(rs.getInt("DECATVH"),dataSource);
             vehicule.setDecatvh(typeVehic);
             
         }

@@ -2,7 +2,7 @@ package org.acme.entities;
 
 public class DrVehicule {
 
-    private Long decodvh;
+    private int decodvh;
 
     private String dematri;
 
@@ -43,18 +43,16 @@ public class DrVehicule {
     public void setDecdeleg(int decdeleg) {
         this.decdeleg = decdeleg;
     }
-
-    public DrVehicule() {
-    }
-
-    public Long getDecodvh() {
+    
+    public int getDecodvh() {
         return decodvh;
     }
-
-    public void setDecodvh(Long decodvh) {
+    
+    public void setDecodvh(int decodvh) {
         this.decodvh = decodvh;
     }
-
     
-
+    public DrVehicule() {
+    }
+    
 }

@@ -17,6 +17,7 @@
               tableStyle="min-width: 50rem;" 
               v-model:filters="filters" filterDisplay="row"
               selectionMode="single"
+              :loading="getLoading"
               v-model:selection="selectedRow">
                   <template #empty> Aucun deleg  trouvé </template>
                   <template #loading> Veuillez patienter </template>
@@ -66,8 +67,11 @@ export default {
     },
     computed:{
         getTypeLigne(){
-            return this.$store.state.typeLigneModule.typeLignes;
-      }
+          return this.$store.state.typeLigneModule.typeLignes;
+        },
+        getLoading(){
+          return this.$store.state.typeLigneModule.loading;
+        }
     },
     mounted(){
       this.$store.dispatch("typeLigneModule/getTypeLigne");

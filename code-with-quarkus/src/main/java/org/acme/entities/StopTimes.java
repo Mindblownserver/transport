@@ -4,69 +4,38 @@ import java.util.Date;
 
 import org.acme.Embeddable.StopTimesId;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
-
-@Entity
-@Table(name="stop_times")
 public class StopTimes{
-    @EmbeddedId 
+    
     StopTimesId id;
 
-    @Column(name="ARRIVAL_TIME")
+    
     private Date arrival_time;
     
-    @Column(name="DEPARTURE_TIME")
+    
     private Date departure_time;
     
-    @Column(name="PICKUP_TYPE")
+    
     private Long pickup_type;
     
-    @Column(name="SHAPE_DIST_TRAVELED")
+    
     private String shape_dist_traveled;
     
-    @Column(name="TIMEPOINT")
+    
     private Integer timepoint;
     
-    @Column(name="RT_ARRIVAL_TIME")
+    
     private Date rt_arrival_time;
     
-    @Column(name="RT_DEPARTURE_TIME")
+    
     private Date rt_departure_time;
     
-    @Column(name="STATE")
-    private String sate;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name="DEDATED",referencedColumnName = "deDated"),
-        @JoinColumn(name="trip_ID",referencedColumnName = "trip_Id")
-    })
-    //@JsonBackReference
-    private Trips trip;
+    private String sate;    
     
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="station")
+    
     private DrStati station;
-    
-   /*  public Date getDedated() {
-        return id.tripsDatedId().deDated();
-    }
 
-
-    public Integer getTrip_id() {
-        return id.tripsDatedId().trip_id();
-    } */
-    
     public Integer getStop_sequence() {
         return id.stopSeq();
     }
