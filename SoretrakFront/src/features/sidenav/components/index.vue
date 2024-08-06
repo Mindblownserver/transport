@@ -4,7 +4,7 @@
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 ms-3"
     :class="`${
       isRtl ? 'me-3 rotate-caret fixed-end' : 'fixed-start ms-3'
-    } ${sidebarType}`"
+    } ${isDarkMode?'bg-gradient-dark':'bg-white'}`"
   >
     <div class="sidenav-header">
       <i

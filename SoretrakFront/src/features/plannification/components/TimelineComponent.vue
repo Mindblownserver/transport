@@ -143,19 +143,27 @@ const loadTrips = ()=>{
   store.commit("tripsModule/setVehicules", busResourceArray);
   store.commit("tripsModule/setAgents", agentResourceArray);
 }
-
+/**
+ * Function that filters the resources by criteria (deleg & centres)
+ * It's executed the moment any of the criteria is changed
+ * @example if deleg is changed, the resource will get filtered by deleg and center, and vice-cersa
+ */
 const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
   try{
     let regexCentreString ="";
     let regexDelegString ="";
+
     selectedCentreCrit.map(valuer=>regexCentreString= regexCentreString+valuer.id+"|")
     selectedDelegCrit.map(valuer=>regexDelegString= regexDelegString+valuer.id+"|")
+    
     let regexCentre = RegExp(regexCentreString.substring(0,regexCentreString.length-1))
     let regexDeleg = RegExp(regexDelegString.substring(0,regexDelegString.length-1))
+    
     let includedResources = myTrips.value.map(trip=>{
       if (regexCentre.test(trip.centreId) && regexDeleg.test(trip.delegId))
       return trip.resource;
     })
+    
     myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values().filter(resource=>includedResources.includes(resource.id))
     myResources.value = myResourcesCriteria.value;
 
@@ -166,11 +174,10 @@ const filterByCrit=(selectedCentreCrit, selectedDelegCrit)=>{
   }
 }
 
-const fetchData=(date)=>{
+const fetchData=(date, selectedCentre, selectedDeleg)=>{
   store.dispatch("tripsModule/getTrips", date).then(()=>{
     loadTrips();
-    myResourcesCriteria.value = resourceMode.value.getMode(selectedResourceValue.value).values()
-    myResources.value = myResourcesCriteria.value
+    filterByCrit(selectedCentre,selectedDeleg)
   });
 }
 

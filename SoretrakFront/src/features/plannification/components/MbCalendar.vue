@@ -7,6 +7,7 @@
     :dragToMove="true"
     :dragToResize="true"
     :dragInTime="false"
+    :options="setOptions({ themeVariant: store.state.isDarkMode? 'dark':'light',theme: 'material'})"
     @event-click="handleEventClick"
     @event-created="handleEventCreated"
     @event-deleted="handleEventDeleted"
@@ -66,7 +67,7 @@
         </div>
         <div class="small-empty-box"></div>
         <div>
-          <DatePicker style="width: 8rem;" v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
+          <DatePicker style="width: 5rem;" v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
         </div>
         <Button label="" disabled text>
           <template #icon>
@@ -74,11 +75,11 @@
           </template>
         </Button>
         <div>
-          <DatePicker style="width: 8rem;" v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
+          <DatePicker style="width: 5rem;" v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
         </div>
         <div class="small-empty-box"></div>
         <div>
-          <SplitButton label="Chercher" :loading="loading" @click="searchByTime" :model="items">
+          <SplitButton label="Chercher" :loading="loading" @click="searchByTime" :model="items" >
             <template #dropdownicon><!-- icon is called a slot, this is how slots are used -->
               <i class="material-icons-round opacity-10 fs-5">filter_alt</i>
             </template>
@@ -90,13 +91,6 @@
             </template>
           </SplitButton>
         </div>
-      </div>
-      <div class="custom-header-right">
-        <Button label="Ajouter trip" severity="info">
-          <template #icon>
-            <i class="material-icons-round opacity-10 fs-5">add</i>
-          </template>
-        </Button>
       </div>
       </template>
     <template #resourceEmpty>
@@ -148,6 +142,7 @@ import {
 } from '@mobiscroll/vue'
 import {ref, computed, watch} from 'vue'
 import { formatDate } from '@mobiscroll/vue';
+import { useStore } from 'vuex/dist/vuex.cjs.js';
 
 const emits = defineEmits(["update:criteria-query","update:search-query","update:resource-mode", "update:date"])
 
@@ -180,6 +175,7 @@ let previousResourceValue="Bus";
 const loading = ref(false);
 
 const myPopup = ref()
+const store = useStore();
 
 let selectedCentreCrit=[];
 let selectedDelegCrit=[];
@@ -222,6 +218,24 @@ const getIcon = computed(()=>{
     };
 })
 
+const myView = {
+  timeline: {
+    type: 'day',
+    timeCellStep: 30,
+    startTime:"04:30"
+  }
+}
+
+/* setOptions({
+  themeVariant: getIsDarkMode.value? "dark":"light",
+  theme: "material"
+}) */
+
+
+
+
+
+// emits + event handling
 const filter= ()=>{
   emits("update:search-query", searchValueLocal.value);
 }
@@ -243,18 +257,6 @@ const filterDeleg =(selectedCrit)=>{
 const filterCentre =(selectedCrit)=>{
   selectedCentreCrit = selectedCrit;
   emits("update:criteria-query", selectedCentreCrit, selectedDelegCrit);
-}
-
-setOptions({
-  themeVariant: "light",
-  theme: "material"
-})
-
-const myView = {
-  timeline: {
-    type: 'day',
-    timeCellStep: 30,
-  }
 }
 
 function handleEventClick(args) {
@@ -289,7 +291,7 @@ function handleEventDragEnd(args){
 function handleDateChange(args){
   if(args.date){
     console.log(args.date.getDate())
-    emits("update:date", args.date);
+    emits("update:date", args.date,selectedCentreCrit,selectedDelegCrit);
   }
 }
 
@@ -315,6 +317,8 @@ watch(()=>props.myTripsProp, (newValue)=>{
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  overflow-x: auto;
+  /* min-width: 1350px; */
 }
 .custom-header-right{
   display: flex;

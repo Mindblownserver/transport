@@ -72,6 +72,9 @@ export default createStore({
     color(state, payload) {
       state.color = payload;
     },
+    toggleDarkMode(state){
+      state.isDarkMode = !state.isDarkMode;
+    }
   },
   actions: {
     setColor({ commit }, payload) {

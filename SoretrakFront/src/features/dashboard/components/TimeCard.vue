@@ -17,6 +17,7 @@
                         :controls="['calendar']" 
                         :buttons="['close']"
                         :selectMultiple="false"
+                        :options="setOptions({ themeVariant: store.state.isDarkMode? 'dark':'light',theme: 'material'})"
                         dateFormat="DD/MM/YYYY" inputStyle="outline" label="Choisir une date" labelStyle="floating"
                         @change="handleDateChange" />
                     </div>
@@ -29,10 +30,9 @@
 <script setup>
 import { MbscDatepicker, setOptions} from '@mobiscroll/vue';
 import { ref } from 'vue';
-setOptions({
-  themeVariant: "light",
-  theme: "material"
-})
+import {useStore} from "vuex"
+
+const store = useStore();
 const emits = defineEmits(["Update:date"])
 
 const defaultDate= ref(new Date());

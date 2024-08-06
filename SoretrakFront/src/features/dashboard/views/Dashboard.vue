@@ -51,7 +51,7 @@
           <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
               title="Les lignes plannifiées par centre"
-              bgColor="#ed78a1"
+              :bgColor="isDarkMode?'#b4184f':'#ed78a1'"
               shadowColor="#b4184f"
             >
               <ReportsDoughnutChart ref="ligneParCentreChart"/>
@@ -60,7 +60,7 @@
           <div class="col-lg-6 col-md-6 mt-4">
             <chart-holder-card
               title="Les vehicules plannifiées par centre"
-              bgColor="#98cd9a"
+              :bgColor="isDarkMode?'#428a45':'#98cd9a'"
               shadowColor="#428a46"
 
             >
@@ -70,7 +70,7 @@
           <div class="col-lg-6 mt-5">
             <chart-holder-card
               title="Les agents plannifiés par centre"
-              bgColor="#8abdf5"
+              :bgColor="isDarkMode?'#0c4a8d':'#8abdf5'"
               shadowColor="#1270d3"
             >
               <ReportsDoughnutChart ref="agentsParCentreChart"/>
@@ -86,6 +86,7 @@ import ChartHolderCard from "../components/ChartHolderCard.vue";
 import ReportsDoughnutChart from "../components/ReportsDoughnutChart.vue";
 import MiniStatisticsCard from "../components/MiniStatisticsCard.vue";
 import TimeCard from "../components/TimeCard.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "dashboard-default",
@@ -122,6 +123,9 @@ export default {
 
       })
     }
+  },
+  computed:{
+    ...mapState(["isDarkMode"])
   }
 };
 </script>

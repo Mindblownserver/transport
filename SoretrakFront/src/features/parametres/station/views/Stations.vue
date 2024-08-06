@@ -1,6 +1,5 @@
 <template>
-  <div class="container-fluid py-4">
-    
+  <div class="container-fluid py-4">  
     <Tabs value="0">
       <TabList>
           <Tab value="0">Tableaux</Tab>
@@ -107,6 +106,7 @@ const filters = ref({
   longetude: { value: null, matchMode: FilterMatchMode.EQUALS },
   
 })
+
 const selectedRow = ref(null);
 const markers = ref([])
 const mapWidgetRef = ref(null);
