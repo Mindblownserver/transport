@@ -6,7 +6,8 @@
     :options="props.data" optionLabel="name"
     class="w-full md:w-80"
     :loading="isLoading"
-    @change="filterCrit()"/>
+    @change="filterCrit()"
+    />
 </template>
 
 <script setup>

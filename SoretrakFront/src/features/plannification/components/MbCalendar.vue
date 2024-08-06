@@ -49,7 +49,7 @@
     </template>
     <template #header>
       <div class="custom-header-left">
-        <MbscCalendarNav/>
+        <MbscCalendarNav v-tooltip.bottom="'Changer la date des trips'"/>
         <div class="left-criteria">
           <SearchCriteriaInput :critLbl="'Centre: '" :data="props.centreProp"
           @update:criteria-query="filterCentre"/>
@@ -67,7 +67,8 @@
         </div>
         <div class="small-empty-box"></div>
         <div>
-          <DatePicker style="width: 5rem;" v-model="timeDebutLocal" fluid timeOnly :maxDate="timeArriveLocal" placeholder="Temps de Depart"></DatePicker>
+          <DatePicker style="width: 5rem;" v-model="timeDebutLocal" fluid timeOnly 
+          :maxDate="timeArriveLocal" placeholder="Temps de Depart" v-tooltip.bottom="'choisir temps du depart'"></DatePicker>
         </div>
         <Button label="" disabled text>
           <template #icon>
@@ -75,7 +76,8 @@
           </template>
         </Button>
         <div>
-          <DatePicker style="width: 5rem;" v-model="timeArriveLocal" fluid timeOnly placeholder="Temps d'arrivé" :minDate="timeDebutLocal"></DatePicker>
+          <DatePicker style="width: 5rem;" v-model="timeArriveLocal" fluid timeOnly 
+          placeholder="Temps d'arrivé" :minDate="timeDebutLocal" v-tooltip.bottom="'choisir temps d\'arrivée'"></DatePicker>
         </div>
         <div class="small-empty-box"></div>
         <div>
@@ -133,7 +135,7 @@ import SplitButton from 'primevue/splitbutton';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import DatePicker from 'primevue/datepicker';
-import SearchCriteriaInput from "./SearchCriteriaInput"
+import SearchCriteriaInput from "./SearchCriteriaInput.vue"
 import MbPopup from './MbEventPopup.vue';
 import {
   MbscEventcalendar,
