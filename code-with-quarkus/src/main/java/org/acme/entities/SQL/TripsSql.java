@@ -67,7 +67,7 @@ public class TripsSql {
 
     // link decState with the needed station
     public String getTripName(){
-        return ligne.getNomLigne();
+        return ligne.getDENOMLA();
     }
     public DrLigne getLigne(){
         return ligne;
