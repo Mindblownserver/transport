@@ -224,7 +224,7 @@ const myView = {
   timeline: {
     type: 'day',
     timeCellStep: 30,
-    startTime:"04:30"
+    startTime:"04:00"
   }
 }
 
@@ -420,7 +420,7 @@ watch(()=>props.myTripsProp, (newValue)=>{
 
 .md-timeline-template .mbsc-timeline-resource,
 .md-timeline-template .mbsc-timeline-row {
-  min-height: 100px;
+  min-height: 50px;
 }
 .aller{
   border-top-right-radius: 20px;
