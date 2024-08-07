@@ -1,7 +1,7 @@
 import AuthService from '../services/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user_free'));
-const initialState = user ? { loggedIn: true } : { loggedIn: false };
+const initialState = user ? { loggedIn: true, role: user.role } : { loggedIn: false, role: null  };
 
 export const auth = {
   namespaced: true,
@@ -9,8 +9,8 @@ export const auth = {
   actions: {
     async login({ commit }, user) {
       try {
-        await AuthService.login(user);
-        commit('isLoggedIn', true);
+        const response = await AuthService.login(user);
+        commit('isLoggedIn', true, response.data);
       } catch (error) {
         commit('isLoggedIn', false);
         throw(error)

@@ -42,7 +42,7 @@
                 <div class="mb-3">
                   <material-input
                     v-model="username"
-                    id="email"
+                    id="username"
                     label="Username"
                     name="username"
                   />
@@ -182,14 +182,17 @@ export default {
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
     async handleLogin() {
+      console.log('Login form submitted with:', {
+        username: this.username,
+        password: this.password
+      });
       try {
         const response = await authService.login({
           username: this.username,
           password: this.password,
         });
         console.log('Login successful:', response);
-        // Handle successful login (e.g., redirect or show a message)
-        // For example: this.$router.push({ name: 'Home' });
+        this.$router.push({ name: 'Dashboard' });
       } catch (error) {
         console.error('Login failed:', error);
         // Handle login error (e.g., show an error message)

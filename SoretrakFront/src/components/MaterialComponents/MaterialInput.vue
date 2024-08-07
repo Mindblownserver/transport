@@ -4,9 +4,18 @@
       variant === 'static' ? '' : 'form-label',
       color === 'dark' ? 'text-black' : 'text-white'
     ]">{{ label }}</label>
-    <input :id="id" :type="type" class="form-control" :class="getClasses(size)" :name="name" :value="value"
-      :placeholder="placeholder" :isRequired="isRequired" :disabled="disabled"
-      @input="(e) => this.$emit('update:value', e.target.value)" />
+    <input 
+      :id="id" 
+      :type="type" 
+      class="form-control" 
+      :class="getClasses(size)" 
+      :name="name" 
+      :value="modelValue"
+      :placeholder="placeholder" 
+      :required="isRequired" 
+      :disabled="disabled"
+      @input="(e) => this.$emit('update:modelValue', e.target.value)" 
+    />
   </div>
 </template>
 
@@ -48,7 +57,7 @@ export default {
       type: String,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       default: "",
     },
@@ -70,7 +79,7 @@ export default {
     }
   },
 
-  emits: ['update:value'],
+  emits: ['update:modelValue'],
   mounted() {
     setMaterialInput();
   },

@@ -104,6 +104,7 @@ public class ParamResources {
     // Centre
 
     @Path("/centre")
+    @RolesAllowed("USER")
     @GET
     public Response getCentres(){
         List<DrCentre> listCentres=centreRespository.listAll();

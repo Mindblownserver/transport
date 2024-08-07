@@ -1,5 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
+import authHeader from '../services/auth-header';
 
 class AxiosInstance {
   constructor(baseURL) {
@@ -18,19 +19,22 @@ class AxiosInstance {
     });
   }
  getCentres(){
-    return this.instance.get("/api/centre");
+    return this.instance.get("/api/centre", { headers: authHeader() });
   }
   getLignes(){
-    return this.instance.get("/api/ligne");
+    return this.instance.get("/api/ligne", { headers: authHeader() });
   }
   getDeleg(){
-    return this.instance.get("/api/deleg")
+    return this.instance.get("/api/deleg", { headers: authHeader() })
   }
   getTypeLignes(){
-    return this.instance.get("/api/ligne/type")
+    return this.instance.get("/api/ligne/type", { headers: authHeader() })
   }
   getStations(){
-    return this.instance.get("/api/stations")
+    return this.instance.get("/api/stations", { headers: authHeader() })
+  }
+  signIn(){
+    return this.instance.get("/auth/login")
   }
   /**
    * Get Trips

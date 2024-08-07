@@ -30,7 +30,14 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
-  ...delegRoute, ...stationRoute, ...ligneRoute, ...vehiculeRoute, ...centreRoute, ...typeLignesRoute, ...tripsRoute,...agentRoute,
+  ...delegRoute, 
+  ...stationRoute, 
+  ...ligneRoute, 
+  ...vehiculeRoute, 
+  ...centreRoute, 
+  ...typeLignesRoute, 
+  ...tripsRoute,
+  ...agentRoute,
   {
     path: "/tables",
     name: "Tables",
@@ -45,6 +52,8 @@ const routes = [
     path: "/rtl-page",
     name: "RTL",
     component: RTL,
+    meta: { requiresAuth: true, roles: ['USER'] },
+
   },
   {
     path: "/notifications",
@@ -93,6 +102,26 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
+});
+
+
+router.beforeEach((to, from, next) => {
+  const loggedIn = JSON.parse(localStorage.getItem('user_free'));
+  const userRole = loggedIn ? loggedIn.role : null;
+  console.log("ahayya: "+userRole)
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!loggedIn) {
+      return next({ name: 'SignIn' });
+    }
+
+    if (to.meta.roles && !to.meta.roles.includes(userRole)) {
+      return next({ name: 'Dashboard' }); 
+      
+    }
+  }
+
+  next();
 });
 
 export default router;

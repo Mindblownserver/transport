@@ -3,6 +3,8 @@ export default [
     {
       path: "/param/type_ligne",
       name: "TypeLignes",
-      component:TypeLignes
+      component:TypeLignes,
+      meta: { requiresAuth: true, roles: ['admin'] } // Example meta field
+
     }
 ];  
